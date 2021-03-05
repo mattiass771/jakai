@@ -1,19 +1,11 @@
-@font-face {
-  font-family: 'arturo_triallight';
-  src: url('./arturo-light-webfont.woff2') format('woff2'),
-       url('./arturo-light-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
   margin: 0;
-  background: url(./bg.png) no-repeat center center fixed; 
+  background: url(./jakai.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  font-family: 'Cabin', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  font-family: 'Quicksand' ,-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif !important;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +26,7 @@ body:after{
   left:0;
   right:0;
   z-index:-1; /* needed to keep in the background */
-  background: url(./bg.png) center center;
+  background: url(./jakai.jpg) center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -42,15 +34,11 @@ body:after{
 }
 
 .body-image {
-  background: url(./boteia.jpg) no-repeat center center fixed; 
+  background: url(./atelier.jpeg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-
-.nav-link {
- font-family: 'arturo_triallight' !important;
 }
 
 @media only screen and (min-width: 975px) {
@@ -82,12 +70,12 @@ body:after{
 }
 
 .btn {
-  background-color: #2b371b !important;
+  background-color: #AE1865 !important;
 }
 
 .btn:hover {
   background-color: whitesmoke !important;
-  color: #2b371b !important
+  color: #AE1865 !important
 }
 
 
@@ -144,7 +132,7 @@ tr.inner-table:hover {
 
 
 .navihover:hover {
-  color: #BAA129 !important;
+  color: #c1c1c1 !important;
 }
 .navihover {
   padding: 8px;
@@ -154,7 +142,7 @@ tr.inner-table:hover {
 
 @media only screen and (min-width: 768px) {
   .navihover:hover {
-    color: #BAA129 !important;
+    color: #c1c1c1 !important;
     margin-top: -8px;
     margin-bottom: -8px;
     padding-bottom: 8px;

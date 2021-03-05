@@ -64,6 +64,7 @@ export default () => {
       .catch((err) => console.log(`Error ${err}`))
       .then(() => window.location.reload());
   };
+  userData.isOwner = true
   return (
     <Router>
       {window.localStorage.getItem('mas-vino-isAdult') !== "true" &&
@@ -90,10 +91,10 @@ export default () => {
             <Route exact path="/">
               <Home userId={userData._id} isOwner={userData.isOwner}  />
             </Route>
-            <Route exact path="/vinarne">
+            <Route exact path="/lekciekurzy">
               <Vinarne userData={userData} />
             </Route>
-            <Route exact path="/vinka">
+            <Route exact path="/workshopy">
               <Vinka userData={userData} />
             </Route>
             <Route exact path="/login-page">
@@ -114,10 +115,13 @@ export default () => {
             <Route exact path={`/objednavky`}>
               <Orders userId={userData._id} isOwner={userData.isOwner} />
             </Route>
-            <Route exact path={`/akcie`}>
+            <Route exact path={`/lektori`}>
               <Events isOwner={userData.isOwner} />
             </Route>
-            <Route exact path={`/sluzby`}>
+            <Route exact path={`/ceny`}>
+              <Services isOwner={userData.isOwner} />
+            </Route>
+            <Route exact path={`/cennikprenajmu`}>
               <Services isOwner={userData.isOwner} />
             </Route>
             <Route exact path={`/kontakt`}>

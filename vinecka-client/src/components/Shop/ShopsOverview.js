@@ -15,7 +15,7 @@ export default ({userData, shopData}) => {
 
     const getImage = (image) => {
         try {
-          const img = `https://vineckabucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
+          const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
           return img;
         } catch {
           return null;
@@ -57,7 +57,7 @@ export default ({userData, shopData}) => {
                 <Col className="text-center">
                     {showCreateShop ? 
                     <CreateShop userData={userData} /> :
-                    <Button style={{marginTop: "20px"}} variant="dark" onClick={() => setShowCreateShop(true)}>New Shop</Button>
+                    <Button style={{marginTop: "20px"}} variant="dark" onClick={() => setShowCreateShop(true)}>Pridať lekciu/kurz</Button>
                     }
                 </Col>}
             </Row>

@@ -111,7 +111,7 @@ export default ({userId}) => {
 
     const getImage = (image) => {
         try {
-          const img = `https://vineckabucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
+          const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
           return img;
         } catch {
           return null;

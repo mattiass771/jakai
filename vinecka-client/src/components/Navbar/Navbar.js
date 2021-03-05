@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-import logo from "./logo5.png"
+import logo from "./logojakai.png"
 
 import {FiShoppingCart} from "react-icons/fi"
 
@@ -27,7 +27,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
     transition: 'top 0.6s',
     width: '100%',
     zIndex: '+2',
-    backgroundColor: '#2b371b',
+    backgroundColor: '#AE1865',
     fontSize: '120%'
   }
 
@@ -55,39 +55,45 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
   return (
     <>
       <div className="text-center w-100" style={{...logoStyles, top: visible ? '0' : '-169px'}}>
-        <hr className="col-lg-2 col-md-3 d-none d-md-inline-block" style={{backgroundColor: 'whitesmoke', marginBottom: '-31px'}} />
         <img
           alt=""
           src={logo}
           width="auto"
-          height="135"
-          style={{marginTop: '-20px'}}
+          height="260"
+          style={{marginTop: '-80px'}}
           
         />
-        <hr className="col-lg-2 col-md-3 d-none d-md-inline-block" style={{backgroundColor: 'whitesmoke', marginBottom: '-31px'}} />
     </div>
     <Navbar collapseOnSelect className="justify-content-center" style={{...navbarStyles, top: visible ? '0' : '-169px', paddingTop: '100px'}} variant="dark" expand="md">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="row justify-content-center text-center">
         <Nav className="my-4 my-md-0">
-          <Nav.Link as={Link} href="/" to="/" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+          <Nav.Link as={Link} href="/" to="/" className="navihover pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
               Domov
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/vinarne" to="/vinarne" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
-              Vinárne
+          <Nav.Link as={Link} href="/lekciekurzy" to="/lekciekurzy" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+              Lekcie a Kurzy
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/vinka" to="/vinka" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
-               Vínka
+          <Nav.Link as={Link} href="/workshopy" to="/workshopy" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+               Workshopy
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/akcie" to="/akcie" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
-              Akcie
+          <Nav.Link as={Link} href="/lektori" to="/lektori" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+              Lektori
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/sluzby" to="/sluzby" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
-              Služby
+          <Nav.Link as={Link} href="/ceny" to="/ceny" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+              Ceny
+          </Nav.Link>
+
+          <Nav.Link as={Link} href="/cennikprenajmu" to="/cennikprenajmu" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+              Cenník prenájmu
+          </Nav.Link>
+
+          <Nav.Link as={Link} href="/galeria" to="/galeria" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+              Galéria
           </Nav.Link>
 
           <Nav.Link as={Link} href="/kontakt" to="/kontakt" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
