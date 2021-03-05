@@ -36,7 +36,7 @@ export default ({shoppingCart = false, handleLogin}) => {
     const address = `${street},${postal.toString()},${city}`
     console.log(typeof phone, phone, typeof address, address )
     axios
-      .post(`https://mas-vino.herokuapp.com/users/add-user`, {
+      .post(`http://localhost:5000/users/add-user`, {
         userName: email,
         password: passwordSecond,
         fullName: fullName,
@@ -46,7 +46,7 @@ export default ({shoppingCart = false, handleLogin}) => {
       })
       .then((res) => {
         if (checkedNewsletter) {
-          axios.post(`https://mas-vino.herokuapp.com/mails/add`, {name: firstName, email})
+          axios.post(`http://localhost:5000/mails/add`, {name: firstName, email})
               .then(res => console.log(res))
               .catch(err => err && console.log(err))
         }
@@ -69,7 +69,7 @@ export default ({shoppingCart = false, handleLogin}) => {
 
   const checkIfEmailInDatabase = () => {
     axios
-      .get(`https://mas-vino.herokuapp.com/users/email/${email}`)
+      .get(`http://localhost:5000/users/email/${email}`)
       .then((res) => setEmailExists(res.data))
       .catch((err) => err && console.log(`Error: ${err}`));
   };

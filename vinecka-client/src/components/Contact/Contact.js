@@ -27,7 +27,7 @@ export default () => {
         emailjs.sendForm('service_vjc9vdo', 'template_o2r5vl8', e.target, 'user_Pp2MD3ZQeVhPpppItiah8')
         .then((result) => {
             if (checkedNewsletter) {
-                axios.post(`https://mas-vino.herokuapp.com/mails/add`, {name, email})
+                axios.post(`http://localhost:5000/mails/add`, {name, email})
                     .then(res => console.log(res))
                     .catch(err => err && console.log(err))
             }

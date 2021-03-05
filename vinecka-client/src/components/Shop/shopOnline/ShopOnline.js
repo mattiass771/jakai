@@ -12,7 +12,7 @@ export default ({userId, isOwner}) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        axios.get(`https://mas-vino.herokuapp.com/shop/link/${shopUrl}`)
+        axios.get(`http://localhost:5000/shop/link/${shopUrl}`)
             .then((res) => res.data ? setShopData(res.data) : setShopData({}))
             .catch((err) => err && console.log(err))
             .then(() => {
@@ -29,7 +29,7 @@ export default ({userId, isOwner}) => {
         /> :
         isUrlAvailible && shopData._id ? 
         <ViewShop shopData={shopData} isOwner={isOwner} userId={userId} /> :
-        <h5 style={{ marginTop: "20%" }} className="text-center">Pod adresou https://mas-vino.herokuapp.com/{shopUrl} ešte neexistuje žiadna vináreň, ak si vinár a chceš u nás predávať, neváhaj nás kontaktovať.</h5>
+        <h5 style={{ marginTop: "20%" }} className="text-center">Pod adresou http://localhost:5000/{shopUrl} ešte neexistuje žiadna vináreň, ak si vinár a chceš u nás predávať, neváhaj nás kontaktovať.</h5>
         
     )
 }

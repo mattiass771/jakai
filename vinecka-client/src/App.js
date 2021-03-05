@@ -37,7 +37,7 @@ export default () => {
   useEffect(() => {
     setLoadingData(true)
     axios
-      .get(`https://mas-vino.herokuapp.com/get-user-data`, {
+      .get(`http://localhost:5000/get-user-data`, {
         withCredentials: true
       })
       .then((res) => {
@@ -54,7 +54,7 @@ export default () => {
   }, []);
   const handleLogOut = () => {
     axios
-      .get(`https://mas-vino.herokuapp.com/logout`, {
+      .get(`http://localhost:5000/logout`, {
         withCredentials: true
       })
       .then(() => {

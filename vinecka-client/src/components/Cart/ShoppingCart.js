@@ -33,7 +33,7 @@ export default ({userId}) => {
     const sortItems = (cartItems) => {
         let sortShop = []
         for (let cartItem of cartItems) {
-            axios.get(`https://mas-vino.herokuapp.com/shop/${cartItem.shopId}`)
+            axios.get(`http://localhost:5000/shop/${cartItem.shopId}`)
                 .then((res) => {
                     if (res.data && res.data.shopName) {
                         const { shopName, owner } = res.data
@@ -41,7 +41,7 @@ export default ({userId}) => {
                         const { count, itemId } = cartItem
                         const findItem = itemsArr.find(el => el._id === cartItem.itemId)
                         if (findItem === undefined) {
-                            axios.post(`https://mas-vino.herokuapp.com/users/${userId}/cart/delete-cart-item/${cartItem.shopId}/${cartItem.itemId}`)
+                            axios.post(`http://localhost:5000/users/${userId}/cart/delete-cart-item/${cartItem.shopId}/${cartItem.itemId}`)
                                 .then((res) => console.log(res))
                                 .catch(err => err && console.log('could not delete item', err))
                         } else {
@@ -81,7 +81,7 @@ export default ({userId}) => {
                         const {shopId, itemId, count} = cartItem
                         console.log('importing item ', itemId)
                         await axios
-                            .post(`https://mas-vino.herokuapp.com/users/${userId}/cart/add-cart-item/${shopId}/${itemId}`, {
+                            .post(`http://localhost:5000/users/${userId}/cart/add-cart-item/${shopId}/${itemId}`, {
                                 shopId, itemId, count
                             })
                             .then((res) => console.log(res))
@@ -93,7 +93,7 @@ export default ({userId}) => {
                 addItemsToShoppingCartFromLocal()
             }
             axios
-                .get(`https://mas-vino.herokuapp.com/users/${userId}`)
+                .get(`http://localhost:5000/users/${userId}`)
                 .then((res) => {
                     if (res.data) {
                         const {shoppingCart, fullName, email, phone, address} = res.data
@@ -120,7 +120,7 @@ export default ({userId}) => {
 
     const removeItemFromCart = (e, itemId, shopId) => {
         if (userId) {
-            axios.post(`https://mas-vino.herokuapp.com/users/${userId}/cart/delete-cart-item/${shopId}/${itemId}`)
+            axios.post(`http://localhost:5000/users/${userId}/cart/delete-cart-item/${shopId}/${itemId}`)
                 .then((res) => console.log(res))
                 .catch(err => err && console.log('could not delete item', err))
                 .then(() => setRefresh(!refresh)) 
@@ -191,10 +191,10 @@ export default ({userId}) => {
         const status = 'vytvorena'
         setPassOrderInfo({ orderId, userInformation, userId, shops, total, status })
         setPaymentPopup(true)
-        axios.post(`https://mas-vino.herokuapp.com/orders/add`, { orderId, userInformation, userId, shops, total, status })
+        axios.post(`http://localhost:5000/orders/add`, { orderId, userInformation, userId, shops, total, status })
             .then(res => {
                 if (checkedNewsletter) {
-                    axios.post(`https://mas-vino.herokuapp.com/mails/add`, {name: userInformation.fullName, email: userInformation.email})
+                    axios.post(`http://localhost:5000/mails/add`, {name: userInformation.fullName, email: userInformation.email})
                         .then(res => console.log(res))
                         .catch(err => err && console.log(err))
                 }

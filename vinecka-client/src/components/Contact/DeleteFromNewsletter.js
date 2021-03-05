@@ -15,7 +15,7 @@ export default () => {
 
     const removeEmail = (e) => {
         e.preventDefault()
-        axios.post(`https://mas-vino.herokuapp.com/mails/delete-from-newsletter`, {email})
+        axios.post(`http://localhost:5000/mails/delete-from-newsletter`, {email})
             .then(res => {
                 setRemoved(true)
                 setTimeout(() => setRemoved(false), 3000)

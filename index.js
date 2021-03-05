@@ -22,7 +22,7 @@ AWS.config.update({
   region: 'eu-central-1'
 })
 
-const s3Bucket = new AWS.S3({ params: { Bucket: 'vineckabucket' }})
+const s3Bucket = new AWS.S3({ params: { Bucket: 'jakaibucket' }})
 
 // CREATE SESSION //
 
@@ -122,11 +122,11 @@ app.use(passport.session());
 app.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "https://mas-vino.herokuapp.com/login-page"
+    failureRedirect: "http://localhost:3000/login-page"
   }),
   (req, res) => {
-    if (req.query.shopping === 'cart') return res.redirect('https://mas-vino.herokuapp.com/cart-page')
-    return res.redirect('https://mas-vino.herokuapp.com/')
+    if (req.query.shopping === 'cart') return res.redirect('http://localhost:3000/cart-page')
+    return res.redirect('http://localhost:3000/')
   }
 );
 

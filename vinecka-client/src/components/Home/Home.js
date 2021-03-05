@@ -54,7 +54,7 @@ export default ({userId, isOwner}) => {
     setLoading(true)
     setFeaturedWines([])
     setFeaturedIds([])
-    axios.get(`https://mas-vino.herokuapp.com/home/`)
+    axios.get(`http://localhost:5000/home/`)
       .then(res => {
         const featured = res.data.featuredWines
         const events = [res.data.descriptionEvents, res.data.imageLinkEvents]
@@ -65,7 +65,7 @@ export default ({userId, isOwner}) => {
         setDescriptionGeneral(description)
         setFeaturedIds(featured)
         featured.map(item => {
-          return axios.get(`https://mas-vino.herokuapp.com/shop/find-item-by-id/${item}`)
+          return axios.get(`http://localhost:5000/shop/find-item-by-id/${item}`)
             .then(res => {
               const response = res.data
               const newObj = {...response[0], shopId: response[1]}
@@ -75,7 +75,7 @@ export default ({userId, isOwner}) => {
         })
       })
       .catch(err => err && console.log('Error while fetching featured wines, ', err))
-    axios.get(`https://mas-vino.herokuapp.com/shop/`)
+    axios.get(`http://localhost:5000/shop/`)
       .then(res => setCarouselData(res.data))
       .catch(err => err && console.log('Error while fetching shops for carousel, ', err))
       .then(() => setLoading(false))

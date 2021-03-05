@@ -28,7 +28,7 @@ export default ({ shopData, isOwner, userId }) => {
 
   useEffect(() => {
     axios
-      .get(`https://mas-vino.herokuapp.com/shop/${shopId}`)
+      .get(`http://localhost:5000/shop/${shopId}`)
       .then((res) => setShopItems(res.data.shopItems))
       .catch((err) => err && console.log(err.data))
       .then(() => {
