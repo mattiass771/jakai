@@ -6,10 +6,10 @@
   "scripts": {
     "start:dev": "nodemon index.js",
     "start": "node index.js",
-    "client": "cd vinecka-client && npm start",
+    "client": "cd client && npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd vinecka-client && npm run build",
-    "install-client": "cd vinecka-client && npm install",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
     "heroku-postbuild": "npm run install-client && npm run build"
   },
   "author": "",
