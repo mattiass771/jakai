@@ -21,7 +21,6 @@ import "react-slidedown/lib/slidedown.css";
 import defaultImage from "../../../default.jpg";
 
 import options from '../../../config/options';
-const {MAX_HEIGHT_JUMBO} = options
 
 // CreateShop.js
 export default ({ shopData, isOwner }) => {
@@ -332,7 +331,7 @@ export default ({ shopData, isOwner }) => {
             <Alert style={{display: `${error ? 'block' : 'none'}`}} variant="danger">{error}</Alert>
             {isUrlAvailible ? 
             <Button onClick={() => setEditMode(editMode ? false : true)} variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button> :
-            <Button disabled onClick={() => setEditMode(editMode ? false : true)} variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
+            <Button disabled variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
           </Col>
         </Row>}
       </Container>

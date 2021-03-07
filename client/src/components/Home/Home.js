@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import { Link } from "react-router-dom";
 
-import ShowItem from '../Shop/ViewShop/ShowItem';
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -49,6 +47,8 @@ export default ({userId, isOwner}) => {
   const [featuredsPopup, setFeaturedsPopup] = useState(false)
 
   const [forceRefresh, setForceRefresh] = useState(false)
+
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     setLoading(true)
@@ -198,6 +198,7 @@ export default ({userId, isOwner}) => {
   }
   
   const showCarouselWithData = () => {
+    console.log(carouselData)
     return carouselData.map(shop => {
       const {shopName, owner, url, imageLink, textColor} = shop
       const image = imageLink
@@ -296,44 +297,6 @@ export default ({userId, isOwner}) => {
           </Container>
         </div>
       </Carousel>
-      {/* <svg className="d-none d-lg-block" preserveAspectRatio="none" height="20%" width="100%" style={{position: "absolute", top: 376, left: 0}} xmlns="http://www.w3.org/2000/svg" viewBox="130 -70 1200 390"><path fill="#AE186580" fill-opacity="1" d="M0,288L60,277.3C120,267,240,245,360,213.3C480,181,600,139,720,112C840,85,960,75,1080,85.3C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg> */}
-      <div className="pt-3 pb-3">
-        <Container className="pt-3 pb-3">
-          {isOwner &&
-          <Row>
-            <ShowUpdateFeatured />
-          </Row>}
-          <Row className="text-center pt-4 pb-4">
-            <ShowItem colXsSettings={6} colMdSettings={3} shopItems={featuredWines} shopId={'home'} userId={userId} setShouldReload={false} shouldReload={false} isOwner={false} />
-          </Row>
-        </Container>
-      </div>
-      <div className="pt-3 pb-3" style={{backgroundColor: '#AE186595', color: "whitesmoke"}}>
-        <Container className="pt-3 pb-3">
-            <Row className="text-center pt-2 pb-4">
-              <Col className="mt-4" lg={3} sm={6} xs={12}>
-                <p style={{height: "50px"}}><HiOutlineBadgeCheck style={{fontSize: "300%"}} /></p>
-                <h5>OVERENÍ PREDAJCOVIA</h5>
-                Kvalitné vína od poctivých lokálnych výrobcov, ktorí vykonávajú svoju prácu telom i dušou.
-              </Col>
-              <Col className="mt-4" lg={3} sm={6} xs={12}>
-                <p style={{height: "50px"}}><FiTruck style={{fontSize: "300%", color: 'whitesmoke !important'}} /></p>
-                <h5>ROZVOZ</h5>
-                ZDARMA: Pri kúpe nad 150 Eur (Pezinok a okolie). Možná dohoda a dovoz i ďalej, volajte na 0948 721 868.
-              </Col>
-              <Col className="mt-4" lg={3} sm={6} xs={12}>
-                <p style={{height: "50px"}}><GoPackage style={{fontSize: "300%"}} /></p>
-                <h5>OSOBNÝ ODBER</h5>
-                Sacherka Cafe, Radničné nám. 42/5, 902 01 Pezinok. Možná dohoda, volajte na 0948 721 868.
-              </Col>
-              <Col className="mt-4" lg={3} sm={6} xs={12}>
-                <p style={{height: "50px"}}><RiSecurePaymentFill style={{fontSize: "300%"}} /></p>
-                <h5>PLATBA</h5>
-                Hotovosťou pri dobierke, alebo bežnými platobnými kartami, či cez internet banking.
-              </Col>
-            </Row>
-        </Container>
-      </div>
       <div>  
         <Container>
           <Row>

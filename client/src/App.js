@@ -15,7 +15,6 @@ import PayGate from "./components/Cart/PayGate"
 import Orders from "./components/Payment/Orders"
 import SuccessPayment from "./components/Payment/SuccessPayment";
 import RejectPayment from "./components/Payment/RejectPayment";
-import Vinka from "./components/Wines/Vinka";
 import Events from "./components/Events/Events";
 import Services from "./components/Services/Services";
 import Footer from "./components/Footer";
@@ -95,7 +94,7 @@ export default () => {
               <Vinarne userData={userData} />
             </Route>
             <Route exact path="/workshopy">
-              <Vinka userData={userData} />
+              <p>workshopy</p>
             </Route>
             <Route exact path="/login-page">
               {isLoggedIn ? <Home userId={userData._id} isOwner={userData.isOwner} /> : <Login />}
@@ -116,13 +115,13 @@ export default () => {
               <Orders userId={userData._id} isOwner={userData.isOwner} />
             </Route>
             <Route exact path={`/lektori`}>
-              <Events isOwner={userData.isOwner} />
+              <p>lektori</p>
             </Route>
             <Route exact path={`/ceny`}>
-              <Services isOwner={userData.isOwner} />
+              <p>ceny</p>
             </Route>
             <Route exact path={`/cennikprenajmu`}>
-              <Services isOwner={userData.isOwner} />
+              <p>cennikprenajmu</p>
             </Route>
             <Route exact path={`/kontakt`}>
               <Contact />
