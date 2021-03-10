@@ -80,7 +80,6 @@ export default ({userId, isOwner}) => {
   }
   
   const showCarouselWithData = () => {
-    console.log(carouselData)
     return carouselData.map(shop => {
       const {pageName, owner, url, imageLink, textColor} = shop
       const image = imageLink

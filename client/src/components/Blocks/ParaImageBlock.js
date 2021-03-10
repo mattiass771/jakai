@@ -11,10 +11,10 @@ export default ({title = 'Nazov', text = 'nejaky text', imageLink = 'https://mir
                 <h2>{title}</h2>
                 <br />
             </Col>}
-            <Col sm={6}>
+            <Col xs={12} md={6} className="pb-2">
                 {text}
             </Col>
-            <Col sm={6}>
+            <Col xs={12} md={6}>
                 <Image src={imageLink} rounded fluid />
             </Col>
         </>

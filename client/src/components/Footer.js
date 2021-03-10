@@ -42,7 +42,7 @@ export default ({showLawPopup, setShowLawPopup}) => {
   }, [prevScrollPos, visible, handleScroll]);
 
     return (
-        <div className="pt-4 pb-3 fixed-bottom" style={{...footerStyles, bottom: visible ? '0' : '-180px'}}>
+        <div className="pt-4 pb-3 fixed-bottom" style={{...footerStyles, bottom: visible ? '0' : '-280px'}}>
         <Container>
           <Row className="text-center">
             <Col className="mb-2" md={6} lg={3}>

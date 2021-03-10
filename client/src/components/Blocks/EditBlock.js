@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
 import { SlideDown } from "react-slidedown";
@@ -16,15 +16,21 @@ import ShowVariants from './ShowVariants'
 
 const IMAGE_PREFIX = 'page-image'
 
-export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
+export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     const [description, setDescription] = useState('')
     const [imageLink, setImageLink] = useState('')
     const [title, setTitle] = useState('')
     const [variant, setVariant] = useState('')
 
+    useEffect(() => {
+        setDescription(blockData.text || '')
+        setImageLink(blockData.imageLink || '')
+        setTitle(blockData.title || '')
+        setVariant(blockData.variant || '')
+    }, [blockData])
+
     const getImage = (image) => {
         try {
-            console.log(image)
           const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
           return img;
         } catch {
@@ -57,18 +63,16 @@ export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/add`, {pageId, text: description, title, imageLink, variant})
+        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant})
             .then(res => {
-                const newBlock = res.data
-                axios.post(`http://localhost:5000/page/${pageId}/update-blocks/`, {newBlock})
-                    .then(blockRes => setAddBlockPopup(false))
-                    .catch(blockErr => console.log(blockErr))
+                setPassEditProps('')
+                setRefresh(!refresh)
             })
             .catch(err => alert('Nepodarilo sa pridat blok, chyba: ', err))
     }
 
     return (
-        <Modal size="lg" show={addBlockPopup} onHide={() => setAddBlockPopup(false)}>
+        <Modal size="lg" show={typeof blockData === 'object'} onHide={() => setPassEditProps('')}>
             <Modal.Body className="text-center">
                 <ShowVariants variant={variant} setVariant={setVariant} />
                 <Row className="justify-content-center">
@@ -100,7 +104,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
                 {imageLink ? 
                 <Row className="justify-content-center text-center">
                     <Col className="form-group">
-                    <img style={{height:'110px', width: '160px'}} src={getImage(imageLink) ? getImage(imageLink) : imageLink} />
+                    <img style={{height:'110px', width: '160px'}} src={getImage(imageLink)} />
                     <Button onClick={() => setImageLink('')} variant="dark" size="sm" >Vymazat obrazok</Button>
                     </Col>
                 </Row> :
@@ -134,13 +138,13 @@ export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
             <br />
             {((variant === 'para-para' && description) || (variant === 'img-only' && imageLink) || (description && imageLink))?
                 <Button variant="dark" onClick={() => handleSave()}>
-                    Pridat
+                    Upravit
                 </Button> :
                 <Button disabled variant="dark">
-                    Pridat
+                    Upravit
                 </Button>
             }&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button variant="dark" onClick={() => setAddBlockPopup(false)}>
+            <Button variant="dark" onClick={() => setPassEditProps('')}>
                 Zrusit
             </Button>
             </Modal.Body>

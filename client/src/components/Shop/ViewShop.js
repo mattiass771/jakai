@@ -13,10 +13,10 @@ export default ({ pageData, isOwner }) => {
   return (
     <>
       <ShopJumbotron pageData={pageData} isOwner={isOwner} />
-      <div className="text-center">
+      <ViewBlocks blocksData={pageData.blocks} isOwner={isOwner} />
+      <div className="text-center whitesmoke-bg-pless pb-4">
         <Button size="sm" variant="dark" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
       </div>
-      <ViewBlocks blocksData={pageData.blocks} isOwner={isOwner} />
       <AddBlock pageId={pageData._id} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />
     </>
   );

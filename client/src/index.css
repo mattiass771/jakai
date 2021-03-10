@@ -49,7 +49,7 @@ body:after{
 
 @media only screen and (max-width: 974px) {
   body {
-    padding-bottom: 140px !important;
+    padding-bottom: 159px !important;
   }
 }
 
@@ -57,6 +57,13 @@ body:after{
   body {
     padding-top: 147px !important;
     padding-bottom: 223px !important;
+  }
+}
+
+@media only screen and (max-width: 522px) {
+  body {
+    padding-top: 147px !important;
+    padding-bottom: 242px !important;
   }
 }
 
@@ -69,7 +76,11 @@ body:after{
   background-color: rgba(250,250,250,0.9);
 }
 
-.whitesmoke-bg-pink {
+.whitesmoke-bg-pless {
+  background-color: rgba(250,250,250,0.75);
+}
+
+.pink-bg-pnine {
   background-color: rgba(174, 24, 101,0.9);
   color: whitesmoke;
 }
@@ -92,6 +103,7 @@ code {
 }
 
 .jumbotron {
+  margin-bottom: 0 !important;
   -webkit-box-shadow: 0px 0px 7px 6px rgb(0, 20, 2); 
   box-shadow: 0px 0px 7px 6px rgb(0, 20, 2);
 }

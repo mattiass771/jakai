@@ -41,7 +41,7 @@ router.route("/add").post((req, res) => {
       .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
-router.route("/edit-block/:blockId").put((req, res) => {
+router.route("/edit-block/:blockId").post((req, res) => {
     const { blockId } = req.params
     const { title, text, imageLink, variant } = req.body
   
