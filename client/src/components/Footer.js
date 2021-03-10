@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 
 import { MdMailOutline } from "react-icons/md";
 import { BiCodeAlt } from "react-icons/bi";
-import { FaFacebookF,FaInstagram } from "react-icons/fa";
+import { FaFacebookF,FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default ({showLawPopup, setShowLawPopup}) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0); 
@@ -51,17 +51,19 @@ export default ({showLawPopup, setShowLawPopup}) => {
               </a>
             </Col>
             <Col className="mb-2" md={6} lg={3}>
-              <a rel="noopener noreferrer" target="_blank" href="https://facebook.com" style={{textDecoration: 'none', color: 'whitesmoke'}}>
-                <FaFacebookF style={{fontSize: '130%', marginTop: '-2px', marginRight: '-4px'}} />acebook.com<strong>/masvino</strong>
+              <a rel="noopener noreferrer" target="_blank" href="https://facebook.com/jakai.studio" style={{textDecoration: 'none', color: 'whitesmoke'}}>
+                <FaFacebookF style={{fontSize: '130%', marginTop: '-2px', marginRight: '-4px'}} />acebook.com<strong>/jakai.studio</strong>
               </a>
             </Col>
             <Col className="mb-2" md={6} lg={3}>
-              <a rel="noopener noreferrer" target="_blank" href="https://instagram.com" style={{textDecoration: 'none', color: 'whitesmoke'}}>
-                <FaInstagram style={{fontSize: '150%', marginTop: '-2px'}} /><strong>#masvino</strong>
+              <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/jakaistudio" style={{textDecoration: 'none', color: 'whitesmoke'}}>
+                <FaInstagram style={{fontSize: '150%', marginTop: '-2px'}} /><strong>#jakaistudio</strong>
               </a>
             </Col>
             <Col className="mb-2" md={6} lg={3}>
-              <MdMailOutline style={{fontSize: '150%', marginTop: '-2px', color: 'whitesmoke'}} /><strong style={{color: 'whitesmoke'}}>masvino@mail.com</strong>
+              <a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/channel/UCPtsq1f0lCYZzHXH7H4hyhg" style={{textDecoration: 'none', color: 'whitesmoke'}}>
+                <FaYoutube style={{fontSize: '150%', marginTop: '-2px'}} />&nbsp;<strong>jakai video</strong>
+              </a>
             </Col>
           </Row>
           <Row className="text-center my-2" style={{fontSize: '80%'}}>

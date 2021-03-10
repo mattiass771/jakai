@@ -11,18 +11,11 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
-import UpdateEvents from './UpdateEvents';
-import UpdateServices from './UpdateServices';
 import UpdateDescription from './UpdateDescription';
-import UpdateFeatured from './UpdateFeatured';
 
 import options from '../../config/options';
 
 import { MdEdit } from "react-icons/md";
-import { HiOutlineBadgeCheck } from "react-icons/hi";
-import { FiTruck } from "react-icons/fi";
-import { GoPackage } from "react-icons/go";
-import { RiSecurePaymentFill } from "react-icons/ri";
 
 import defaultImage from "../../default.jpg"
 
@@ -31,50 +24,23 @@ const {MIN_HEIGHT_JUMBO} = options
 //Home.js
 export default ({userId, isOwner}) => {
   const [carouselData, setCarouselData] = useState('')
-  const [featuredWines, setFeaturedWines] = useState([])
   const [loading, setLoading] = useState(false)
-  const [featuredIds, setFeaturedIds] = useState([])
-
-  const [eventsData, setEventsData] = useState([])
-  const [servicesData, setServicesData] = useState([])
   const [descriptionGeneral, setDescriptionGeneral] = useState('')
-  const [isHoveredServices, setIsHoveredServices] = useState('none')
-  const [isHoveredEvents, setIsHoveredEvents] = useState('none')
 
-  const [eventsPopup, setEventsPopup] = useState(false)
-  const [servicesPopup, setServicesPopup] = useState(false)
   const [descriptionsPopup, setDescriptionsPopup] = useState(false)
-  const [featuredsPopup, setFeaturedsPopup] = useState(false)
 
   const [forceRefresh, setForceRefresh] = useState(false)
 
-  const [index, setIndex] = useState(0);
-
   useEffect(() => {
     setLoading(true)
-    setFeaturedWines([])
-    setFeaturedIds([])
     axios.get(`http://localhost:5000/home/`)
       .then(res => {
-        const featured = res.data.featuredWines
-        const events = [res.data.descriptionEvents, res.data.imageLinkEvents]
-        const services = [res.data.descriptionServices, res.data.imageLinkServices]
         const description = res.data.descriptionGeneral
-        setEventsData(events)
-        setServicesData(services)
-        setDescriptionGeneral(description)
-        setFeaturedIds(featured)
-        featured.map(item => {
-          return axios.get(`http://localhost:5000/shop/find-item-by-id/${item}`)
-            .then(res => {
-              const response = res.data
-              const newObj = {...response[0], shopId: response[1]}
-              return setFeaturedWines(prev => [...prev, newObj])
-            })
-            .catch(err => err && console.log('Error while setting full featured wines, ', err))
-        })
+        const subTitle = res.data.subTitleGeneral
+        const title = res.data.titleGeneral
+        setDescriptionGeneral({title, subTitle, description})
       })
-      .catch(err => err && console.log('Error while fetching featured wines, ', err))
+      .catch(err => err && console.log('Error while fetching home data, ', err))
     axios.get(`http://localhost:5000/shop/`)
       .then(res => setCarouselData(res.data))
       .catch(err => err && console.log('Error while fetching shops for carousel, ', err))
@@ -90,68 +56,6 @@ export default ({userId, isOwner}) => {
     }
   };
 
-  const ShowEvents = () => {
-    return (
-      <Col md={6} style={{padding:'35px'}}>
-        {isOwner &&
-          <Button
-            onClick={() => setEventsPopup(true)}
-            style={{
-              width: "40px",
-              height: "40px",
-              marginBottom: "-40px",
-              zIndex: "+1",
-              position:'absolute'
-            }}
-            variant="outline-warning"
-          >
-            <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
-          </Button>
-          }
-          <Link to={`/akcie`}>
-            <Card className="h-100 w-100 body-image" onMouseEnter={() => setIsHoveredEvents('block')} onTouchStart={() => setIsHoveredEvents('block')} onMouseLeave={() => setIsHoveredEvents('none')} style={{ textAlign:"center", color: "whitesmoke",
-            //  background: 'rgba(52,58,64,0)',
-              border: '1.5px solid white' }} >
-                <Card.Img className="h-100 w-100" src={getImage(eventsData[1]) ? getImage(eventsData[1]) : eventsData[1]} />
-                <Card.ImgOverlay className={isHoveredEvents === 'none' ? 'fade-out' : 'fade-in'} style={{ background: "rgba(52,58,64,0.3)"}} >
-                </Card.ImgOverlay>
-            </Card>
-        </Link>
-      </Col>
-    )
-  }
-
-  const ShowServices = () => {
-    return (
-      <Col md={6} style={{padding:'35px'}}>
-        {isOwner &&
-          <Button
-            onClick={() => setServicesPopup(true)}
-            style={{
-              width: "40px",
-              height: "40px",
-              marginBottom: "-40px",
-              zIndex: "+1",
-              position:'absolute'
-            }}
-            variant="outline-warning"
-          >
-            <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
-          </Button>}
-        <Link to={`/sluzby`}>
-            <Card className="h-100 w-100 body-image" onMouseEnter={() => setIsHoveredServices('block')} onTouchStart={() => setIsHoveredServices('block')} onMouseLeave={() => setIsHoveredServices('none')} style={{ textAlign:"center", color: "whitesmoke", 
-            // background: 'rgba(52,58,64,0)', 
-            border: '1.5px solid white'}} >
-                <Card.Img className="h-100 w-100" src={getImage(servicesData[1]) ? getImage(servicesData[1]) : servicesData[1]} />
-                <Card.ImgOverlay className={`${isHoveredServices === 'none' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.3)"}} >
-                  <div></div>
-                </Card.ImgOverlay>
-            </Card>
-        </Link>
-      </Col>
-    )
-  }
-
   const ShowGeneral = ({fSz = '115%'}) => {
     return (
       <Row className="text-center mb-2">
@@ -162,7 +66,7 @@ export default ({userId, isOwner}) => {
               style={{
                 width: "40px",
                 height: "40px",
-                marginBottom: "-40px",
+                marginTop: "-40px",
                 zIndex: "+1",
                 position:'absolute'
               }}
@@ -170,31 +74,10 @@ export default ({userId, isOwner}) => {
             >
               <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
             </Button>}
-          {descriptionGeneral}
+          {descriptionGeneral.description}
         </Col>
       </Row>
     )
-  }
-
-  const ShowUpdateFeatured = () => {
-    return <Row>
-        <Col className="mb-4">
-          {isOwner &&
-            <Button
-              onClick={() => setFeaturedsPopup(true)}
-              style={{
-                width: "40px",
-                height: "40px",
-                marginBottom: "-40px",
-                zIndex: "+1",
-                position:'absolute'
-              }}
-              variant="outline-warning"
-            >
-              <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
-            </Button>}
-        </Col>
-      </Row>
   }
   
   const showCarouselWithData = () => {
@@ -235,17 +118,8 @@ export default ({userId, isOwner}) => {
     :
     <>
     <div>
-      {eventsPopup &&
-        <UpdateEvents eventsText={eventsData[0]} eventsImage={eventsData[1]} eventsPopup={eventsPopup} setEventsPopup={setEventsPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
-      }
-      {servicesPopup &&
-        <UpdateServices servicesText={servicesData[0]} servicesImage={servicesData[1]} servicesPopup={servicesPopup} setServicesPopup={setServicesPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
-      }
       {descriptionsPopup &&
-        <UpdateDescription descriptionsText={descriptionGeneral} descriptionsPopup={descriptionsPopup} setDescriptionsPopup={setDescriptionsPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
-      }
-      {featuredsPopup &&
-        <UpdateFeatured getImage={getImage} featuredIds={featuredIds} featuredsPopup={featuredsPopup} setFeaturedsPopup={setFeaturedsPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
+        <UpdateDescription descriptionGeneral={descriptionGeneral} descriptionsPopup={descriptionsPopup} setDescriptionsPopup={setDescriptionsPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
       }
       <Carousel indicators={false} style={{height: MIN_HEIGHT_JUMBO*2 }}>
         {carouselData && showCarouselWithData()}  
@@ -256,7 +130,7 @@ export default ({userId, isOwner}) => {
                 <hr style={{backgroundColor: "whitesmoke", paddingBottom: "1px"}} />
               </Col>
               <Col xs={10} sm={8} md={6} xl={4} >
-                <h2>Vína malých karpát</h2>
+                <h2>{descriptionGeneral.title}</h2>
               </Col>
               <Col className="pt-2"  xs={1} sm={2} md={3} xl={4} >
                 <hr style={{backgroundColor: "whitesmoke", paddingBottom: "1px"}}/>
@@ -264,7 +138,7 @@ export default ({userId, isOwner}) => {
             </Row>
             <Row className="text-center justify-content-center">
               <Col>
-                <em style={{fontSize: "160%"}}>Vychutnajte si tie najlepšie vínka z Malokarpatskej oblasti.</em>
+                <em style={{fontSize: "160%"}}>{descriptionGeneral.subTitle}</em>
               </Col>
             </Row>
             <ShowGeneral />
@@ -272,12 +146,12 @@ export default ({userId, isOwner}) => {
           <Container className="d-none d-sm-block d-md-none">
             <Row className="text-center justify-content-center pt-2">
               <Col xs={10} sm={8} md={6} xl={4} >
-                <h3>Vína malých karpát</h3>
+                <h3>{descriptionGeneral.title}</h3>
               </Col>
             </Row>
             <Row className="text-center justify-content-center">
               <Col>
-                <em style={{fontSize: "115%"}}>Vychutnajte si tie najlepšie vínka z Malokarpatskej oblasti.</em>
+                <em style={{fontSize: "115%"}}>{descriptionGeneral.subTitle}</em>
               </Col>
             </Row>
             <ShowGeneral fSz="100%" />
@@ -285,26 +159,18 @@ export default ({userId, isOwner}) => {
           <Container className="d-block d-sm-none">
             <Row className="text-center justify-content-center">
               <Col xs={10} sm={8} md={6} xl={4} >
-                <h4>Vína malých karpát</h4>
+                <h4>{descriptionGeneral.title}</h4>
               </Col>
             </Row>
             <Row className="text-center justify-content-center">
               <Col>
-                <em style={{fontSize: "100%"}}>Vychutnajte si tie najlepšie vínka z Malokarpatskej oblasti.</em>
+                <em style={{fontSize: "100%"}}>{descriptionGeneral.subTitle}</em>
               </Col>
             </Row>
             <ShowGeneral fSz="85%" />
           </Container>
         </div>
       </Carousel>
-      <div>  
-        <Container>
-          <Row>
-            <ShowEvents />
-            <ShowServices />
-          </Row>
-        </Container>
-      </div>
     </div>
   </>
   );
