@@ -23,29 +23,29 @@ import defaultImage from "../../../default.jpg";
 import options from '../../../config/options';
 
 // CreateShop.js
-export default ({ shopData, isOwner }) => {
+export default ({ pageData, isOwner }) => {
   let history = useHistory();
-  const url = shopData.url;
+  const url = pageData.url;
   const [currentUrl, setCurrentUrl] = useState(url)
   const [newUrl, setNewUrl] = useState(url)
   const [isUrlAvailible, setIsUrlAvailible] = useState(true)
   const [editMode, setEditMode] = useState(false)
-  const [shopName, setShopName] = useState(shopData.shopName)
+  const [pageName, setPageName] = useState(pageData.pageName)
   const [error, setError] = useState('')
-  const [description, setDescription] = useState(shopData.description)
-  const [owner, setOwner] = useState(shopData.owner)
+  const [description, setDescription] = useState(pageData.description)
+  const [owner, setOwner] = useState(pageData.owner)
   const [imageLink, setImageLink] = useState('');
   const [overviewImage, setOverviewImage] = useState('');
-  const [showImageFromDb, setShowImageFromDb] = useState(shopData.imageLink ? shopData.imageLink : '')
+  const [showImageFromDb, setShowImageFromDb] = useState(pageData.imageLink ? pageData.imageLink : '')
   const [localUploadingTitle, setLocalUploadingTitle] = useState(false)
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
-  const [textColor, setTextColor] = useState(shopData.textColor)
+  const [textColor, setTextColor] = useState(pageData.textColor)
 
   useEffect(() => {
-    if (textColor !== shopData.textColor) {
+    if (textColor !== pageData.textColor) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/textColor/${textColor}`
+        `http://localhost:5000/page/${pageData._id}/update-page/textColor/${textColor}`
       )
       .then((res) => {
         return;
@@ -65,12 +65,12 @@ export default ({ shopData, isOwner }) => {
 
   // specify upload params and url for your files
   const getUploadParams = ({ meta }) => {
-    return { url: `http://localhost:5000/fileUpload/${shopData._id}` };
+    return { url: `http://localhost:5000/fileUpload/${pageData._id}` };
   };
 
   const deleteFile = (file) => {
     axios
-      .get(`http://localhost:5000/deleteFile/${shopData._id}`, {
+      .get(`http://localhost:5000/deleteFile/${pageData._id}`, {
         params: file
       })
       .then(() => 
@@ -86,9 +86,9 @@ export default ({ shopData, isOwner }) => {
     }
     if (status === "done") {
       if (localUploadingTitle) {
-        setImageLink(`${shopData._id}-${meta.name.replace(/_/g,'-')}`);
+        setImageLink(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
       } else if (localUploadingOverview) {
-        setOverviewImage(`${shopData._id}-${meta.name.replace(/_/g,'-')}`);
+        setOverviewImage(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
       }
     }
   };
@@ -96,7 +96,7 @@ export default ({ shopData, isOwner }) => {
   const deleteCard = (e) => {
     axios
         .delete(
-        `http://localhost:5000/shop/${shopData._id}`
+        `http://localhost:5000/page/${pageData._id}`
         )
         .then(() => history.push(`/vinarne`))
         .catch((err) => err && console.log(`Error ${err}`));
@@ -106,7 +106,7 @@ export default ({ shopData, isOwner }) => {
     if (imageLink) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/imageLink/${imageLink}`
+        `http://localhost:5000/page/${pageData._id}/update-page/imageLink/${imageLink}`
       )
       .then((res) => {
         return;
@@ -119,7 +119,7 @@ export default ({ shopData, isOwner }) => {
     if (overviewImage) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/overviewImage/${overviewImage}`
+        `http://localhost:5000/page/${pageData._id}/update-page/overviewImage/${overviewImage}`
       )
       .then((res) => {
         return;
@@ -130,7 +130,7 @@ export default ({ shopData, isOwner }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/shop/link/${currentUrl}`)
+      .get(`http://localhost:5000/page/link/${currentUrl}`)
       .then((res) => {
         if (res.data && currentUrl !== newUrl) setIsUrlAvailible(false)
         else setIsUrlAvailible(true)
@@ -148,7 +148,7 @@ export default ({ shopData, isOwner }) => {
     if (isUrlAvailible) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/url/${currentUrl}`
+        `http://localhost:5000/page/${pageData._id}/update-page/url/${currentUrl}`
       )
       .then((res) => {
         return setNewUrl(currentUrl);
@@ -159,10 +159,10 @@ export default ({ shopData, isOwner }) => {
   }
 
   const handleShopNameChange = () => {
-    if (shopName) {
+    if (pageName) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/shopName/${shopName}`
+        `http://localhost:5000/page/${pageData._id}/update-page/pageName/${pageName}`
       )
       .then((res) => {
         return;
@@ -175,7 +175,7 @@ export default ({ shopData, isOwner }) => {
     if (description) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/description/${description}`
+        `http://localhost:5000/page/${pageData._id}/update-page/description/${description}`
       )
       .then((res) => {
         return;
@@ -188,7 +188,7 @@ export default ({ shopData, isOwner }) => {
     if (owner) {
       axios
       .put(
-        `http://localhost:5000/shop/${shopData._id}/update-shop/owner/${owner}`
+        `http://localhost:5000/page/${pageData._id}/update-page/owner/${owner}`
       )
       .then((res) => {
         return;
@@ -219,7 +219,7 @@ export default ({ shopData, isOwner }) => {
       {!editMode ?
         <Row style={{padding: '15px', backgroundColor: textColor === 'white' ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)', borderRadius: '7.5px'}}>
           <Col>
-            <h2>{shopName}</h2>
+            <h2>{pageName}</h2>
             <p>{description}</p>
             <p>{owner}</p>
           </Col>
@@ -249,10 +249,10 @@ export default ({ shopData, isOwner }) => {
             <Col xs={8}>
               <input 
                 className={'form-control text-center'}
-                value={shopName} 
-                onChange={(e) => setShopName(e.target.value)} 
+                value={pageName} 
+                onChange={(e) => setPageName(e.target.value)} 
                 onBlur={handleShopNameChange}
-                name="shopName"
+                name="pageName"
                 placeholder="Nazov"
               />
               <textarea 

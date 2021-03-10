@@ -9,7 +9,7 @@ import Card from "react-bootstrap/Card";
 
 import { Link } from "react-router-dom";
 
-export default ({userData, shopData}) => {
+export default ({userData, pageData}) => {
     const [showCreateShop, setShowCreateShop] = useState(false)
     const [isHovered, setIsHovered] = useState("")
 
@@ -23,8 +23,8 @@ export default ({userData, shopData}) => {
       };
 
     const showShops = () => {
-        return shopData.map(shop => {
-            const { _id, shopName, url, overviewImage } = shop
+        return pageData.map(shop => {
+            const { _id, pageName, url, overviewImage } = shop
             const handleMouseOver = () => {
                 let hoverObj = {}
                 hoverObj[_id] = 'none'
@@ -40,7 +40,7 @@ export default ({userData, shopData}) => {
                             <Card.Img className="h-100" src={getImage(overviewImage) ? getImage(overviewImage) : `https://miro.medium.com/max/295/1*i5iqn7xB-l0kLwsJJBYEWQ.jpeg`} />
                             <Card.ImgOverlay className={`${isHovered[_id] === 'none' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
                                     <h3 style={{paddingTop: "50%"}}>
-                                        {shopName}
+                                        {pageName}
                                     </h3>
                             </Card.ImgOverlay>
                         </Card>

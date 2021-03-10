@@ -33,7 +33,7 @@ export default ({userId}) => {
     const sortItems = (cartItems) => {
         let sortShop = []
         for (let cartItem of cartItems) {
-            axios.get(`http://localhost:5000/shop/${cartItem.shopId}`)
+            axios.get(`http://localhost:5000/page/${cartItem.shopId}`)
                 .then((res) => {
                     if (res.data && res.data.shopName) {
                         const { shopName, owner } = res.data

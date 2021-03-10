@@ -9,7 +9,6 @@ import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 
 import UpdateDescription from './UpdateDescription';
 
@@ -41,7 +40,7 @@ export default ({userId, isOwner}) => {
         setDescriptionGeneral({title, subTitle, description})
       })
       .catch(err => err && console.log('Error while fetching home data, ', err))
-    axios.get(`http://localhost:5000/shop/`)
+    axios.get(`http://localhost:5000/page/`)
       .then(res => setCarouselData(res.data))
       .catch(err => err && console.log('Error while fetching shops for carousel, ', err))
       .then(() => setLoading(false))
@@ -83,7 +82,7 @@ export default ({userId, isOwner}) => {
   const showCarouselWithData = () => {
     console.log(carouselData)
     return carouselData.map(shop => {
-      const {shopName, owner, url, imageLink, textColor} = shop
+      const {pageName, owner, url, imageLink, textColor} = shop
       const image = imageLink
         ? getImage(imageLink)
         : defaultImage;
@@ -98,7 +97,7 @@ export default ({userId, isOwner}) => {
         >
           <Link to={`/${url}`}>
             <Carousel.Caption style={{zIndex:'+1' ,marginBottom: MIN_HEIGHT_JUMBO+75, color: textColor === 'white' ? 'whitesmoke' : '#333333'}}>
-              <h3>{shopName}</h3>
+              <h3>{pageName}</h3>
               <p>{owner}</p>
             </Carousel.Caption>
           </Link>
