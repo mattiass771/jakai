@@ -4,9 +4,11 @@ const router = require("express").Router();
 const Schema = mongoose.Schema;
 
 const blockSchema = new Schema({
-    text: { type: String, required: true},
-    imageLink: { type: String, required: true},
+    text: { type: String },
+    title: { type: String },
+    imageLink: { type: String } ,
     variant: { type: String, required: true},
+    pageId: { type: String },
 });
 
 const Block = mongoose.model("Block", blockSchema);
@@ -24,24 +26,24 @@ router.route("/:blockId").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-    const { blockName, owner, ownerId, description, url } = req.body;
+    const { text, title, imageLink, variant, pageId } = req.body;
   
     const addBlock = new Block({
-      blockName,
-      owner,
-      ownerId,
-      description,
-      url
+      text,
+      title,
+      imageLink,
+      variant,
+      pageId
     });
     addBlock
       .save()
-      .then(() => res.json(`New block is now online!`))
+      .then((response) => res.json(response._id))
       .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
 router.route("/edit-block/:blockId").put((req, res) => {
     const { blockId } = req.params
-    const { text, imageLink, variant } = req.body
+    const { title, text, imageLink, variant } = req.body
   
     Block.findById(blockId, (err, blockFound) => {
       if (err) return console.log(err.data);
@@ -49,6 +51,7 @@ router.route("/edit-block/:blockId").put((req, res) => {
       blockFound.text = text
       blockFound.imageLink = imageLink
       blockFound.variant = variant
+      blockFound.title = title
   
       blockFound
         .save()

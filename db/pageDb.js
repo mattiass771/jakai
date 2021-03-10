@@ -87,6 +87,23 @@ router.route("/:pageId/update-page/:find/:replace").put((req, res) => {
   });
 });
 
+router.route("/:pageId/update-blocks/").post((req, res) => {
+  const { pageId } = req.params;
+  const { newBlock } = req.body
+
+  Page.findById(pageId, (err, pageFound) => {
+    if (err) return console.log(err.data);
+
+    const prevBlocks = pageFound.blocks
+    pageFound.blocks = [...prevBlocks, newBlock];
+
+    pageFound
+      .save()
+      .then(() => res.json('Block added to the page'))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
+});
+
 router.route("/:id").delete((req, res) => {
   Page.findByIdAndDelete(req.params.id)
     .then(() => res.json("Page deleted."))

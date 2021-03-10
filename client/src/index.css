@@ -97,6 +97,17 @@ code {
   margin: 0 auto;
 }
 
+.variant-select {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px 0;
+}
+
+.variant-select:hover {
+  background-color: #AE1865 !important;
+  color: whitesmoke;
+}
+
 .display-none {
   display: none;
 }

@@ -68,7 +68,7 @@ export default ({descriptionsPopup, setDescriptionsPopup, forceRefresh, setForce
                     </Col>
                 </Row>
             <br />
-            {description ?
+            {description && subTitle && title ?
                 <Button variant="dark" onClick={() => handleSave()}>
                     Upravit
                 </Button> :
