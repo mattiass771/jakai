@@ -16,7 +16,7 @@ import ShowVariants from './ShowVariants'
 
 const IMAGE_PREFIX = 'page-image'
 
-export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
+export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) => {
     const [description, setDescription] = useState('')
     const [imageLink, setImageLink] = useState('')
     const [title, setTitle] = useState('')
@@ -61,7 +61,10 @@ export default ({addBlockPopup, setAddBlockPopup, pageId}) => {
             .then(res => {
                 const newBlock = res.data
                 axios.post(`http://localhost:5000/page/${pageId}/update-blocks/`, {newBlock})
-                    .then(blockRes => setAddBlockPopup(false))
+                    .then(blockRes => {
+                        setAddBlockPopup(false)
+                        document.location.reload()
+                    })
                     .catch(blockErr => console.log(blockErr))
             })
             .catch(err => alert('Nepodarilo sa pridat blok, chyba: ', err))

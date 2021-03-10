@@ -6,6 +6,7 @@ import ImageParaBlock from '../../Blocks/ImageParaBlock'
 import ParaBlock from '../../Blocks/ParaBlock'
 import ImageBlock from '../../Blocks/ImageBlock'
 import EditBlock from '../../Blocks/EditBlock'
+import AddBlock from '../../Blocks/AddBlock'
 
 import { MdEdit } from "react-icons/md";
 
@@ -13,16 +14,17 @@ import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 
 
-export default ({blocksData, isOwner = true}) => {
+export default ({pageId, blocksData, isOwner = true}) => {
     const [blocks, setBlocks] = useState([])
     const [passEditProps, setPassEditProps] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const [addBlockPopup, setAddBlockPopup] = useState(false)
 
     useEffect(() => {
         setBlocks([])
         const getData = async id => {
             await axios.get(`http://localhost:5000/blocks/${id}`).then((res) => {
-                setBlocks(prev => [...prev, res.data])
+                if (res.data) setBlocks(prev => [...prev, res.data])
             }).catch(err => console.log('error fetching blocks', err))
         }
         blocksData.reduce(
@@ -123,16 +125,19 @@ export default ({blocksData, isOwner = true}) => {
                                 >
                                     <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                                 </Button>}
-                            <ImageBlock title={title} imageLink={imageLink} />
+                            <ImageBlock title={title} imageLink={getImage(imageLink)} />
                         </Row>
                     )
             }
+            
         })
     }
     return (
-        <div className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}}>
-            <EditBlock setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />
+        <div className="whitesmoke-bg-pless pb-4 text-center" style={{fontSize: '120%'}}>
+            <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />
+            <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />
             <ShowBlocks />
+            <Button className="mt-4" size="sm" variant="success" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
         </div>
     )
 }

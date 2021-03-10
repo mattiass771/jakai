@@ -104,6 +104,23 @@ router.route("/:pageId/update-blocks/").post((req, res) => {
   });
 });
 
+router.route("/:pageId/remove-block/").post((req, res) => {
+  const { pageId } = req.params;
+  const { blockId } = req.body
+
+  Page.findById(pageId, (err, pageFound) => {
+    if (err) return console.log(err.data);
+
+    const prevBlocks = pageFound.blocks
+    pageFound.blocks = prevBlocks.filter(block => block !== blockId)
+
+    pageFound
+      .save()
+      .then(() => res.json('Block added to the page'))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
+});
+
 router.route("/:id").delete((req, res) => {
   Page.findByIdAndDelete(req.params.id)
     .then(() => res.json("Page deleted."))

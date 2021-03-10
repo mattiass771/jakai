@@ -1,23 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 
 import ShopJumbotron from "./ViewShop/ShopJumbotron";
-import AddBlock from "../Blocks/AddBlock";
 import ViewBlocks from "./ViewShop/ViewBlocks"
-
-import Button from "react-bootstrap/Button"
 
 // CreateShop.js
 export default ({ pageData, isOwner }) => {
-  const [addBlockPopup, setAddBlockPopup] = useState(false)
-
   return (
     <>
       <ShopJumbotron pageData={pageData} isOwner={isOwner} />
-      <ViewBlocks blocksData={pageData.blocks} isOwner={isOwner} />
-      <div className="text-center whitesmoke-bg-pless pb-4">
-        <Button size="sm" variant="dark" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
-      </div>
-      <AddBlock pageId={pageData._id} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />
+      <ViewBlocks pageId={pageData._id} blocksData={pageData.blocks} isOwner={isOwner} />
     </>
   );
 };

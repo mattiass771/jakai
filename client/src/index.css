@@ -86,11 +86,11 @@ body:after{
 }
 
 
-.btn {
+.btn-dark {
   background-color: #ae1865 !important;
 }
 
-.btn:hover {
+.btn-dark:hover {
   background-color: whitesmoke !important;
   color: #AE1865 !important
 }

@@ -60,6 +60,12 @@ router.route("/edit-block/:blockId").post((req, res) => {
     });
 });
 
+router.route("/:id").delete((req, res) => {
+  Block.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Block deleted."))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
 module.exports = {
     router,
     Block

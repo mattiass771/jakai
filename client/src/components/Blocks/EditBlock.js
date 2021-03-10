@@ -21,6 +21,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     const [imageLink, setImageLink] = useState('')
     const [title, setTitle] = useState('')
     const [variant, setVariant] = useState('')
+    const [really, setReally] = useState(false)
 
     useEffect(() => {
         setDescription(blockData.text || '')
@@ -69,6 +70,21 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                 setRefresh(!refresh)
             })
             .catch(err => alert('Nepodarilo sa pridat blok, chyba: ', err))
+    }
+
+    const deleteBlock = () => {
+        const blockId = blockData._id
+        axios.delete(`http://localhost:5000/blocks/${blockId}`)
+            .then(res => {
+                axios.post(`http://localhost:5000/page/${pageId}/remove-block/`, {blockId})
+                    .then(blockRes => {
+                        setReally(false)
+                        setPassEditProps('')
+                        setRefresh(!refresh)
+                    })
+                    .catch(blockErr => console.log(blockErr))
+            })
+            .catch(err => alert('Chyba pri vymazavani bloku, ',err))
     }
 
     return (
@@ -136,6 +152,15 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                 </Row>}
             </SlideDown>
             <br />
+            <div className="text-right">
+                {really ? 
+                <Button variant="danger" onClick={() => deleteBlock()}>
+                    VYMAZAT!
+                </Button>
+                : <Button variant="danger" onClick={() => setReally(true)}>
+                    Vymazat Blok?
+                </Button>}
+            </div>
             {((variant === 'para-para' && description) || (variant === 'img-only' && imageLink) || (description && imageLink))?
                 <Button variant="dark" onClick={() => handleSave()}>
                     Upravit
