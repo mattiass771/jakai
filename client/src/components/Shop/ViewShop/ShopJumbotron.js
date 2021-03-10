@@ -274,7 +274,7 @@ export default ({ pageData, isOwner }) => {
               />
               <div>
                 <InputGroup>
-              <p style={{marginRight: 10, marginTop: 5}}>www.vimko.sk/</p>
+              <p style={{marginRight: 10, marginTop: 5}}>www.jakai.sk/</p>
                   <input 
                     className={isUrlAvailible ? 'form-control text-center' : 'text-center form-control invalid-input'}
                     value={currentUrl} 
