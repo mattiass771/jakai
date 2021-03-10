@@ -65,8 +65,10 @@ mongoose.connect(
 );
 
 // DATABASE COLLECTIONS //
-const shopRouter = require("./db/shopDb").router;
-app.use("/shop", shopRouter);
+const pageRouter = require("./db/pageDb").router;
+app.use("/page", pageRouter);
+const blocksRouter = require("./db/blocksDb").router;
+app.use("/blocks", blocksRouter);
 const userRouter = require("./db/userDb").router;
 app.use("/users", userRouter);
 const orderRouter = require("./db/orderDb").router;
