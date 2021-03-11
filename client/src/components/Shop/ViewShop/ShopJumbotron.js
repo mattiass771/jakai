@@ -34,6 +34,7 @@ export default ({ pageData, isOwner }) => {
   const [error, setError] = useState('')
   const [description, setDescription] = useState(pageData.description)
   const [owner, setOwner] = useState(pageData.owner)
+  const [category, setCategory] = useState(pageData.category)
   const [imageLink, setImageLink] = useState('');
   const [overviewImage, setOverviewImage] = useState('');
   const [showImageFromDb, setShowImageFromDb] = useState(pageData.imageLink ? pageData.imageLink : '')
@@ -171,6 +172,19 @@ export default ({ pageData, isOwner }) => {
     }
   }
 
+  const handleCategoryChange = () => {
+    if (category) {
+      axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-page/category/${category}`
+      )
+      .then((res) => {
+        return;
+      })
+      .catch((err) => err && handleError(err));
+    }
+  }
+
   const handleDescriptionChange = () => {
     if (description) {
       axios
@@ -270,7 +284,15 @@ export default ({ pageData, isOwner }) => {
                 onChange={(e) => setOwner(e.target.value)} 
                 onBlur={handleOwnerChange}
                 name="owner"
-                placeholder="Majitel"
+                placeholder="Lektor"
+              />
+              <input 
+                className={'form-control text-center'}
+                value={category} 
+                onChange={(e) => setCategory(e.target.value)} 
+                onBlur={handleCategoryChange}
+                name="category"
+                placeholder="Kategoria"
               />
               <div>
                 <InputGroup>

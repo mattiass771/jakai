@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 // SCHEMAS //
 
 const pageSchema = new Schema({
-  pageName: { type: String, required: true, default: "New Page" },
-  owner: { type: String, required: true, default: "Who is the owner?" },
+  pageName: { type: String, required: true },
+  owner: { type: String },
   description: {
     type: String,
     required: true,
-    default: "Add a brief description to your page..."
+    default: "Pridaj popis"
   },
   imageLink: {
     type: String,

@@ -81,7 +81,8 @@ export default ({userId, isOwner}) => {
   
   const showCarouselWithData = () => {
     return carouselData.map(shop => {
-      const {pageName, owner, url, imageLink, textColor} = shop
+      const {pageName, url, imageLink, textColor, category, owner} = shop
+      const parsedCategory = category.replace(/[-_\.]/g, ' a ')
       const image = imageLink
         ? getImage(imageLink)
         : defaultImage;
@@ -98,6 +99,7 @@ export default ({userId, isOwner}) => {
             <Carousel.Caption style={{zIndex:'+1' ,marginBottom: MIN_HEIGHT_JUMBO+75, color: textColor === 'white' ? 'whitesmoke' : '#333333'}}>
               <h3>{pageName}</h3>
               <p>{owner}</p>
+              <p>{parsedCategory[0].toUpperCase()}{parsedCategory.substring(1)}</p>
             </Carousel.Caption>
           </Link>
           <div style={{backgroundColor: '#AE186595', color: "whitesmoke", padding: '40px', marginTop: MIN_HEIGHT_JUMBO, height: MIN_HEIGHT_JUMBO}}>
