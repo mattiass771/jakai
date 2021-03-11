@@ -7,7 +7,7 @@ import "./index.css";
 import "react-dropzone-uploader/dist/styles.css";
 
 import Home from "./components/Home/Home";
-import Lekcie from "./components/Shop/Lekcie";
+import Pages from "./components/Shop/Pages";
 import Login from "./components/Login/Login";
 import ShopOnline from "./components/Shop/shopOnline/ShopOnline"
 import ShoppingCart from "./components/Cart/ShoppingCart"
@@ -90,11 +90,11 @@ export default () => {
             <Route exact path="/">
               <Home userId={userData._id} isOwner={userData.isOwner}  />
             </Route>
-            <Route exact path="/lekciekurzy">
-              <Lekcie userData={userData} />
+            <Route exact path="/lekcie-kurzy">
+              <Pages userData={userData} category="lekcie-kurzy" />
             </Route>
             <Route exact path="/workshopy">
-              <p>workshopy</p>
+              <Pages userData={userData} category="workshopy" />
             </Route>
             <Route exact path="/login-page">
               {isLoggedIn ? <Home userId={userData._id} isOwner={userData.isOwner} /> : <Login />}

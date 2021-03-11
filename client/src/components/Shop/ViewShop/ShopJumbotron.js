@@ -98,7 +98,7 @@ export default ({ pageData, isOwner }) => {
         .delete(
         `http://localhost:5000/page/${pageData._id}`
         )
-        .then(() => history.push(`/vinarne`))
+        .then(() => history.push(`/lekciekurzy`))
         .catch((err) => err && console.log(`Error ${err}`));
   };
 

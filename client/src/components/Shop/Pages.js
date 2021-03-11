@@ -5,7 +5,7 @@ import PagesOverview from "./PagesOverview";
 import Spinner from "react-bootstrap/Spinner";
 
 //Shop.js
-export default ({ userData }) => {
+export default ({ userData, category }) => {
   const [pageData, setPageData] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -24,7 +24,7 @@ export default ({ userData }) => {
           style={{ marginLeft: "49%", marginTop: "20%" }}
           animation="border"
         />
-      ) : <PagesOverview userData={userData} pageData={pageData} />}
+      ) : <PagesOverview userData={userData} pageData={pageData.filter(data => data.category === category)} category={category} />}
     </>
   );
 };

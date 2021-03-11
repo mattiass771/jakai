@@ -72,7 +72,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
               Domov
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/lekciekurzy" to="/lekciekurzy" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
+          <Nav.Link as={Link} href="/lekcie-kurzy" to="/lekcie-kurzy" className="navihover  pt-4 pb-3 mr-xl-4 ml-xl-4 mr-lg-2 ml-lg-2 mr-1 ml-1">
               Lekcie a Kurzy
           </Nav.Link>
 

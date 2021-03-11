@@ -10,22 +10,20 @@ import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
 
 // CreateShop.js
-export default ({ userData }) => {
-  const [shopName, setShopName] = useState("");
+export default ({ userData, category }) => {
+  const [pageName, setPageName] = useState("");
   const [description, setDescription] = useState("");
 
   const owner = userData.fullName;
-  const ownerId = userData._id;
 
   const handleOpenShop = () => {
-    console.log(owner, shopName, ownerId, description, shortid.generate())
     axios
       .post(`http://localhost:5000/page/add`, {
-        shopName,
+        pageName,
         owner,
-        ownerId,
         description,
-        url: shortid.generate()
+        url: shortid.generate(),
+        category
       })
       .then((res) => console.log(res.data))
       .catch((err) => err && console.log(`Error catched: ${err}`))
@@ -47,13 +45,13 @@ export default ({ userData }) => {
           </Row>
           <Row className="justify-content-md-center">
             <Col md={6} className="form-group">
-              <label htmlFor="shopName">Názov:</label>
+              <label htmlFor="pageName">Názov:</label>
               <input
-                value={shopName}
+                value={pageName}
                 className="form-control"
                 type="text"
-                name="shopName"
-                onChange={(e) => setShopName(e.target.value)}
+                name="pageName"
+                onChange={(e) => setPageName(e.target.value)}
               />
             </Col>
           </Row>

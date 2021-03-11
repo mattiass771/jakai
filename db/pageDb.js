@@ -20,6 +20,7 @@ const pageSchema = new Schema({
     type: String,
   },
   url: {type: String, required: true},
+  category: {type: String },
   blocks: {type: Array},
   textColor: { type: String, required: true, default: "whitesmoke"}
 });
@@ -47,6 +48,13 @@ router.route("/owner/:userId").get((req, res) => {
     .catch((err) => res.status.apply(400).json(`Error: ${err} !`));
 });
 
+router.route("/category/:categ").get((req, res) => {
+  const categ = req.params.categ;
+  Page.find({ category: categ })
+    .then((page) => res.json(page))
+    .catch((err) => res.status.apply(400).json(`Error: ${err} !`));
+});
+
 router.route("/link/:link").get((req, res) => {
   const link = req.params.link;
   Page.findOne({ url: link })
@@ -55,14 +63,14 @@ router.route("/link/:link").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-  const { pageName, owner, ownerId, description, url } = req.body;
+  const { pageName, owner, description, url, category } = req.body;
 
   const addPage = new Page({
     pageName,
     owner,
-    ownerId,
     description,
-    url
+    url,
+    category
   });
   addPage
     .save()

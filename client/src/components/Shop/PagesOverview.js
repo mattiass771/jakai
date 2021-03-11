@@ -9,7 +9,7 @@ import Card from "react-bootstrap/Card";
 
 import { Link } from "react-router-dom";
 
-export default ({userData, pageData}) => {
+export default ({userData, pageData, category}) => {
     const [showCreateShop, setShowCreateShop] = useState(false)
     const [isHovered, setIsHovered] = useState("")
 
@@ -56,7 +56,7 @@ export default ({userData, pageData}) => {
                 {userData.isOwner && 
                 <Col className="text-center">
                     {showCreateShop ? 
-                    <CreateShop userData={userData} /> :
+                    <CreateShop userData={userData} category={category} /> :
                     <Button style={{marginTop: "20px"}} variant="dark" onClick={() => setShowCreateShop(true)}>Pridať lekciu/kurz</Button>
                     }
                 </Col>}
