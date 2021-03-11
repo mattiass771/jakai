@@ -85,6 +85,13 @@ body:after{
   color: whitesmoke;
 }
 
+ul li ol {
+  text-align: start !important;
+}
+
+.ck-editor__editable {
+  min-height: 215px;
+}
 
 .btn-dark {
   background-color: #ae1865 !important;

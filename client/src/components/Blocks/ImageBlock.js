@@ -7,7 +7,7 @@ export default ({title = 'Nazov', imageLink = 'https://miro.medium.com/max/1200/
     return (
         <>
         {title &&
-        <Col xs={12}>
+        <Col className="text-center" xs={12}>
             <h2>{title}</h2>
             <br />
         </Col>}

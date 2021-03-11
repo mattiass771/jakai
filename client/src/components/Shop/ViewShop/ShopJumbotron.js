@@ -311,9 +311,9 @@ export default ({ pageData, isOwner }) => {
           </Row>
           <Row className="justify-content-md-center">
             <Col className="text-center">
-              <Button variant="dark" onClick={() => handleLocalUploadingTitle()}>Upload title image</Button>
+              <Button variant="dark" onClick={() => handleLocalUploadingTitle()}>Uploadni titulku</Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <Button variant="dark" onClick={() => handleLocalUploadingOverview()}>Upload overview image</Button>
+              <Button variant="dark" onClick={() => handleLocalUploadingOverview()}>Uploadni kartu</Button>
             </Col>
           </Row>
         </>
@@ -335,7 +335,7 @@ export default ({ pageData, isOwner }) => {
                   key="label"
                   style={{ marginTop: "15px", color: "#333333" }}
                 >
-                  Drop or click to choose {localUploadingTitle ? 'title' : 'overview'} image.
+                  Sem pretiahni alebo klikni a nahraj {localUploadingTitle ? 'titulku' : 'kartu'}.
                   <br />
                   <BsUpload />
                 </p>

@@ -4,6 +4,10 @@ import axios from 'axios'
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
 
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { editorConfig } from '../../config/options'
+
 import Dropzone from "react-dropzone-uploader";
 import { BsUpload } from "react-icons/bs";
 
@@ -21,6 +25,8 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     const [imageLink, setImageLink] = useState('')
     const [title, setTitle] = useState('')
     const [variant, setVariant] = useState('')
+
+    ClassicEditor.defaultConfig = editorConfig
 
     const getImage = (image) => {
         try {
@@ -89,13 +95,12 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
                 <Row className="justify-content-center">
                     <Col className="form-group text-center mt-1">
                     <label htmlFor="description">Text:</label>
-                    <textarea
-                        value={description}
-                        className="form-control text-center"
-                        name="description"
-                        type="text"
-                        style={{ resize: "none", minHeight: "350px" }}
-                        onChange={(e) => setDescription(e.target.value)}
+                    <CKEditor
+                        editor={ClassicEditor}
+                        onChange={(event, editor) => {
+                            const data = editor.getData()
+                            setDescription(data)
+                        }}
                     />
                     </Col>
                 </Row>

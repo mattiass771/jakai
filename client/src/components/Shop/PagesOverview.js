@@ -57,7 +57,7 @@ export default ({userData, pageData, category}) => {
                 <Col className="text-center">
                     {showCreateShop ? 
                     <CreateShop userData={userData} category={category} /> :
-                    <Button style={{marginTop: "20px"}} variant="dark" onClick={() => setShowCreateShop(true)}>Pridať lekciu/kurz</Button>
+                    <Button style={{marginTop: "20px"}} variant="dark" onClick={() => setShowCreateShop(true)}>Pridať</Button>
                     }
                 </Col>}
             </Row>

@@ -7,13 +7,11 @@ export default ({title = 'Nazov', text = 'nejaky text', imageLink = 'https://mir
     return (
         <>
             {title &&
-            <Col xs={12}>
+            <Col className="text-center" xs={12}>
                 <h2>{title}</h2>
                 <br />
             </Col>}
-            <Col xs={12} md={6} className="pb-2">
-                {text}
-            </Col>
+            <Col dangerouslySetInnerHTML={{__html: text}} xs={12} md={6} className="pb-2" />
             <Col xs={12} md={6}>
                 <Image src={imageLink} rounded fluid />
             </Col>

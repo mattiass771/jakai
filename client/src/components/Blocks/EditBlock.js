@@ -4,6 +4,10 @@ import axios from 'axios'
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
 
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { editorConfig } from '../../config/options'
+
 import Dropzone from "react-dropzone-uploader";
 import { BsUpload } from "react-icons/bs";
 
@@ -17,18 +21,13 @@ import ShowVariants from './ShowVariants'
 const IMAGE_PREFIX = 'page-image'
 
 export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
-    const [description, setDescription] = useState('')
-    const [imageLink, setImageLink] = useState('')
-    const [title, setTitle] = useState('')
-    const [variant, setVariant] = useState('')
+    const [description, setDescription] = useState(blockData.text)
+    const [imageLink, setImageLink] = useState(blockData.imageLink)
+    const [title, setTitle] = useState(blockData.title)
+    const [variant, setVariant] = useState(blockData.variant)
     const [really, setReally] = useState(false)
 
-    useEffect(() => {
-        setDescription(blockData.text || '')
-        setImageLink(blockData.imageLink || '')
-        setTitle(blockData.title || '')
-        setVariant(blockData.variant || '')
-    }, [blockData])
+    ClassicEditor.defaultConfig = editorConfig
 
     const getImage = (image) => {
         try {
@@ -87,6 +86,8 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
             .catch(err => alert('Chyba pri vymazavani bloku, ',err))
     }
 
+    console.log(description)
+
     return (
         <Modal size="lg" show={typeof blockData === 'object'} onHide={() => setPassEditProps('')}>
             <Modal.Body className="text-center">
@@ -106,13 +107,13 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                 <Row className="justify-content-center">
                     <Col className="form-group text-center mt-1">
                     <label htmlFor="description">Text:</label>
-                    <textarea
-                        value={description}
-                        className="form-control text-center"
-                        name="description"
-                        type="text"
-                        style={{ resize: "none", minHeight: "350px" }}
-                        onChange={(e) => setDescription(e.target.value)}
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={description}
+                        onChange={(event, editor) => {
+                            const data = editor.getData()
+                            setDescription(data)
+                        }}
                     />
                     </Col>
                 </Row>

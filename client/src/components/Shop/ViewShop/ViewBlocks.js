@@ -50,7 +50,7 @@ export default ({pageId, blocksData, isOwner = true}) => {
             switch(variant) {
                 case 'para-para':
                     return (
-                        <Row key={_id} className={`text-center justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, variant})}
@@ -70,7 +70,7 @@ export default ({pageId, blocksData, isOwner = true}) => {
                     )
                 case 'para-img':
                     return (
-                        <Row key={_id} className={`text-center justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, variant})}
@@ -90,7 +90,7 @@ export default ({pageId, blocksData, isOwner = true}) => {
                     )
                 case 'img-para':
                     return (
-                        <Row key={_id} className={`text-center justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, variant})}
@@ -110,7 +110,7 @@ export default ({pageId, blocksData, isOwner = true}) => {
                     )
                 case 'img-only':
                     return (
-                        <Row key={_id} className={`text-center justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, variant})}
@@ -133,11 +133,13 @@ export default ({pageId, blocksData, isOwner = true}) => {
         })
     }
     return (
-        <div className="whitesmoke-bg-pless pb-4 text-center" style={{fontSize: '120%'}}>
-            <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />
+        <div className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}}>
+            {typeof passEditProps === 'object'&& <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
             <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />
             <ShowBlocks />
-            <Button className="mt-4" size="sm" variant="success" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
+            <div className="text-center">
+                <Button className="mt-4" size="sm" variant="success" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
+            </div>
         </div>
     )
 }
