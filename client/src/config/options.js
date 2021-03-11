@@ -6,6 +6,7 @@ export const editorConfig = {
         items: [
             'bold',
             'italic',
+            'link',
             '|',
             'bulletedList',
             'numberedList',

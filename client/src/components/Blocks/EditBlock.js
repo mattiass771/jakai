@@ -89,7 +89,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     console.log(description)
 
     return (
-        <Modal size="lg" show={typeof blockData === 'object'} onHide={() => setPassEditProps('')}>
+        <Modal enforceFocus={false} size="lg" show={typeof blockData === 'object'} onHide={() => setPassEditProps('')}>
             <Modal.Body className="text-center">
                 <ShowVariants variant={variant} setVariant={setVariant} />
                 <Row className="justify-content-center">

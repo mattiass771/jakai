@@ -16,6 +16,17 @@ body {
   scrollbar-width: none;  /* Firefox */
   padding-top: 168px;
   padding-bottom: 107px;
+  --ck-z-default: 100;
+  --ck-z-modal: calc( var(--ck-z-default) + 999);
+}
+
+a:link {
+  color:#AE1865;
+}
+
+a:link:hover {
+  color:#b4648e;
+  text-decoration: none;
 }
 
 body:after{
@@ -101,8 +112,6 @@ ul li ol {
   background-color: whitesmoke !important;
   color: #AE1865 !important
 }
-
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

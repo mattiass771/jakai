@@ -14,7 +14,7 @@ import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 
 
-export default ({pageId, blocksData, isOwner = true}) => {
+export default ({pageId, blocksData, isOwner}) => {
     const [blocks, setBlocks] = useState([])
     const [passEditProps, setPassEditProps] = useState('')
     const [refresh, setRefresh] = useState(false)
@@ -134,12 +134,13 @@ export default ({pageId, blocksData, isOwner = true}) => {
     }
     return (
         <div className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}}>
-            {typeof passEditProps === 'object'&& <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
-            <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />
+            {typeof passEditProps === 'object'&& isOwner && <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
+            {isOwner && <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />}
             <ShowBlocks />
+            {isOwner &&
             <div className="text-center">
                 <Button className="mt-4" size="sm" variant="success" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
-            </div>
+            </div>}
         </div>
     )
 }

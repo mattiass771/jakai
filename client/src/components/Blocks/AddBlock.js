@@ -77,7 +77,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     }
 
     return (
-        <Modal size="lg" show={addBlockPopup} onHide={() => setAddBlockPopup(false)}>
+        <Modal enforceFocus={false} size="lg" show={addBlockPopup} onHide={() => setAddBlockPopup(false)}>
             <Modal.Body className="text-center">
                 <ShowVariants variant={variant} setVariant={setVariant} />
                 <Row className="justify-content-center">

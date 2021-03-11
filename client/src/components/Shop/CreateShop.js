@@ -37,9 +37,9 @@ export default ({ userData, category }) => {
           <br />
           <Row>
             <Col className="text-center">
-              <h1>Pridať novú lekciu/kurz</h1>
+              <h1>Pridať novú stránku</h1>
               <p>
-                Vyplň základné informácie a zvyšok nastavíš v novovytvorenom kurze.
+                Vyplň základné informácie a zvyšok nastavíš v novovytvorenej stránke.
               </p>
             </Col>
           </Row>
@@ -71,9 +71,14 @@ export default ({ userData, category }) => {
           </Row>
           <Row className="justify-content-md-center">
             <Col md={6} className="text-center">
+              {description && pageName ? 
               <Button variant="dark" onClick={handleOpenShop}>
                 Hotovo
+              </Button> :
+              <Button variant="dark" disabled>
+                Hotovo
               </Button>
+              }
             </Col>
           </Row>
         </Container>

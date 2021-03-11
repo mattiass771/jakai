@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
 import Carousel from "react-bootstrap/Carousel";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
@@ -25,6 +26,7 @@ export default ({userId, isOwner}) => {
   const [carouselData, setCarouselData] = useState('')
   const [loading, setLoading] = useState(false)
   const [descriptionGeneral, setDescriptionGeneral] = useState('')
+  const [isHoveredLinks, setIsHoveredLinks] = useState('')
 
   const [descriptionsPopup, setDescriptionsPopup] = useState(false)
 
@@ -76,6 +78,46 @@ export default ({userId, isOwner}) => {
           {descriptionGeneral.description}
         </Col>
       </Row>
+    )
+  }
+
+  const ShowLinks = () => {
+    return (
+      <>
+        <Col md={4} style={{padding:'35px', height: '350px'}}>
+          <Link to={`/lekcie-kurzy`}>
+              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('lekcie')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
+              border: '1.5px solid white'}} >
+                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/Reflexn%C3%A1-mas%C3%A1%C5%BE-chodidiel_Jaka%C3%AD.jpg" style={{width: '100%', objectFit: 'cover'}} />
+                  <Card.ImgOverlay className={`${isHoveredLinks === 'lekcie' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
+                    <h3 style={{paddingTop: "50%"}}>Lekcie a kurzy</h3>
+                  </Card.ImgOverlay>
+              </Card>
+          </Link>
+        </Col>
+        <Col md={4} style={{padding:'35px', height: '350px'}}>
+          <Link to={`/workshopy`}>
+              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('workshopy')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
+              border: '1.5px solid white'}} >
+                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60449a69f15b6c0b0400e10b-chlebik.jpg" style={{width: '100%', objectFit: 'cover'}} />
+                  <Card.ImgOverlay className={`${isHoveredLinks === 'workshopy' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
+                    <h3 style={{paddingTop: "50%"}}>Workshopy a semináre</h3>
+                  </Card.ImgOverlay>
+              </Card>
+          </Link>
+        </Col>
+        <Col md={4} style={{padding:'35px', height: '350px'}}>
+          <a rel="noopener noreferrer" target="_blank" href={`https://mohendzodaro.com/kurzy/`}>
+              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('programy')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
+              border: '1.5px solid white'}} >
+                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60429f074cf12041b61e6346-MEDIT%C3%81CIA-PRE-DU%C5%A0U-%C5%BDENY-JAKA%C3%8D-1024x683.jpeg" style={{width: '100%', objectFit: 'cover'}} />
+                  <Card.ImgOverlay className={`${isHoveredLinks === 'programy' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
+                    <h3 style={{paddingTop: "50%"}}>Programy pre ženy</h3>
+                  </Card.ImgOverlay>
+              </Card>
+          </a>
+        </Col>
+      </>
     )
   }
   
@@ -171,6 +213,13 @@ export default ({userId, isOwner}) => {
             <ShowGeneral fSz="85%" />
           </Container>
         </div>
+    </div>
+    <div>  
+      <Container>
+        <Row className="py-4">
+          <ShowLinks />
+        </Row>
+      </Container>
     </div>
   </>
   );
