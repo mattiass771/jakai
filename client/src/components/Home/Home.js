@@ -123,7 +123,8 @@ export default ({userId, isOwner}) => {
       }
       <Carousel indicators={false} style={{height: MIN_HEIGHT_JUMBO*2 }}>
         {carouselData && showCarouselWithData()}  
-        <div style={{color: "whitesmoke", padding: '30px', marginTop: MIN_HEIGHT_JUMBO}}>
+      </Carousel>
+        <div style={{color: "whitesmoke", padding: '30px', marginTop: -MIN_HEIGHT_JUMBO}}>
           <Container className="d-none d-md-block">
             <Row className="text-center justify-content-center pt-4">
               <Col className="pt-2" xs={1} sm={2} md={3} xl={4} >
@@ -170,7 +171,6 @@ export default ({userId, isOwner}) => {
             <ShowGeneral fSz="85%" />
           </Container>
         </div>
-      </Carousel>
     </div>
   </>
   );
