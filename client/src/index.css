@@ -10,7 +10,7 @@ body {
     sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: whitesmoke;
+  background-color: #f5f5f5;
   color: #333333 !important;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -21,13 +21,24 @@ body {
 }
 
 a:link {
-  color:#AE1865;
+  color:#AE1865 !important;
 }
 
 a:link:hover {
   color:#b4648e;
   text-decoration: none;
 }
+
+a {
+  color:#AE1865 !important;
+}
+
+a:hover {
+  color:#b4648e;
+  text-decoration: none;
+}
+
+
 
 body:after{
   content:"";
@@ -88,12 +99,12 @@ body:after{
 }
 
 .whitesmoke-bg-pless {
-  background-color: rgba(250,250,250,0.75);
+  background-color: rgba(250,250,250,0.5);
 }
 
 .pink-bg-pnine {
-  background-color: rgba(174, 24, 101,0.9);
-  color: whitesmoke;
+  background-color: whitesmoke;
+  color: #333333;
 }
 
 ul li ol {
@@ -105,12 +116,12 @@ ul li ol {
 }
 
 .btn-dark {
-  background-color: #ae1865 !important;
+  background-color: #333333 !important;
 }
 
 .btn-dark:hover {
   background-color: whitesmoke !important;
-  color: #AE1865 !important
+  color: #333333 !important
 }
 
 code {
@@ -120,8 +131,6 @@ code {
 
 .jumbotron {
   margin-bottom: 0 !important;
-  -webkit-box-shadow: 0px 0px 7px 6px rgb(0, 20, 2); 
-  box-shadow: 0px 0px 7px 6px rgb(0, 20, 2);
 }
 
 .card {
@@ -177,17 +186,19 @@ tr.inner-table:hover {
 
 
 .navihover:hover {
-  color: #c1c1c1 !important;
+  /* color: #c1c1c1 !important; */
+  border-bottom: 1px solid #333333 !important;
 }
+
 .navihover {
   padding: 8px;
-  color: whitesmoke !important;
+  color: #333333 !important;
 }
 
 
 @media only screen and (min-width: 768px) {
   .navihover:hover {
-    color: #c1c1c1 !important;
+    /* color: #c1c1c1 !important; */
     margin-top: -8px;
     margin-bottom: -8px;
     padding-bottom: 8px;

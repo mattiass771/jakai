@@ -115,7 +115,7 @@ export default () => {
               <Orders userId={userData._id} isOwner={userData.isOwner} />
             </Route>
             <Route exact path={`/lektori`}>
-              <p>lektori</p>
+              <Pages userData={userData} category="lektori" />
             </Route>
             <Route exact path={`/ceny`}>
               <p>ceny</p>

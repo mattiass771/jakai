@@ -9,6 +9,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import InputGroup from "react-bootstrap/InputGroup"
 import Button from "react-bootstrap/Button"
 import Alert from "react-bootstrap/Alert"
+import Image from "react-bootstrap/Image"
 
 import Dropzone from "react-dropzone-uploader";
 
@@ -18,9 +19,11 @@ import { MdDelete } from "react-icons/md";
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
 
-import defaultImage from "../../../default.jpg";
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { editorConfig } from '../../../config/options'
 
-import options from '../../../config/options';
+import defaultImage from "../../../default.jpg";
 
 // CreateShop.js
 export default ({ pageData, isOwner }) => {
@@ -40,7 +43,11 @@ export default ({ pageData, isOwner }) => {
   const [showImageFromDb, setShowImageFromDb] = useState(pageData.imageLink ? pageData.imageLink : '')
   const [localUploadingTitle, setLocalUploadingTitle] = useState(false)
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
+  const [localUploadingLogoImage, setLocalUploadingLogoImage] = useState(false)
   const [textColor, setTextColor] = useState(pageData.textColor)
+  const [logoImage, setLogoImage] = useState(pageData.logoImage)
+  
+  ClassicEditor.defaultConfig = editorConfig
 
   useEffect(() => {
     if (textColor !== pageData.textColor) {
@@ -90,6 +97,8 @@ export default ({ pageData, isOwner }) => {
         setImageLink(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
       } else if (localUploadingOverview) {
         setOverviewImage(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
+      } else if (localUploadingLogoImage) {
+        setLogoImage(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
       }
     }
   };
@@ -128,6 +137,19 @@ export default ({ pageData, isOwner }) => {
       .catch((err) => err && handleError(err));
     } 
   }, [overviewImage])
+
+  useEffect(() => {
+    if (logoImage) {
+      axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-page/logoImage/${logoImage}`
+      )
+      .then((res) => {
+        return;
+      })
+      .catch((err) => err && handleError(err));
+    } 
+  }, [logoImage])
 
   useEffect(() => {
     axios
@@ -187,9 +209,10 @@ export default ({ pageData, isOwner }) => {
 
   const handleDescriptionChange = () => {
     if (description) {
+      console.log('hit', typeof description)
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/description/${description}`
+        `http://localhost:5000/page/${pageData._id}/update-page-description/`,{description}
       )
       .then((res) => {
         return;
@@ -213,29 +236,46 @@ export default ({ pageData, isOwner }) => {
 
   const handleLocalUploadingOverview = () => {
     setLocalUploadingTitle(false)
+    setLocalUploadingLogoImage(false)
     setLocalUploadingOverview(true)
   }
 
   const handleLocalUploadingTitle = () => {
     setLocalUploadingOverview(false)
+    setLocalUploadingLogoImage(false)
     setLocalUploadingTitle(true)
   }
+
+  const handleLocalUploadingLogoImage = () => {
+    setLocalUploadingOverview(false)
+    setLocalUploadingTitle(false)
+    setLocalUploadingLogoImage(true)
+  }
+
+  console.log(logoImage)
 
   return (
     <Jumbotron style={{
                       color: textColor === 'white' ? 'whitesmoke' : '#333333', 
                       fontSize: '120%',
-                      background: `url(${showImageFromDb ? getImage(showImageFromDb) : defaultImage}) center center no-repeat`, 
-                      backgroundSize: 'cover'                  
+                      background: `rgba(245,245,245,0.5)`, 
+                      padding: '40px 60px'            
                       }} fluid>
-                        
-    <Container className="text-center">
       {!editMode ?
-        <Row style={{padding: '15px', backgroundColor: textColor === 'white' ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)', borderRadius: '7.5px'}}>
+        <Row style={{padding: '15px'}}>
+          {logoImage && 
+            <Col>
+              <Image src={getImage(logoImage)} style={{maxHeight: '300px'}} rounded fluid />
+            </Col>
+          }
           <Col>
+          <span className="text-center">
             <h2>{pageName}</h2>
-            <p>{description}</p>
+          </span>
+            <p dangerouslySetInnerHTML={{__html: description}}></p>
+          <span className="text-center">
             <p>{owner}</p>
+          </span>
           </Col>
         </Row>
         :
@@ -269,7 +309,7 @@ export default ({ pageData, isOwner }) => {
                 name="pageName"
                 placeholder="Nazov"
               />
-              <textarea 
+              {/* <textarea 
                 style={{minHeight: '100px'}}
                 className={'form-control text-center'}
                 value={description} 
@@ -277,6 +317,16 @@ export default ({ pageData, isOwner }) => {
                 onBlur={handleDescriptionChange}
                 name="description"
                 placeholder="Popis"
+              /> */}
+              <CKEditor
+                  editor={ClassicEditor}
+                  data={description}
+                  onChange={(event, editor) => {
+                      const data = editor.getData()
+                      setDescription(data)
+                  }}
+                  onBlur={handleDescriptionChange}
+                  name="description"
               />
               <input 
                 className={'form-control text-center'}
@@ -314,11 +364,13 @@ export default ({ pageData, isOwner }) => {
               <Button variant="dark" onClick={() => handleLocalUploadingTitle()}>Uploadni titulku</Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Button variant="dark" onClick={() => handleLocalUploadingOverview()}>Uploadni kartu</Button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <Button variant="dark" onClick={() => handleLocalUploadingLogoImage()}>Uploadni logo</Button>
             </Col>
           </Row>
         </>
         }
-        {((localUploadingTitle || localUploadingOverview) && editMode) ? 
+        {((localUploadingTitle || localUploadingOverview || localUploadingLogoImage) && editMode) ? 
         <SlideDown className={"my-dropdown-slidedown"}>
         <Row>
           <Col>
@@ -335,7 +387,7 @@ export default ({ pageData, isOwner }) => {
                   key="label"
                   style={{ marginTop: "15px", color: "#333333" }}
                 >
-                  Sem pretiahni alebo klikni a nahraj {localUploadingTitle ? 'titulku' : 'kartu'}.
+                  Sem pretiahni alebo klikni a nahraj {localUploadingTitle ? 'titulku' : localUploadingLogoImage ? 'logo' : 'kartu'}.
                   <br />
                   <BsUpload />
                 </p>
@@ -356,7 +408,7 @@ export default ({ pageData, isOwner }) => {
             <Button disabled variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
           </Col>
         </Row>}
-      </Container>
+      {/* </Container> */}
     </Jumbotron>
   );
 };

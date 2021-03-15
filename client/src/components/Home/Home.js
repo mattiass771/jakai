@@ -23,7 +23,7 @@ const {MIN_HEIGHT_JUMBO} = options
 
 //Home.js
 export default ({userId, isOwner}) => {
-  const [carouselData, setCarouselData] = useState('')
+  const [carouselData, setCarouselData] = useState(['6049c49c4fcb58064cdad9e8-IMG-0070-1024x318.jpeg'])
   const [loading, setLoading] = useState(false)
   const [descriptionGeneral, setDescriptionGeneral] = useState('')
   const [isHoveredLinks, setIsHoveredLinks] = useState('')
@@ -40,12 +40,9 @@ export default ({userId, isOwner}) => {
         const subTitle = res.data.subTitleGeneral
         const title = res.data.titleGeneral
         setDescriptionGeneral({title, subTitle, description})
+        setLoading(false)
       })
       .catch(err => err && console.log('Error while fetching home data, ', err))
-    axios.get(`http://localhost:5000/page/`)
-      .then(res => setCarouselData(res.data))
-      .catch(err => err && console.log('Error while fetching shops for carousel, ', err))
-      .then(() => setLoading(false))
   }, [forceRefresh])
 
   const getImage = (image) => {
@@ -122,30 +119,19 @@ export default ({userId, isOwner}) => {
   }
   
   const showCarouselWithData = () => {
-    return carouselData.map(shop => {
-      const {pageName, url, imageLink, textColor, category, owner} = shop
-      const parsedCategory = category.replace(/[-_\.]/g, ' a ')
+    return carouselData.map(imageLink => {
       const image = imageLink
         ? getImage(imageLink)
         : defaultImage;
       return (
-        <Carousel.Item className="car-image-bg" key={`${url}-${imageLink}`} 
+        <Carousel.Item className="car-image-bg" key={`${imageLink}`} 
           style={{
-            height: MIN_HEIGHT_JUMBO*2, 
+            height: MIN_HEIGHT_JUMBO, 
             width: "100%",
             background: `url(${image}) center center no-repeat`, 
             backgroundSize: 'cover'  
           }}
         >
-          <Link to={`/${url}`}>
-            <Carousel.Caption style={{zIndex:'+1' ,marginBottom: MIN_HEIGHT_JUMBO+75, color: textColor === 'white' ? 'whitesmoke' : '#333333'}}>
-              <h3>{pageName}</h3>
-              <p>{owner}</p>
-              <p>{parsedCategory[0].toUpperCase()}{parsedCategory.substring(1)}</p>
-            </Carousel.Caption>
-          </Link>
-          <div style={{backgroundColor: '#AE186595', color: "whitesmoke", padding: '40px', marginTop: MIN_HEIGHT_JUMBO, height: MIN_HEIGHT_JUMBO}}>
-          </div>
         </Carousel.Item>
       )
     })
@@ -163,20 +149,20 @@ export default ({userId, isOwner}) => {
       {descriptionsPopup &&
         <UpdateDescription descriptionGeneral={descriptionGeneral} descriptionsPopup={descriptionsPopup} setDescriptionsPopup={setDescriptionsPopup} forceRefresh={forceRefresh} setForceRefresh={setForceRefresh} />
       }
-      <Carousel indicators={false} style={{height: MIN_HEIGHT_JUMBO*2 }}>
+      <Carousel controls={false} indicators={false} style={{height: MIN_HEIGHT_JUMBO }}>
         {carouselData && showCarouselWithData()}  
       </Carousel>
-        <div style={{color: "whitesmoke", padding: '30px', marginTop: -MIN_HEIGHT_JUMBO}}>
+        <div style={{color: "#333333", padding: '30px', backgroundColor: 'whitesmoke'}}>
           <Container className="d-none d-md-block">
             <Row className="text-center justify-content-center pt-4">
               <Col className="pt-2" xs={1} sm={2} md={3} xl={4} >
-                <hr style={{backgroundColor: "whitesmoke", paddingBottom: "1px"}} />
+                <hr style={{backgroundColor: "#333333", paddingBottom: "1px"}} />
               </Col>
               <Col xs={10} sm={8} md={6} xl={4} >
                 <h2>{descriptionGeneral.title}</h2>
               </Col>
               <Col className="pt-2"  xs={1} sm={2} md={3} xl={4} >
-                <hr style={{backgroundColor: "whitesmoke", paddingBottom: "1px"}}/>
+                <hr style={{backgroundColor: "#333333", paddingBottom: "1px"}}/>
               </Col>
             </Row>
             <Row className="text-center justify-content-center">

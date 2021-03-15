@@ -46,7 +46,7 @@ export default ({pageId, blocksData, isOwner}) => {
     const ShowBlocks = () => {
         return blocks.map((block, i) => {
             const {_id, variant, title, text, imageLink} = block
-            const pinkStripe = i%2 ? 'pink-bg-pnine' : ''
+            const pinkStripe = !(i%2) ? 'pink-bg-pnine' : ''
             switch(variant) {
                 case 'para-para':
                     return (

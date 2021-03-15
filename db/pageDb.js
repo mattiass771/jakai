@@ -19,6 +19,9 @@ const pageSchema = new Schema({
   overviewImage: {
     type: String,
   },
+  logoImage: {
+    type: String,
+  },
   url: {type: String, required: true},
   category: {type: String },
   blocks: {type: Array},
@@ -91,6 +94,21 @@ router.route("/:pageId/update-page/:find/:replace").put((req, res) => {
     pageFound
       .save()
       .then(() => res.json(`Page updated!`))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
+});
+
+router.route("/:pageId/update-page-description/").put((req, res) => {
+  const { pageId } = req.params;
+  const {description} = req.body;
+
+  Page.findById(pageId, (err, pageFound) => {
+    if (err) return console.log(err.data);
+    pageFound.description = description;
+
+    pageFound
+      .save()
+      .then(() => res.json(`Page description updated!`))
       .catch((error) => res.status(400).json(`Error: ${error}`));
   });
 });
