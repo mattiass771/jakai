@@ -16,6 +16,9 @@ const pageSchema = new Schema({
   imageLink: {
     type: String,
   },
+  rozvrhLink: {
+    type: String,
+  },
   overviewImage: {
     type: String,
   },
@@ -25,7 +28,6 @@ const pageSchema = new Schema({
   url: {type: String, required: true},
   category: {type: String },
   blocks: {type: Array},
-  textColor: { type: String, required: true, default: "whitesmoke"}
 });
 
 const Page = mongoose.model("Page", pageSchema);
@@ -109,6 +111,21 @@ router.route("/:pageId/update-page-description/").put((req, res) => {
     pageFound
       .save()
       .then(() => res.json(`Page description updated!`))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
+});
+
+router.route("/:pageId/update-rozvrh-link/").put((req, res) => {
+  const { pageId } = req.params;
+  const {rozvrhLink} = req.body;
+
+  Page.findById(pageId, (err, pageFound) => {
+    if (err) return console.log(err.data);
+    pageFound.rozvrhLink = rozvrhLink;
+
+    pageFound
+      .save()
+      .then(() => res.json(`Link timetable updated!`))
       .catch((error) => res.status(400).json(`Error: ${error}`));
   });
 });

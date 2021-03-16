@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Jumbotron from "react-bootstrap/Jumbotron";
@@ -23,7 +22,7 @@ import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { editorConfig } from '../../../config/options'
 
-import defaultImage from "../../../default.jpg";
+import RozvrhModal from '../../Rozvrh/RozvrhModal'
 
 // CreateShop.js
 export default ({ pageData, isOwner }) => {
@@ -32,35 +31,22 @@ export default ({ pageData, isOwner }) => {
   const [currentUrl, setCurrentUrl] = useState(url)
   const [newUrl, setNewUrl] = useState(url)
   const [isUrlAvailible, setIsUrlAvailible] = useState(true)
+  const [showRozvrhPopup, setShowRozvrhPopup] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [pageName, setPageName] = useState(pageData.pageName)
+  const [rozvrhLink, setRozvrhLink] = useState(pageData.rozvrhLink)
   const [error, setError] = useState('')
   const [description, setDescription] = useState(pageData.description)
   const [owner, setOwner] = useState(pageData.owner)
   const [category, setCategory] = useState(pageData.category)
   const [imageLink, setImageLink] = useState('');
   const [overviewImage, setOverviewImage] = useState('');
-  const [showImageFromDb, setShowImageFromDb] = useState(pageData.imageLink ? pageData.imageLink : '')
   const [localUploadingTitle, setLocalUploadingTitle] = useState(false)
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
   const [localUploadingLogoImage, setLocalUploadingLogoImage] = useState(false)
-  const [textColor, setTextColor] = useState(pageData.textColor)
   const [logoImage, setLogoImage] = useState(pageData.logoImage)
   
   ClassicEditor.defaultConfig = editorConfig
-
-  useEffect(() => {
-    if (textColor !== pageData.textColor) {
-      axios
-      .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/textColor/${textColor}`
-      )
-      .then((res) => {
-        return;
-      })
-      .catch((err) => err && handleError(err));
-    } 
-  }, [textColor])
 
   const getImage = (image) => {
     try {
@@ -181,6 +167,19 @@ export default ({ pageData, isOwner }) => {
     }
   }
 
+  const handleRozvrhLinkChange = () => {
+    if (rozvrhLink) {
+      axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink}
+      )
+      .then((res) => {
+        return;;
+      })
+      .catch((err) => err && handleError(err))
+    }
+  }
+
   const handleShopNameChange = () => {
     if (pageName) {
       axios
@@ -255,8 +254,10 @@ export default ({ pageData, isOwner }) => {
   console.log(logoImage)
 
   return (
+    <>
+    <RozvrhModal showRozvrhPopup={showRozvrhPopup} setShowRozvrhPopup={setShowRozvrhPopup} rozvrhLink={rozvrhLink} />
     <Jumbotron style={{
-                      color: textColor === 'white' ? 'whitesmoke' : '#333333', 
+                      color: '#333333', 
                       fontSize: '120%',
                       background: `rgba(245,245,245,0.5)`, 
                       padding: '40px 60px'            
@@ -280,13 +281,6 @@ export default ({ pageData, isOwner }) => {
         </Row>
         :
         <>
-          <Row className="justify-content-md-center pb-2">
-            <Col className="text-center">
-              <Button variant={`${textColor === 'white' ? 'light' : 'dark'}`} onClick={() => setTextColor('white')} >Biely text</Button>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <Button variant={`${textColor === 'white' ? 'dark' : 'light'}`} onClick={() => setTextColor('black')} >Cierny text</Button>
-            </Col>
-          </Row>
           <Row className="justify-content-center">
             <Button
               onClick={(e) => deleteCard(e)}
@@ -301,23 +295,17 @@ export default ({ pageData, isOwner }) => {
               <MdDelete style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
             </Button>
             <Col xs={8}>
-              <input 
-                className={'form-control text-center'}
-                value={pageName} 
-                onChange={(e) => setPageName(e.target.value)} 
-                onBlur={handleShopNameChange}
-                name="pageName"
-                placeholder="Nazov"
-              />
-              {/* <textarea 
-                style={{minHeight: '100px'}}
-                className={'form-control text-center'}
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)} 
-                onBlur={handleDescriptionChange}
-                name="description"
-                placeholder="Popis"
-              /> */}
+              <InputGroup>
+                <p style={{marginRight: 10, marginTop: 5}}>Nazov:</p>
+                <input 
+                  className={'form-control text-center'}
+                  value={pageName} 
+                  onChange={(e) => setPageName(e.target.value)} 
+                  onBlur={handleShopNameChange}
+                  name="pageName"
+                  placeholder="Nazov"
+                />
+              </InputGroup>
               <CKEditor
                   editor={ClassicEditor}
                   data={description}
@@ -328,22 +316,41 @@ export default ({ pageData, isOwner }) => {
                   onBlur={handleDescriptionChange}
                   name="description"
               />
-              <input 
-                className={'form-control text-center'}
-                value={owner} 
-                onChange={(e) => setOwner(e.target.value)} 
-                onBlur={handleOwnerChange}
-                name="owner"
-                placeholder="Lektor"
-              />
-              <input 
-                className={'form-control text-center'}
-                value={category} 
-                onChange={(e) => setCategory(e.target.value)} 
-                onBlur={handleCategoryChange}
-                name="category"
-                placeholder="Kategoria"
-              />
+              <InputGroup style={{marginTop: 10}}>
+                <p style={{marginRight: 10, marginTop: 5}}>Lektor:</p>
+                <input 
+                  className={'form-control text-center'}
+                  value={owner} 
+                  onChange={(e) => setOwner(e.target.value)} 
+                  onBlur={handleOwnerChange}
+                  name="owner"
+                  placeholder="Lektor"
+                />
+              </InputGroup>
+              <InputGroup>
+                <p style={{marginRight: 10, marginTop: 5}}>Kategoria:</p>
+                <select
+                  className={'form-control text-center'}
+                  onChange={(e) => setCategory(e.target.value)} 
+                  onBlur={handleCategoryChange}
+                  value={category} 
+                >
+                  <option>lekcie-kurzy</option>
+                  <option>workshopy</option>
+                  <option>lektori</option>
+                </select>
+              </InputGroup>
+              <InputGroup>
+                <p style={{marginRight: 10, marginTop: 5}}>Rozvrh:</p>
+                <input 
+                  className={'form-control text-center'}
+                  value={rozvrhLink} 
+                  onChange={(e) => setRozvrhLink(e.target.value)} 
+                  onBlur={handleRozvrhLinkChange}
+                  name="rozvrhLink"
+                  placeholder="Link na rozvrh"
+                />
+              </InputGroup>
               <div>
                 <InputGroup>
               <p style={{marginRight: 10, marginTop: 5}}>www.jakai.sk/</p>
@@ -399,8 +406,13 @@ export default ({ pageData, isOwner }) => {
           </Col>
         </Row></SlideDown> : null
         }
+        <Row className="mt-4 text-center">
+          <Col>
+            <Button onClick={() => setShowRozvrhPopup(true)} variant="dark">Prihlasit sa na kurz!</Button>
+          </Col>
+        </Row>
         {isOwner &&
-        <Row className="mt-4">
+        <Row className="mt-4 text-center">
           <Col>
             <Alert style={{display: `${error ? 'block' : 'none'}`}} variant="danger">{error}</Alert>
             {isUrlAvailible ? 
@@ -408,7 +420,7 @@ export default ({ pageData, isOwner }) => {
             <Button disabled variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
           </Col>
         </Row>}
-      {/* </Container> */}
     </Jumbotron>
+    </>
   );
 };

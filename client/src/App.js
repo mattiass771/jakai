@@ -15,7 +15,7 @@ import PayGate from "./components/Cart/PayGate"
 import Orders from "./components/Payment/Orders"
 import SuccessPayment from "./components/Payment/SuccessPayment";
 import RejectPayment from "./components/Payment/RejectPayment";
-import Events from "./components/Events/Events";
+import Rozvrh from "./components/Rozvrh/Rozvrh";
 import Services from "./components/Services/Services";
 import Footer from "./components/Footer";
 import AdultModal from './AdultModal';
@@ -119,6 +119,9 @@ export default () => {
             </Route>
             <Route exact path={`/ceny`}>
               <p>ceny</p>
+            </Route>
+            <Route exact path={`/rozvrh`}>
+              <Rozvrh isOwner={userData.isOwner} />
             </Route>
             <Route exact path={`/cennikprenajmu`}>
               <p>cennikprenajmu</p>
