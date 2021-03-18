@@ -78,45 +78,56 @@ export default ({userId, isOwner}) => {
     )
   }
 
-  const ShowLinks = () => {
-    return (
-      <>
-        <Col md={4} style={{padding:'35px', height: '350px'}}>
-          <Link to={`/lekcie-kurzy`}>
-              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('lekcie')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
-              border: '1.5px solid white'}} >
-                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/Reflexn%C3%A1-mas%C3%A1%C5%BE-chodidiel_Jaka%C3%AD.jpg" style={{width: '100%', objectFit: 'cover'}} />
-                  <Card.ImgOverlay className={`${isHoveredLinks === 'lekcie' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
-                    <h3 style={{paddingTop: "50%"}}>Lekcie a kurzy</h3>
-                  </Card.ImgOverlay>
-              </Card>
-          </Link>
-        </Col>
-        <Col md={4} style={{padding:'35px', height: '350px'}}>
-          <Link to={`/workshopy`}>
-              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('workshopy')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
-              border: '1.5px solid white'}} >
-                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60449a69f15b6c0b0400e10b-chlebik.jpg" style={{width: '100%', objectFit: 'cover'}} />
-                  <Card.ImgOverlay className={`${isHoveredLinks === 'workshopy' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
-                    <h3 style={{paddingTop: "50%"}}>Workshopy a semináre</h3>
-                  </Card.ImgOverlay>
-              </Card>
-          </Link>
-        </Col>
-        <Col md={4} style={{padding:'35px', height: '350px'}}>
-          <a rel="noopener noreferrer" target="_blank" href={`https://mohendzodaro.com/kurzy/`}>
-              <Card className="h-100" onMouseEnter={() => setIsHoveredLinks('programy')} onTouchStart={() => setIsHoveredLinks('')} onMouseLeave={() => setIsHoveredLinks('')} style={{ textAlign:"center", color: "whitesmoke", 
-              border: '1.5px solid white'}} >
-                  <Card.Img className="h-100" src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60429f074cf12041b61e6346-MEDIT%C3%81CIA-PRE-DU%C5%A0U-%C5%BDENY-JAKA%C3%8D-1024x683.jpeg" style={{width: '100%', objectFit: 'cover'}} />
-                  <Card.ImgOverlay className={`${isHoveredLinks === 'programy' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
-                    <h3 style={{paddingTop: "50%"}}>Programy pre ženy</h3>
-                  </Card.ImgOverlay>
-              </Card>
-          </a>
-        </Col>
-      </>
-    )
-  }
+const showLinks = () => {
+    const handleMouseOver = (_id) => {
+        let hoverObj = {}
+        hoverObj[_id] = 'none'
+        setIsHoveredLinks({...isHoveredLinks, ...hoverObj})
+    }
+    const handleMouseLeave = () => {
+        setIsHoveredLinks('')
+    }
+      return (
+        <>
+          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+            <Link to={`/lekcie-kurzy`}>
+                <Card className="h-100" onMouseEnter={() => handleMouseOver('lekcie')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} style={{ textAlign:"center", color: "#333333", 
+                border: '1.5px solid white'}} >
+                    <Card.Img className={`${isHoveredLinks['lekcie'] === 'none' ? 'scale-out' : 'scale-in'}`} src="https://jakaibucket.s3.eu-central-1.amazonaws.com/Reflexn%C3%A1-mas%C3%A1%C5%BE-chodidiel_Jaka%C3%AD.jpg" style={{height: "80%", width: '100%', objectFit: 'cover'}} />
+                    <Card.Body>
+                      <Card.Title><h4>Lekcie a kurzy</h4></Card.Title>
+                    </Card.Body>
+                </Card>
+            </Link>
+          </Col>
+          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+            <Link to={`/workshopy`}>
+                <Card className="h-100" onMouseEnter={() => handleMouseOver('workshopy')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} style={{ textAlign:"center", color: "#333333", 
+                border: '1.5px solid white'}} >
+                    <Card.Img className={`${isHoveredLinks['workshopy'] === 'none' ? 'scale-out' : 'scale-in'}`} src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60449a69f15b6c0b0400e10b-chlebik.jpg" style={{height: "80%", width: '100%', objectFit: 'cover'}} />
+                    <Card.Body>
+                      <Card.Title><h4>Workshopy a semináre</h4></Card.Title>
+                    </Card.Body>
+                </Card>
+            </Link>
+          </Col>
+          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+            <a className="link-override" rel="noopener noreferrer" target="_blank" href={`https://mohendzodaro.com/kurzy/`}>
+                <Card className={`h-100`} onMouseEnter={() => handleMouseOver('programy')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} 
+                style={{ 
+                  textAlign:"center",
+                  color: "#333333" ,
+                  border: '1.5px solid white'}} >
+                    <Card.Img className={`${isHoveredLinks['programy'] === 'none' ? 'scale-out' : 'scale-in'}`} src="https://jakaibucket.s3.eu-central-1.amazonaws.com/60429f074cf12041b61e6346-MEDIT%C3%81CIA-PRE-DU%C5%A0U-%C5%BDENY-JAKA%C3%8D-1024x683.jpeg" style={{height: "80%", width: '100%', objectFit: 'cover'}} />
+                    <Card.Body>
+                      <Card.Title><h4>Programy pre ženy</h4></Card.Title>
+                    </Card.Body>
+                </Card>
+            </a>
+          </Col>
+        </>
+      )
+}
   
   const showCarouselWithData = () => {
     return carouselData.map(imageLink => {
@@ -200,13 +211,11 @@ export default ({userId, isOwner}) => {
           </Container>
         </div>
     </div>
-    <div>  
-      <Container>
-        <Row className="py-4">
-          <ShowLinks />
-        </Row>
-      </Container>
-    </div>
+    <Container>
+      <Row className="my-4 py-4">
+        {showLinks()}
+      </Row>
+    </Container>
   </>
   );
 };

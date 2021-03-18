@@ -181,6 +181,18 @@ tr.inner-table:hover {
   transition:  opacity 0.5s 0.1s;
 }
 
+.scale-out{
+  border-radius: 7.5px !important;
+  padding: 3px 3px 0px 3px;
+  transition: padding 0.5s;
+}
+
+.scale-in{
+  border-radius: 10px !important;
+  padding: 8px 8px 0px 8px;
+  transition: padding 0.5s;
+}
+
 /* NAVBAR */
 
 

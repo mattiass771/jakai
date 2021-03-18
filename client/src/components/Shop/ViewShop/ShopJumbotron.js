@@ -45,6 +45,7 @@ export default ({ pageData, isOwner }) => {
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
   const [localUploadingLogoImage, setLocalUploadingLogoImage] = useState(false)
   const [logoImage, setLogoImage] = useState(pageData.logoImage)
+  const [pageType, setPageType] = useState(pageData.pageType)
   
   ClassicEditor.defaultConfig = editorConfig
 
@@ -193,6 +194,19 @@ export default ({ pageData, isOwner }) => {
     }
   }
 
+  const handlePageTypeChange = () => {
+    if (pageType) {
+      axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-page/pageType/${pageType}`
+      )
+      .then((res) => {
+        return;
+      })
+      .catch((err) => err && handleError(err));
+    }
+  }
+
   const handleCategoryChange = () => {
     if (category) {
       axios
@@ -272,6 +286,7 @@ export default ({ pageData, isOwner }) => {
           <Col>
           <span className="text-center">
             <h2>{pageName}</h2>
+            {pageType && <h4>{pageType}</h4>}
           </span>
             <p dangerouslySetInnerHTML={{__html: description}}></p>
           <span className="text-center">
@@ -349,6 +364,17 @@ export default ({ pageData, isOwner }) => {
                   onBlur={handleRozvrhLinkChange}
                   name="rozvrhLink"
                   placeholder="Link na rozvrh"
+                />
+              </InputGroup>
+              <InputGroup>
+                <p style={{marginRight: 10, marginTop: 5}}>Typ:</p>
+                <input 
+                  className={'form-control text-center'}
+                  value={pageType} 
+                  onChange={(e) => setPageType(e.target.value)} 
+                  onBlur={handlePageTypeChange}
+                  name="pageType"
+                  placeholder="Typ lekcie/kurzu"
                 />
               </InputGroup>
               <div>

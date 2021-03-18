@@ -27,6 +27,7 @@ const pageSchema = new Schema({
   },
   url: {type: String, required: true},
   category: {type: String },
+  pageType: {type: String },
   blocks: {type: Array},
 });
 

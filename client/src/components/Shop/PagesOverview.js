@@ -24,7 +24,7 @@ export default ({userData, pageData, category}) => {
 
     const showShops = () => {
         return pageData.map(shop => {
-            const { _id, pageName, url, overviewImage } = shop
+            const { _id, pageName, url, overviewImage, pageType } = shop
             const handleMouseOver = () => {
                 let hoverObj = {}
                 hoverObj[_id] = 'none'
@@ -34,15 +34,23 @@ export default ({userData, pageData, category}) => {
                 setIsHovered('')
             }
             return (
-                <Col className="mt-2 mb-2" style={{maxHeight: "310px"}} md={4} key={_id} >
+                <Col className="mt-2 mb-2" md={4} key={_id} style={{height: "410px", maxWidth: '350px',  minWidth: '300px', margin: '0 auto'}} >
                     <Link to={`/${url}`}>
-                        <Card className="h-100" onMouseEnter={() => handleMouseOver()} onMouseLeave={() => handleMouseLeave()} style={{ textAlign:"center", color: "whitesmoke" }} id={_id} >
-                            <Card.Img className="h-100" src={getImage(overviewImage) ? getImage(overviewImage) : `https://miro.medium.com/max/295/1*i5iqn7xB-l0kLwsJJBYEWQ.jpeg`} />
-                            <Card.ImgOverlay className={`${isHovered[_id] === 'none' ? 'fade-out' : 'fade-in'}`} style={{ background: "rgba(52,58,64,0.4)"}} >
-                                    <h3 style={{paddingTop: "50%"}}>
-                                        {pageName}
-                                    </h3>
-                            </Card.ImgOverlay>
+                        <Card className={`h-100`} 
+                            onMouseEnter={() => handleMouseOver()} 
+                            onMouseLeave={() => handleMouseLeave()} 
+                            style={{ textAlign:"center", color: '#333333' }} 
+                        id={_id} >
+                            <Card.Img className={`${isHovered[_id] === 'none' ? 'scale-out' : 'scale-in'}`} 
+                                style={{height: '65%', width: '100%', objectFit: 'cover'}} src={getImage(overviewImage) ? getImage(overviewImage) : `https://miro.medium.com/max/295/1*i5iqn7xB-l0kLwsJJBYEWQ.jpeg`} />
+                            <Card.Body>
+                                    <Card.Title>
+                                        <h4>
+                                            {pageName}
+                                        </h4>
+                                        {pageType &&<h5>{pageType}</h5>}
+                                    </Card.Title>
+                            </Card.Body>
                         </Card>
                     </Link>
                 </Col>
