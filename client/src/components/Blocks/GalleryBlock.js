@@ -21,9 +21,17 @@ export default ({title, text, images }) => {
             return (
                 <Col 
                     onClick={() => setExpand(image)} 
-                    className={`mt-2`}
+                    className={`
+                        mt-4
+                        ${images.length === 1 && 'col-12'} 
+                        ${images.length === 2 && 'col-xs-12 col-md-6'} 
+                        ${!(images.length % 3) && images.length <= 9 && 'col-xs-12 col-md-4'}
+                        ${images.length === 4 && 'col-xs-12 col-md-6'} 
+                        ${!(images.length % 4) && images.length > 4 && 'col-xs-12 col-md-6 col-lg-4 col-xl-3'}
+                        ${images.length > 4 && images.length < 8 && 'col-xs-12 col-md-6 col-lg-4'} 
+                        ${images.length > 9 && 'col-xs-12 col-md-6 col-lg-4 col-xl-3'} 
+                    `}
                     style={{maxHeight: '450px', cursor: 'pointer'}}
-                    sm={12} md={6} lg={4} xl={3} 
                     key={image}
                 >
                     <Image style={{ height: '100%', width: '100%', objectFit: 'cover'}} src={getImage(image)} rounded />

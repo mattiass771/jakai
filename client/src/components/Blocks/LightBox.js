@@ -23,15 +23,6 @@ export default ({expand, setExpand, getImage, images}) => {
         setActualImage(prevIndex)
     }
 
-    useEffect(() => {
-
-    }, [actualImage])
-
-    const slideLeft = {
-        left: 0,
-        transition: 'left 1s',
-    }
-
     return (
         <Modal style={{background: 'rgba(0,0,0,0)'}} size="lg" show={typeof expand === 'string' && expand.length !== 0} onHide={() => setExpand('')}>
             <Image src={getImage(images[actualImage])} rounded fluid />
