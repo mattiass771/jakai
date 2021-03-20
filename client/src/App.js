@@ -18,7 +18,6 @@ import RejectPayment from "./components/Payment/RejectPayment";
 import Rozvrh from "./components/Rozvrh/Rozvrh";
 import Services from "./components/Services/Services";
 import Footer from "./components/Footer";
-import AdultModal from './AdultModal';
 import Contact from './components/Contact/Contact';
 import DeleteFromNewsletter from './components/Contact/DeleteFromNewsletter';
 import Popup from './components/Law/Popup';
@@ -66,9 +65,6 @@ export default () => {
   userData.isOwner = true
   return (
     <Router>
-      {window.localStorage.getItem('mas-vino-isAdult') !== "true" &&
-        <AdultModal initShow={true} />
-      }
       {
         showLawPopup !== '' && <Popup showLawPopup={showLawPopup} setShowLawPopup={setShowLawPopup} />
       }

@@ -185,7 +185,7 @@ app.get("/deleteFile/:shopId", (req, res) => {
       console.log('Image ', file, 'deleted from aws s3.');    
       return res.status(200).json({ msg: `${file} deleted successfuly.` }); 
     }            
-});
+  });
 });
 
 // ACCESS APP IN PRODUCTION //

@@ -159,6 +159,12 @@ code {
   color: #333333;
 }
 
+.link-no-deco:hover {
+  text-decoration: none;
+  color: #c1c1c1;
+  cursor:pointer;
+}
+
 a.link-no-deco:hover {
   text-decoration: none;
   color: #c1c1c1;

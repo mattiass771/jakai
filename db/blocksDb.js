@@ -9,6 +9,7 @@ const blockSchema = new Schema({
     imageLink: { type: String } ,
     variant: { type: String, required: true},
     pageId: { type: String },
+    images: { type: Array }
 });
 
 const Block = mongoose.model("Block", blockSchema);
@@ -26,14 +27,15 @@ router.route("/:blockId").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-    const { text, title, imageLink, variant, pageId } = req.body;
+    const { text, title, imageLink, variant, pageId, images } = req.body;
   
     const addBlock = new Block({
       text,
       title,
       imageLink,
       variant,
-      pageId
+      pageId,
+      images
     });
     addBlock
       .save()
@@ -43,7 +45,7 @@ router.route("/add").post((req, res) => {
 
 router.route("/edit-block/:blockId").post((req, res) => {
     const { blockId } = req.params
-    const { title, text, imageLink, variant } = req.body
+    const { title, text, imageLink, variant, images } = req.body
   
     Block.findById(blockId, (err, blockFound) => {
       if (err) return console.log(err.data);
@@ -52,6 +54,7 @@ router.route("/edit-block/:blockId").post((req, res) => {
       blockFound.imageLink = imageLink
       blockFound.variant = variant
       blockFound.title = title
+      blockFound.images = images
   
       blockFound
         .save()

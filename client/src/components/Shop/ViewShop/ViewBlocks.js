@@ -5,6 +5,7 @@ import ParaImageBlock from '../../Blocks/ParaImageBlock'
 import ImageParaBlock from '../../Blocks/ImageParaBlock'
 import ParaBlock from '../../Blocks/ParaBlock'
 import ImageBlock from '../../Blocks/ImageBlock'
+import GalleryBlock from '../../Blocks/GalleryBlock'
 import EditBlock from '../../Blocks/EditBlock'
 import AddBlock from '../../Blocks/AddBlock'
 
@@ -45,7 +46,7 @@ export default ({pageId, blocksData, isOwner}) => {
 
     const ShowBlocks = () => {
         return blocks.map((block, i) => {
-            const {_id, variant, title, text, imageLink} = block
+            const {_id, variant, title, text, imageLink, images} = block
             const pinkStripe = !(i%2) ? 'pink-bg-pnine' : ''
             switch(variant) {
                 case 'para-para':
@@ -113,7 +114,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, variant})}
+                                    onClick={() => setPassEditProps({_id, title, imageLink, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -126,6 +127,26 @@ export default ({pageId, blocksData, isOwner}) => {
                                     <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                                 </Button>}
                             <ImageBlock title={title} imageLink={getImage(imageLink)} />
+                        </Row>
+                    )
+                case 'gallery':
+                    return (
+                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                            {isOwner &&
+                                <Button
+                                    onClick={() => setPassEditProps({_id, title, text, images, variant})}
+                                    style={{
+                                        width: "40px",
+                                        height: "40px",
+                                        marginTop: "-40px",
+                                        zIndex: "+1",
+                                        position:'absolute'
+                                    }}
+                                    variant="outline-warning"
+                                >
+                                    <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
+                                </Button>}
+                            <GalleryBlock title={title} images={images} text={text} />
                         </Row>
                     )
             }

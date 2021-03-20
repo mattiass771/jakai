@@ -26,6 +26,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     const [title, setTitle] = useState(blockData.title)
     const [variant, setVariant] = useState(blockData.variant)
     const [really, setReally] = useState(false)
+    const [images, setImages] = useState(blockData.images)
 
     ClassicEditor.defaultConfig = editorConfig
 
@@ -54,16 +55,18 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     };
 
     const handleChangeStatus = ({ meta, file }, status) => {
-        if (status === "removed") {
-        deleteFile(meta);
+        if (status === "removed" && variant !== 'gallery') {
+            deleteFile(meta);
         }
-        if (status === "done") {
-        setImageLink(`${IMAGE_PREFIX}-${meta.name}`);
+        if (status === "done" && variant !== 'gallery') {
+            setImageLink(`${IMAGE_PREFIX}-${meta.name}`);
+        } else if (status === "done" && variant === 'gallery') {
+            setImages([...images, `${IMAGE_PREFIX}-${meta.name}`]);
         }
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant})
+        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant, images})
             .then(res => {
                 setPassEditProps('')
                 setRefresh(!refresh)
@@ -86,7 +89,17 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
             .catch(err => alert('Chyba pri vymazavani bloku, ',err))
     }
 
-    console.log(description)
+    const showImages = () => {
+        return images.map(image => {
+            return (
+                <Col md={3} key={image}>
+                    <img style={{height:'110px', width: '160px'}} src={getImage(image)} />
+                    <br />
+                    <Button style={{marginTop: '-40px'}} onClick={() => setImages(images.filter(img => img !== image))} variant="dark" size="sm" >Vymazat obrazok</Button>
+                </Col>
+            )
+        })
+    }
 
     return (
         <Modal enforceFocus={false} size="lg" show={typeof blockData === 'object'} onHide={() => setPassEditProps('')}>
@@ -118,39 +131,73 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                     </Col>
                 </Row>
                 <SlideDown className={"my-dropdown-slidedown"}>
-                {imageLink ? 
-                <Row className="justify-content-center text-center">
-                    <Col className="form-group">
-                    <img style={{height:'110px', width: '160px'}} src={getImage(imageLink)} />
-                    <Button onClick={() => setImageLink('')} variant="dark" size="sm" >Vymazat obrazok</Button>
-                    </Col>
-                </Row> :
-                <Row>
-                    <Col>
-                        <Dropzone
-                            maxFiles={1}
-                            multiple={false}
-                            canCancel={false}
-                            getUploadParams={getUploadParams}
-                            onChangeStatus={handleChangeStatus}
-                            accept="image/*"
-                            inputContent={() => (
-                                <p
-                                className="text-center"
-                                key="label"
-                                style={{ marginTop: "15px", color: "#333333" }}
-                                >
-                                Pridat obrazok udalosti. <br />
-                                <br />
-                                <BsUpload />
-                                </p>
-                            )}
-                            classNames={{
-                                dropzone: "dropzoning"
-                            }}
-                        />
-                    </Col>
-                </Row>}
+                {variant !== 'gallery' &&
+                    (imageLink ? 
+                        <Row className="justify-content-center text-center">
+                            <Col className="form-group">
+                            <img style={{height:'110px', width: '160px'}} src={getImage(imageLink) ? getImage(imageLink) : imageLink} />
+                            <Button onClick={() => setImageLink('')} variant="dark" size="sm" >Vymazat obrazok</Button>
+                            </Col>
+                        </Row> :
+                        <Row>
+                            <Col>
+                                <Dropzone
+                                    maxFiles={1}
+                                    multiple={false}
+                                    canCancel={false}
+                                    getUploadParams={getUploadParams}
+                                    onChangeStatus={handleChangeStatus}
+                                    accept="image/*"
+                                    inputContent={() => (
+                                        <p
+                                        className="text-center"
+                                        key="label"
+                                        style={{ marginTop: "15px", color: "#333333" }}
+                                        >
+                                        Pridat obrazok udalosti. <br />
+                                        <br />
+                                        <BsUpload />
+                                        </p>
+                                    )}
+                                    classNames={{
+                                        dropzone: "dropzoning"
+                                    }}
+                                />
+                            </Col>
+                        </Row>)}
+                {variant === 'gallery' &&
+                <>
+                    <Row>
+                        <Col>
+                            <Dropzone
+                                maxFiles={1}
+                                multiple={false}
+                                canCancel={false}
+                                getUploadParams={getUploadParams}
+                                onChangeStatus={handleChangeStatus}
+                                accept="image/*"
+                                inputContent={() => (
+                                    <p
+                                    className="text-center"
+                                    key="label"
+                                    style={{ marginTop: "15px", color: "#333333" }}
+                                    >
+                                    Pridat obrazky do galerie udalosti. <br />
+                                    <br />
+                                    <BsUpload />
+                                    </p>
+                                )}
+                                classNames={{
+                                    dropzone: "dropzoning"
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    <Row className="justify-content-center text-center">
+                        {showImages()}
+                    </Row>
+                </>
+                }
             </SlideDown>
             <br />
             <div className="text-right">
@@ -162,7 +209,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                     Vymazat Blok?
                 </Button>}
             </div>
-            {((variant === 'para-para' && description) || (variant === 'img-only' && imageLink) || (description && imageLink))?
+            {((variant === 'para-para' && description) || (variant === 'img-only' && imageLink) || (variant === 'gallery' && images.length !== 0) || (description && imageLink))?
                 <Button variant="dark" onClick={() => handleSave()}>
                     Upravit
                 </Button> :
