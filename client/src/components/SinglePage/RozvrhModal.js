@@ -1,8 +1,6 @@
 import React from 'react'
 
 import Modal from 'react-bootstrap/Modal'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 export default ({showRozvrhPopup, setShowRozvrhPopup, rozvrhLink}) => {

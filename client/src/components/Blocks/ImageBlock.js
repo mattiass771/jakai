@@ -11,8 +11,8 @@ export default ({title , imageLink }) => {
             <h2>{title}</h2>
             <br />
         </Col>}
-        <Col xs={12}>
-            <Image src={imageLink} rounded />
+        <Col className="text-center" xs={12}>
+            <Image style={{maxHeight: '600px', minHeight: '400px', width: 'auto', objectFit: 'cover'}} src={imageLink} rounded fluid />
         </Col>
         </>
     )

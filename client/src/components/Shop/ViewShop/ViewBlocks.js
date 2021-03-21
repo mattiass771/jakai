@@ -54,7 +54,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -74,7 +74,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -94,7 +94,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -114,7 +114,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, imageLink, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -134,7 +134,7 @@ export default ({pageId, blocksData, isOwner}) => {
                         <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
                                     style={{
                                         width: "40px",
                                         height: "40px",

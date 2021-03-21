@@ -22,7 +22,7 @@ import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { editorConfig } from '../../../config/options'
 
-import RozvrhModal from '../../Rozvrh/RozvrhModal'
+import RozvrhModal from '../../SinglePage/RozvrhModal'
 
 // CreateShop.js
 export default ({ pageData, isOwner }) => {
@@ -280,7 +280,7 @@ export default ({ pageData, isOwner }) => {
         <Row style={{padding: '15px'}}>
           {logoImage && 
             <Col>
-              <Image src={getImage(logoImage)} style={{maxHeight: '300px'}} rounded fluid />
+              <Image src={getImage(logoImage)} style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} rounded fluid />
             </Col>
           }
           <Col>

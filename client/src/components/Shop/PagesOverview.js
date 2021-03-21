@@ -69,6 +69,11 @@ export default ({userData, pageData, category}) => {
                     }
                 </Col>}
             </Row>
+            <div className="text-center py-4">
+                <hr className="d-none d-md-block col-md-3" />
+                <h1 >{(category.replace(/[-]/g, ' a ')).toUpperCase()}</h1>
+                <hr className="d-none d-md-block col-md-3" />
+            </div>
             <Row className="mt-4">
                 {showShops()}
             </Row>

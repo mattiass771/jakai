@@ -4,23 +4,19 @@ import axios from 'axios'
 import ViewBlocks from '../Shop/ViewShop/ViewBlocks'
 import Spinner from "react-bootstrap/Spinner";
 
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-
-export default ({isOwner}) => {
-    const [rozvrhData, setRozvrhData] = useState([])
+export default ({isOwner, pageId, identificator}) => {
+    const [singlePageData, setSinglePageData] = useState([])
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setLoading(true)
-        axios.get(`http://localhost:5000/page/6050e08fb8a35737f49e1552`)
+        axios.get(`http://localhost:5000/page/${pageId}`)
             .then(res => {
-                setRozvrhData(res.data)
+                setSinglePageData(res.data)
                 setLoading(false)
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [pageId])
 
     return (
         loading ? (
@@ -30,12 +26,18 @@ export default ({isOwner}) => {
             />
           ) :
         <>
+            <div className="text-center whitesmoke-bg-pless py-4">
+                <hr className="d-none d-md-block col-md-3" />
+                <h1 >{singlePageData.pageName.toUpperCase()}</h1>
+                <hr className="d-none d-md-block col-md-3" />
+            </div>
+            {identificator === 'rozvrh' &&
             <div style={{height: '800px', width: 'auto'}}>
                 <iframe className="meo-event-calendar" style={{width: '100%', height: '800px', border: '1px solid #ccc', borderRadius: '3px'}} 
                     src="https://calendiari.com/booking/embeddedCalendar?accountId=CdKXXQZ9HkeXochPTT_DNQ&amp;view=Week" 
                     width="300" height="150"></iframe>
-            </div>
-            <ViewBlocks pageId={rozvrhData._id} blocksData={rozvrhData.blocks} isOwner={isOwner} />
+            </div>}
+            <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />
         </>
     )
 }

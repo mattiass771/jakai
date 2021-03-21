@@ -13,7 +13,7 @@ export default ({title, text, imageLink }) => {
             </Col>}
             <Col dangerouslySetInnerHTML={{__html: text}} xs={12} md={6} className="pb-2" />
             <Col xs={12} md={6}>
-                <Image src={imageLink} rounded fluid />
+                <Image style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} src={imageLink} rounded fluid />
             </Col>
         </>
     )

@@ -15,8 +15,7 @@ import PayGate from "./components/Cart/PayGate"
 import Orders from "./components/Payment/Orders"
 import SuccessPayment from "./components/Payment/SuccessPayment";
 import RejectPayment from "./components/Payment/RejectPayment";
-import Rozvrh from "./components/Rozvrh/Rozvrh";
-import Services from "./components/Services/Services";
+import SinglePage from "./components/SinglePage/SinglePage";
 import Footer from "./components/Footer";
 import Contact from './components/Contact/Contact';
 import DeleteFromNewsletter from './components/Contact/DeleteFromNewsletter';
@@ -114,13 +113,16 @@ export default () => {
               <Pages userData={userData} category="lektori" />
             </Route>
             <Route exact path={`/ceny`}>
-              <p>ceny</p>
+              <SinglePage isOwner={userData.isOwner} pageId={`6057526798dacf7257d7a4a4`} identificator={`ceny`} />
             </Route>
             <Route exact path={`/rozvrh`}>
-              <Rozvrh isOwner={userData.isOwner} />
+              <SinglePage isOwner={userData.isOwner} pageId={`6050e08fb8a35737f49e1552`} identificator={`rozvrh`} />
             </Route>
             <Route exact path={`/cennikprenajmu`}>
-              <p>cennikprenajmu</p>
+              <SinglePage isOwner={userData.isOwner} pageId={`605752f898dacf7257d7a4a5`} identificator={`cennikprenajmu`} />
+            </Route>
+            <Route exact path={`/galeria`}>
+              <SinglePage isOwner={userData.isOwner} pageId={`6057535298dacf7257d7a4a6`} identificator={`galeria`} />
             </Route>
             <Route exact path={`/kontakt`}>
               <Contact />
