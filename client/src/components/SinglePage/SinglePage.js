@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import ViewBlocks from '../Shop/ViewShop/ViewBlocks'
+import ViewBlocks from '../Shop/ViewShop/ViewBlocks';
+import Videos from '../Videos/Videos'
 import Spinner from "react-bootstrap/Spinner";
 
-export default ({isOwner, pageId, identificator}) => {
+export default ({videos, isOwner, pageId, identificator}) => {
     const [singlePageData, setSinglePageData] = useState([])
     const [loading, setLoading] = useState(true);
 
@@ -37,6 +38,9 @@ export default ({isOwner, pageId, identificator}) => {
                     src="https://calendiari.com/booking/embeddedCalendar?accountId=CdKXXQZ9HkeXochPTT_DNQ&amp;view=Week" 
                     width="300" height="150"></iframe>
             </div>}
+            {identificator === 'videos' &&
+                <Videos videos={videos} isOwner={isOwner} />
+            }
             <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />
         </>
     )

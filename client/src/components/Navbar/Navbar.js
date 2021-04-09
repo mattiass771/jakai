@@ -104,6 +104,10 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
           <Nav.Link as={Link} href="/kontakt" to="/kontakt" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
               KONTAKT
           </Nav.Link>
+
+          <Nav.Link as={Link} href="/videa" to="/videa" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+              VIDEÁ
+          </Nav.Link>
         </Nav>
         <Nav style={{position: "absolute", right: 16, top: 16}}>
             <Nav.Link as={Link} href="/cart-page" to="/cart-page" className="navihover  pt-3 pb-3 ">
