@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 import Contact from './components/Contact/Contact';
 import DeleteFromNewsletter from './components/Contact/DeleteFromNewsletter';
 import Popup from './components/Law/Popup';
+import MyVideos from './components/Videos/MyVideos';
 
 import Spinner from "react-bootstrap/Spinner";
 
@@ -119,7 +120,10 @@ export default () => {
               <SinglePage isOwner={userData.isOwner} pageId={`6050e08fb8a35737f49e1552`} identificator={`rozvrh`} />
             </Route>
             <Route exact path={`/videa`}>
-              <SinglePage videos={userData.videos} isOwner={userData.isOwner} pageId={`60701288c633d417d6dc66a7`} identificator={`videos`} />
+              <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} pageId={`60701288c633d417d6dc66a7`} identificator={`videos`} />
+            </Route>
+            <Route exact path={`/moje-videa`}>
+              <MyVideos userId={userData._id} videos={userData.videos} />
             </Route>
             <Route exact path={`/cennikprenajmu`}>
               <SinglePage isOwner={userData.isOwner} pageId={`605752f898dacf7257d7a4a5`} identificator={`cennikprenajmu`} />

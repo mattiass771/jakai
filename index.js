@@ -81,6 +81,8 @@ const servicesRouter = require("./db/serviceDb").router;
 app.use("/services", servicesRouter);
 const mailsRouter = require("./db/newsEmailsDb").router;
 app.use("/mails", mailsRouter);
+const videosRouter = require("./db/videosDb").router;
+app.use("/videos", videosRouter);
 
 // ACCESS USER DATABASE //
 const User = require("./db/userDb").User;

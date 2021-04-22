@@ -58,6 +58,21 @@ router.route("/add-user").post((req, res) => {
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
+router.route("/:userId/expired-video").post((req, res) => {
+  const { videoId } = req.body;
+  const { userId } = req.params
+
+  User.findById(userId)
+    .then((userFound) => {
+      userFound['videos'] = (userFound.videos).filter(video => video.url !== videoId);
+      userFound
+        .save()
+        .then(() => res.json(`User info updated!`))
+        .catch((e) => res.status(400).json(`Error: ${e}`));
+    })
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
 router.route("/edit-user/:userId/:find/:replace").put((req, res) => {
   const { userId, find, replace } = req.params;
 

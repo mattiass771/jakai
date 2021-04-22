@@ -5,7 +5,7 @@ import ViewBlocks from '../Shop/ViewShop/ViewBlocks';
 import Videos from '../Videos/Videos'
 import Spinner from "react-bootstrap/Spinner";
 
-export default ({videos, isOwner, pageId, identificator}) => {
+export default ({videos, isOwner, pageId, identificator, userId}) => {
     const [singlePageData, setSinglePageData] = useState([])
     const [loading, setLoading] = useState(true);
 
@@ -39,7 +39,7 @@ export default ({videos, isOwner, pageId, identificator}) => {
                     width="300" height="150"></iframe>
             </div>}
             {identificator === 'videos' &&
-                <Videos videos={videos} isOwner={isOwner} />
+                <Videos userId={userId} userVideos={videos} isOwner={isOwner} />
             }
             <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />
         </>
