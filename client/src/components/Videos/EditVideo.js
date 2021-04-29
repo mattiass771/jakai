@@ -20,19 +20,30 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
-export default ({addVideoPopup, setAddVideoPopup}) => {
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [url, setUrl] = useState('')
-    const [price, setPrice] = useState('')
-    const [imageLink, setImageLink] = useState('')
+export default ({passEditProps, setPassEditProps}) => {
+    const [name, setName] = useState(passEditProps.name || '')
+    const [description, setDescription] = useState(passEditProps.description || '')
+    const [url, setUrl] = useState(passEditProps.url || '')
+    const [price, setPrice] = useState(passEditProps.price || '')
+    const [imageLink, setImageLink] = useState(passEditProps.imageLink || '')
+    const videoId = passEditProps._id || null
 
     ClassicEditor.defaultConfig = editorConfig
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/videos/add-video`, {name, description, url, price, imageLink})
-            .then(res => setAddVideoPopup(false))
-            .catch(err => alert('Nepodarilo sa pridat video, chyba: ', err))
+        if (videoId) {
+            axios.post(`http://localhost:5000/videos/edit-video/${videoId}`, {name, description, url, price, imageLink})
+                .then(res => setPassEditProps(''))
+                .catch(err => alert('Nepodarilo sa upravit video, chyba: ', err))
+        }
+    }
+
+    const deleteVideo = () => {
+        if (videoId) {
+            axios.post(`http://localhost:5000/videos/delete-video/${videoId}`)
+                .then(res => setPassEditProps(''))
+                .catch(err => alert('Nepodarilo sa vymazat video, chyba: ', err))
+        }
     }
 
     const handleChangeStatus = ({ meta, file }, status) => {
@@ -45,7 +56,7 @@ export default ({addVideoPopup, setAddVideoPopup}) => {
     };
 
     return (
-        <Modal enforceFocus={false} size="lg" show={addVideoPopup} onHide={() => setAddVideoPopup(false)}>
+        <Modal enforceFocus={false} size="lg" show={typeof passEditProps === 'object' && videoId !== null} onHide={() => setPassEditProps('')}>
             <Modal.Body className="text-center">
                 <Row className="justify-content-center">
                     <Col className="form-group text-center mt-1">
@@ -89,6 +100,7 @@ export default ({addVideoPopup, setAddVideoPopup}) => {
                     <label htmlFor="description">Text:</label>
                     <CKEditor
                         editor={ClassicEditor}
+                        data={description}
                         onChange={(event, editor) => {
                             const data = editor.getData()
                             setDescription(data)
@@ -130,10 +142,18 @@ export default ({addVideoPopup, setAddVideoPopup}) => {
                         </Col>
                     </Row>}
             <br />
+                <Row className="justify-content-center">
+                    <Col className="form-group text-center mt-1">
+                        <Button onClick={() => deleteVideo()} variant="danger">
+                            Vymazat
+                        </Button>
+                    </Col>
+                </Row>
+            <br />
             <Button onClick={() => handleSave()} variant="dark">
-                Pridat
+                Upravit
             </Button>
-            <Button variant="dark" onClick={() => setAddVideoPopup(false)}>
+            <Button variant="dark" onClick={() => setPassEditProps('')}>
                 Zrusit
             </Button>
             </Modal.Body>

@@ -21,12 +21,12 @@ import ShowVariants from './ShowVariants'
 const IMAGE_PREFIX = 'page-image'
 
 export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
-    const [description, setDescription] = useState(blockData.text)
-    const [imageLink, setImageLink] = useState(blockData.imageLink)
-    const [title, setTitle] = useState(blockData.title)
-    const [variant, setVariant] = useState(blockData.variant)
+    const [description, setDescription] = useState(blockData.text || '')
+    const [imageLink, setImageLink] = useState(blockData.imageLink || '')
+    const [title, setTitle] = useState(blockData.title || '')
+    const [variant, setVariant] = useState(blockData.variant || '')
     const [really, setReally] = useState(false)
-    const [images, setImages] = useState(blockData.images)
+    const [images, setImages] = useState(blockData.images || '')
 
     ClassicEditor.defaultConfig = editorConfig
 

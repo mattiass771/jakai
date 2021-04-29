@@ -6,7 +6,9 @@ const Schema = mongoose.Schema;
 const videoSchema = new Schema({
     url: { type: String, required: true },
     name: { type: String, required: true},
-    description: { type: String } ,
+    description: { type: String },
+    price: { type: Number },
+    imageLink: { type: String }
 });
 
 const Video = mongoose.model("Video", videoSchema);
@@ -24,12 +26,14 @@ router.route("/get-video/:videoId").post((req, res) => {
 });
 
 router.route("/add-video").post((req, res) => {
-    const { url, name, description } = req.body;
+    const { url, name, description, price, imageLink } = req.body;
   
     const addVideo = new Video({
         url, 
         name, 
-        description
+        description,
+        price,
+        imageLink
     });
     addVideo
       .save()
@@ -39,13 +43,15 @@ router.route("/add-video").post((req, res) => {
 
 router.route("/edit-video/:videoId").post((req, res) => {
     const { videoId } = req.params
-    const { name, description } = req.body
+    const { name, description, price, imageLink } = req.body
   
     Video.findById(videoId, (err, videoFound) => {
       if (err) return console.log(err.data);
   
       videoFound.name = name
       videoFound.description = description
+      videoFound.price = price
+      videoFound.imageLink = imageLink
   
       videoFound
         .save()
