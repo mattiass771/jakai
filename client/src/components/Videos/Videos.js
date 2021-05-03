@@ -10,13 +10,17 @@ import Button from 'react-bootstrap/Button'
 
 import AddVideo from './AddVideo'
 import EditVideo from './EditVideo'
+import VideoModal from './VideoModal'
 
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdOndemandVideo } from "react-icons/md";
+import { RiVideoFill } from "react-icons/ri"
 
 export default ({userVideos, isOwner, userId}) => {
     const [videos, setVideos] = useState([])
     const [addVideoPopup, setAddVideoPopup] = useState(false)
     const [passEditProps, setPassEditProps] = useState('')
+    const [showVideoPopup, setShowVideoPopup] = useState('')
+    const [isHovered, setIsHovered] = useState('')
 
     useEffect(() => {
         axios.post(`http://localhost:5000/videos/`)
@@ -28,7 +32,7 @@ export default ({userVideos, isOwner, userId}) => {
         return videos.map(video => {
             const {_id, name, url, description, price, imageLink} = video
             return (
-                <Col key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
+                <Col className="py-4" key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
                     {isOwner &&
                         <Button
                             onClick={() => setPassEditProps({_id, name, url, description, price, imageLink})}
@@ -45,19 +49,35 @@ export default ({userVideos, isOwner, userId}) => {
                             <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                         </Button>}
                     <h3>{name}</h3>
-                    {typeof videos === 'object' && !(price > 0) ?
-                    <iframe 
-                        src={`https://player.vimeo.com/video/${url}`}
-                        width="100%" 
-                        height="260px" 
-                        frameBorder="0" 
-                        allow="autoplay; fullscreen; picture-in-picture" 
-                        allowFullScreen
-                    >    
-                    </iframe>
-                    : <img src={getImage(imageLink)} style={{width: '100%', height: '260px'}} />
-                    }
-                    {description && <p dangerouslySetInnerHTML={{__html: description}} />}
+                    <figure style={{height: '260px', width: '100%'}}>
+                        <RiVideoFill 
+                            className={`${isHovered === _id ? 'fade-out-play' : 'fade-in-play'}`}
+                            style={{
+                                fontSize: '500%',
+                                color: '#AE1865',
+                                pointerEvents: 'none',
+                                zIndex: '+9',
+                                position: 'relative',
+                                marginBottom: '-280px'
+                            }}
+                        />
+                        <img 
+                            className={`box-shad-card ${isHovered === _id ? 'scale-out-marg' : 'scale-in-marg'}`} 
+                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink})} 
+                            onMouseEnter={() => setIsHovered(_id)}
+                            onTouchStart={() => setIsHovered(_id)}
+                            onMouseLeave={() => setIsHovered('')}
+                            onTouchEnd={() => setIsHovered('')}
+                            src={getImage(imageLink)} 
+                            style={{
+                                width: '100%', 
+                                height: '260px', 
+                                objectFit: 'cover', 
+                                cursor: 'pointer', 
+                                opacity: isHovered === _id ? '1.0' : '0.9'
+                            }} 
+                        />
+                    </figure>
                 </Col>
             )
         })
@@ -68,6 +88,7 @@ export default ({userVideos, isOwner, userId}) => {
             {isOwner && <Button variant="dark" onClick={() => setAddVideoPopup(true)} >Pridat Video</Button>}
             {isOwner && <AddVideo addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
             {typeof passEditProps === 'object' && isOwner && <EditVideo passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
+            {typeof showVideoPopup === 'object' && <VideoModal showVideoPopup={showVideoPopup} setShowVideoPopup={setShowVideoPopup} />}
             <Row className="py-4">
                 {videos && showVideos()}
             </Row>

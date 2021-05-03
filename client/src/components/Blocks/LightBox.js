@@ -21,7 +21,7 @@ export default ({expand, setExpand, getImage, images}) => {
     const showImages = () => {
         return images.map((image, i) => {
             return (
-                <Carousel.Item style={{width: '100%', background: 'rgba(0,0,0,0.0)'}}>
+                <Carousel.Item key={image} style={{width: '100%', background: 'rgba(0,0,0,0.0)'}}>
                     <Image style={{width: '100%'}} src={getImage(images[i])} rounded fluid />
                 </Carousel.Item>
             )
@@ -36,10 +36,10 @@ export default ({expand, setExpand, getImage, images}) => {
                 style={{width: '100%', background: 'rgba(0,0,0,0.0)'}} 
                 fade={true}
                 onSelect={handleSelect} 
-                activeIndex={actualImage} 
+                activeIndex={Number(actualImage)} 
                 indicators={false} 
                 interval={null} 
-                fluid
+                fluid="true"
             >
                 {showImages()}
             </Carousel>

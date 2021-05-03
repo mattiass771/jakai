@@ -38,7 +38,19 @@ a:hover {
   text-decoration: none;
 }
 
+ul {
+  text-align: left;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+ol {
+  text-align: left;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 body:after{
   content:"";
@@ -55,6 +67,29 @@ body:after{
   background-size: cover;
 }
 
+.background-cover {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.vertical-center {
+  position: absolute;
+  margin-left: -57px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.vertical-center-thumbnail {
+  position: absolute;
+  margin-left: 143px;
+  top: 60%;
+  -ms-transform: translateY(-60%);
+  transform: translateY(-60%);
+}
+
 .body-image {
   background: url(./atelier.jpeg) no-repeat center center fixed; 
   -webkit-background-size: cover;
@@ -67,11 +102,19 @@ body:after{
   body {
     padding-bottom: 107px !important;
   }
+
+  .video-tresholds {
+    height: 500px;
+  }
 }
 
 @media only screen and (max-width: 974px) {
   body {
     padding-bottom: 159px !important;
+  }
+
+  .video-tresholds {
+    height: 300px;
   }
 }
 
@@ -80,12 +123,19 @@ body:after{
     padding-top: 147px !important;
     padding-bottom: 223px !important;
   }
+  .video-tresholds {
+    height: 250px;
+  }
 }
 
 @media only screen and (max-width: 522px) {
   body {
     padding-top: 147px !important;
     padding-bottom: 242px !important;
+  }
+
+  .video-tresholds {
+    height: 220px;
   }
 }
 
@@ -140,6 +190,13 @@ code {
   margin: 0 auto;
 }
 
+.box-shad-card {
+  -webkit-box-shadow: 0px 0px 10px -2px rgb(51, 51, 51); 
+  box-shadow: 0px 0px 10px -2px #333333;
+  border-radius: 5px;
+  margin: 0 auto;
+}
+
 .variant-select {
   cursor: pointer;
   border-radius: 5px;
@@ -188,6 +245,16 @@ tr.inner-table:hover {
   transition:  opacity 0.5s 0.1s;
 }
 
+.fade-out-play{
+  opacity:0;
+  transition:  opacity 0.25s ;
+
+}
+.fade-in-play{
+  opacity:1;
+  transition:  opacity 0.25s;
+}
+
 .scale-out{
   border-radius: 7.5px !important;
   padding: 3px 3px 0px 3px;
@@ -198,6 +265,21 @@ tr.inner-table:hover {
   border-radius: 10px !important;
   padding: 8px 8px 0px 8px;
   transition: padding 0.5s;
+}
+
+.scale-out-marg {
+  padding: 2px 2px 2px 2px;
+  transition: padding 0.25s;
+}
+
+.scale-out-marg:active {
+  padding: 3px 3px 3px 3px;
+  transition: padding 0.1s;
+}
+
+.scale-in-marg {
+  padding: 0px 0px 0px 0px;
+  transition: padding 0.25s;
 }
 
 /* NAVBAR */

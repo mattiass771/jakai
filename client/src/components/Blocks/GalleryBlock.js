@@ -7,6 +7,7 @@ import LightBox from './LightBox'
 
 export default ({title, text, images }) => {
     const [expand, setExpand] = useState('')
+    const [isHovered, setIsHovered] = useState('')
 
     const getImage = (image) => {
         try {
@@ -34,7 +35,16 @@ export default ({title, text, images }) => {
                     style={{maxHeight: '450px', cursor: 'pointer'}}
                     key={image}
                 >
-                    <Image style={{ height: '100%', width: '100%', objectFit: 'cover'}} src={getImage(image)} rounded />
+                    <Image 
+                        className={`box-shad-card ${isHovered === image ? 'scale-out-marg' : 'scale-in-marg'}`} 
+                        onMouseEnter={() => setIsHovered(image)}
+                        onTouchStart={() => setIsHovered(image)}
+                        onMouseLeave={() => setIsHovered('')}
+                        onTouchEnd={() => setIsHovered('')}
+                        style={{ height: '100%', width: '100%', objectFit: 'cover'}} 
+                        src={getImage(image)} 
+                        rounded 
+                    />
                 </Col>
             )
         })
