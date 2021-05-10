@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
+import moment from 'moment'
 
 import { getImage } from '../../utils/getImage'
 
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 import {MdLock} from 'react-icons/md'
 
-export default ({showVideoPopup, setShowVideoPopup }) => {
-    const {_id, name, url, description, price, imageLink} = showVideoPopup
+export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
+    const {name, url, description, price, imageLink} = showVideoPopup
+    const orderId = `JV${moment().unix()}`
+
+    const handleBuyVideo = (orderObj) => {
+        const oldOrders = localStorage.getItem('jakaiVideoShop') || '[]'
+        const parsedOldOrders = JSON.parse(oldOrders)
+        const shouldAddOrder = parsedOldOrders.some(order => order.url === orderObj.url)
+        if (!shouldAddOrder) {
+            const newOrders = [...parsedOldOrders, orderObj] 
+            localStorage.setItem('jakaiVideoShop', JSON.stringify(newOrders))
+        }
+        setAddAlert(true)
+    }
+
     return (
         <Modal size="xl" show={typeof showVideoPopup === 'object'} onHide={() => setShowVideoPopup('')}>
             <Modal.Body className="text-center" style={{fontSize: "90%", backgroundColor: 'whitesmoke'}}>
@@ -27,6 +42,7 @@ export default ({showVideoPopup, setShowVideoPopup }) => {
                         className={`box-shad-card video-tresholds`} 
                     >
                         <figure 
+                            onClick={() => handleBuyVideo({name, url, price, imageLink, orderId})}
                             className="whitesmoke-bg-pless"
                             style={{
                                 width: '100%', 
@@ -41,6 +57,7 @@ export default ({showVideoPopup, setShowVideoPopup }) => {
                                     opacity: '1.0'
                                 }}
                             />
+                            <Button variant="dark" className={'vertical-center-btn'} style={{fontSize: '150%'}}>Predplatiť video</Button>
                         </figure>
                     </figure>
                     <article className="pt-4" style={{

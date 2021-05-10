@@ -82,6 +82,14 @@ body:after{
   transform: translateY(-50%);
 }
 
+.vertical-center-btn {
+  position: absolute;
+  margin-left: -92px;
+  top: 95%;
+  -ms-transform: translateY(-95%);
+  transform: translateY(-95%);
+}
+
 .vertical-center-thumbnail {
   position: absolute;
   margin-left: 143px;

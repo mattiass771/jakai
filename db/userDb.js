@@ -14,7 +14,7 @@ const userSchema = new Schema({
   phone: { type: String, required: true},
   isOwner: { type: Boolean, required: true, default: false},
   address: { type: String, required: true },
-  videos: { type: Array }
+  videos: { type: Array },
 });
 
 const User = mongoose.model("User", userSchema);

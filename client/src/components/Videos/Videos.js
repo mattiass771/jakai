@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 import AddVideo from './AddVideo'
 import EditVideo from './EditVideo'
@@ -16,6 +17,7 @@ import { MdEdit, MdOndemandVideo } from "react-icons/md";
 import { RiVideoFill } from "react-icons/ri"
 
 export default ({userVideos, isOwner, userId}) => {
+    const [addAlert, setAddAlert] = useState(false)
     const [videos, setVideos] = useState([])
     const [addVideoPopup, setAddVideoPopup] = useState(false)
     const [passEditProps, setPassEditProps] = useState('')
@@ -27,6 +29,12 @@ export default ({userVideos, isOwner, userId}) => {
             .then(res => setVideos(res.data))
             .catch(err => console.log(err))
     }, [addVideoPopup, passEditProps])
+
+    useEffect(() => {
+        if (addAlert) {
+            setTimeout(() => setAddAlert(false), 1500)
+        }
+    }, [addAlert])
 
     const showVideos = () => {
         return videos.map(video => {
@@ -63,7 +71,7 @@ export default ({userVideos, isOwner, userId}) => {
                         />
                         <img 
                             className={`box-shad-card ${isHovered === _id ? 'scale-out-marg' : 'scale-in-marg'}`} 
-                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink})} 
+                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink, userId})} 
                             onMouseEnter={() => setIsHovered(_id)}
                             onTouchStart={() => setIsHovered(_id)}
                             onMouseLeave={() => setIsHovered('')}
@@ -85,10 +93,14 @@ export default ({userVideos, isOwner, userId}) => {
 
     return (
         <Container className="whitesmoke-bg-pless text-center" style={{padding: '0px 75px'}} fluid>
+            {addAlert && 
+                <Alert variant="success" style={{position: 'fixed', top: 0, right: 0, zIndex: '+9999999999'}}>
+                    <Alert.Heading>Video bolo pridané do košíka!</Alert.Heading>
+                </Alert>}
             {isOwner && <Button variant="dark" onClick={() => setAddVideoPopup(true)} >Pridat Video</Button>}
             {isOwner && <AddVideo addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
             {typeof passEditProps === 'object' && isOwner && <EditVideo passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
-            {typeof showVideoPopup === 'object' && <VideoModal showVideoPopup={showVideoPopup} setShowVideoPopup={setShowVideoPopup} />}
+            {typeof showVideoPopup === 'object' && <VideoModal setAddAlert={setAddAlert} showVideoPopup={showVideoPopup} setShowVideoPopup={setShowVideoPopup} />}
             <Row className="py-4">
                 {videos && showVideos()}
             </Row>
