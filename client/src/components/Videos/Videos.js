@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import {useHistory} from 'react-router-dom'
 
 import { getImage } from '../../utils/getImage'
 
@@ -17,6 +18,7 @@ import { MdEdit, MdOndemandVideo } from "react-icons/md";
 import { RiVideoFill } from "react-icons/ri"
 
 export default ({userVideos, isOwner, userId}) => {
+    let history = useHistory()
     const [addAlert, setAddAlert] = useState(false)
     const [videos, setVideos] = useState([])
     const [addVideoPopup, setAddVideoPopup] = useState(false)
@@ -29,12 +31,6 @@ export default ({userVideos, isOwner, userId}) => {
             .then(res => setVideos(res.data))
             .catch(err => console.log(err))
     }, [addVideoPopup, passEditProps])
-
-    useEffect(() => {
-        if (addAlert) {
-            setTimeout(() => setAddAlert(false), 1500)
-        }
-    }, [addAlert])
 
     const showVideos = () => {
         return videos.map(video => {
@@ -94,8 +90,9 @@ export default ({userVideos, isOwner, userId}) => {
     return (
         <Container className="whitesmoke-bg-pless text-center" style={{padding: '0px 75px'}} fluid>
             {addAlert && 
-                <Alert variant="success" style={{position: 'fixed', top: 0, right: 0, zIndex: '+9999999999'}}>
+                <Alert className="text-left" variant="dark" onClose={() => setAddAlert(false)} dismissible style={{color: 'whitesmoke', position: 'fixed', top: 0, right: 0, zIndex: '+9999999999', backgroundColor: '#AE1865'}}>
                     <Alert.Heading>Video bolo pridané do košíka!</Alert.Heading>
+                    <Button variant="dark" onClick={() => history.push('/kosik')}>Prejsť k platbe</Button>
                 </Alert>}
             {isOwner && <Button variant="dark" onClick={() => setAddVideoPopup(true)} >Pridat Video</Button>}
             {isOwner && <AddVideo addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}

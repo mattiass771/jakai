@@ -95,7 +95,7 @@ export default () => {
             <Route exact path="/login-page">
               {isLoggedIn ? <Home userId={userData._id} isOwner={userData.isOwner} /> : <Login />}
             </Route>
-            <Route exact path="/cart-page">
+            <Route exact path="/kosik">
               <ShoppingCart userId={userData._id} />
             </Route>
             <Route exact path={`/success-payment`}>
@@ -139,9 +139,6 @@ export default () => {
             </Route>
             <Route exact path={`/:shopUrl`}>
               <ShopOnline userId={userData._id} isOwner={userData.isOwner} />
-            </Route>
-            <Route exact path={`/shop/payment`}>
-              <PayGate />
             </Route>
           </Switch>
         </div>}
