@@ -13,10 +13,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import {BsTrashFill} from "react-icons/bs";
 import DeleteModal from "./DeleteModal";
 
-export default ({userId, isOwner}) => {
+export default ({userEmail, isOwner}) => {
     const [ordersData, setOrdersData] = useState([])
-    const [shippedObj, setShippedObj] = useState({})
-    const [refresh, setRefresh] = useState(false)
     const [expandedObj, setExpandedObj] = useState({})
 
     const [maxDate, setMaxDate] = useState(new Date())
@@ -30,30 +28,11 @@ export default ({userId, isOwner}) => {
         axios.get(`http://localhost:5000/orders`)
             .then(res => {
                 const result = res.data
-                const validatedOrdersData = isOwner ? result : result.filter(obj => obj.userId === userId)
+                const validatedOrdersData = isOwner ? result : result.filter(obj => obj.email === userEmail)
                 setOrdersData(validatedOrdersData)
             })
             .catch(err => err && console.log(err.data))
     }, [])
-
-    const handleShipping = (e, _id) => {
-        e.stopPropagation()
-        const newVal = e.target.checked
-        let newObj = {}
-        let expandObj = {}
-
-        newObj[_id] = newVal
-        setShippedObj({...shippedObj, ...newObj})
-
-        const oldValue = expandedObj[_id] ?? false
-        expandObj[_id] = oldValue
-        setExpandedObj({...expandedObj, ...expandObj})
-
-        axios.put(`http://localhost:5000/orders/${_id}/update-shipped/`, {isShipped: newVal})
-            .then(res => console.log(res.data))
-            .catch(err => err && console.log(err))
-            .then(() => setRefresh(!refresh))
-    }
 
     const handleExpanded = (_id) => {
         let newObj = {}
@@ -62,40 +41,16 @@ export default ({userId, isOwner}) => {
         setExpandedObj({...expandedObj, ...newObj})
     }
 
-    const ShowItemDataForOrder = ({passItemData}) => {
-        let shopTotal = 0
-        return passItemData.map((item, i) => {
-            const { itemName, price, count, itemId } = item
-            shopTotal += (count * Number(price.replace(/,/g, '.')))
+    const ShowOrderDetails = ({passVideos}) => {
+        return passVideos.map((shop, i) => {
+            const { name, url, price } = shop
             return (
-                <React.Fragment key={itemId}>
-                    <Col style={{border: '1px solid #cccccc'}} md={3}>
-                        ({count}) <strong>{itemName}</strong>, {price}€
-                    </Col>
-                    {!passItemData[i+1] && 
-                        <Col className="text-center" style={{border: '1px solid #cccccc', backgroundColor: "rgb(245, 245, 245)"}} md={2} order={12}>
-                            <h6 >spolu: <strong>{shopTotal.toFixed(2).toString().replace(/\./g, ',')} €</strong></h6>
-                        </Col>
-                    }
-                </React.Fragment>
-            )
-        })
-    }
-
-
-    const ShowOrderDetails = ({passShops}) => {
-        return passShops.map((shop, i) => {
-            const { shopName, itemData, shopId } = shop
-            return (
-                <Container key={shopId} fluid>
-                    <Row>
-                        <Col md={2}><h5>{shopName}:</h5></Col>
+                <Container key={url} fluid>
+                    <Row className="justify-content-center text-center py-2">
+                        <Col md={4}><h5>Nazov: <strong>{name}</strong></h5></Col>
+                        <Col md={4}><h5>Cislo: <strong>{url}</strong></h5></Col>
+                        <Col md={4}><h5>Cena: <strong>{price} €</strong></h5></Col>
                     </Row>
-                    <Row>
-                        <ShowItemDataForOrder passItemData={itemData} />
-                    </Row>
-                    {passShops[i+1] && 
-                    <hr />}
                 </Container>
             )
         })
@@ -139,7 +94,7 @@ export default ({userId, isOwner}) => {
     const ShowOrders = () => {
         const filteredData = setFilter(ordersData)
         return filteredData.map(order => {
-            const { _id, orderId, userInformation, createdAt, status, shops, isShipped, total, userId: buyerId } = order
+            const { _id, orderId, userInformation, createdAt, status, videos, total, userId: buyerId } = order
             const { email } = userInformation
             const statusColor = status === 'vytvorena' ? 'orange' : status === 'zaplatena' ? 'green' : status === 'odmietnuta' ? 'red' : 'black';
             return (
@@ -148,20 +103,8 @@ export default ({userId, isOwner}) => {
                         <td>{orderId}</td>
                         <td>{email}</td>
                         <td>{moment(createdAt).format("DD MMM YYYY, HH:mm")}</td>
-                        <td>{total.toFixed(2).toString().replace(/\./g,',')} €</td>
-                        <td style={{color: statusColor}}>{(shippedObj[_id] ?? isShipped) ? <em style={{color: 'blue', float:'left'}}>odoslana</em> : status}
-                            {status === 'zaplatena' && isOwner &&
-                            <input 
-                                style={{
-                                    float: 'right', 
-                                    cursor: 'pointer',
-                                    paddingBottom: '-50px'
-                                }}
-                                type='checkbox'
-                                name='checkShipping'
-                                checked={shippedObj[_id] ?? isShipped}
-                                onChange={(e) => handleShipping(e, _id)}
-                            />}
+                        <td>{total.replace(/\./g,',')} €</td>
+                        <td style={{color: statusColor}}>{status}
                             {isOwner &&
                                 <BsTrashFill style={{float: "right", cursor: 'pointer', marginRight: '6px', color: "#333333"}} onClick={(e) => handleDeleteModal(e, _id)} />
                             }
@@ -171,7 +114,7 @@ export default ({userId, isOwner}) => {
                     <tr style={{backgroundColor: status === 'odmietnuta' ? '#ffecec' : 'rgb(250, 250, 250)' }}>
                         <td colSpan="5">
                             <ShowBuyerDetails passUserInformation={userInformation} buyerId={buyerId} />
-                            <ShowOrderDetails passShops={shops} />
+                            <ShowOrderDetails passVideos={videos} />
                         </td>    
                     </tr>}
                 </tbody>

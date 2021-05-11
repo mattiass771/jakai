@@ -218,7 +218,7 @@ export default ({ uncheckGdpr, setUncheckGdpr ,setUserInformation, userInformati
                   style={{
                       cursor: 'pointer',
                   }}
-                  color="success"
+                  color="info"
                   shape="curve"
                   animation="jelly"
                   name='checkedGdpr'
@@ -235,7 +235,7 @@ export default ({ uncheckGdpr, setUncheckGdpr ,setUserInformation, userInformati
                     style={{
                         cursor: 'pointer',
                     }}
-                    color="success"
+                    color="info"
                     shape="curve"
                     animation="jelly"
                     name='checkedNewsletter'

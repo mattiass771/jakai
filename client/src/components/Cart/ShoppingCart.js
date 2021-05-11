@@ -18,17 +18,28 @@ export default ({userId}) => {
     const [cartVideos, setCartVideos] = useState([])
     const [login, setLogin] = useState(false)
     const [registration, setRegistration] = useState(userId ? false : true)
-    const [shipmentOnly, setShipmentOnly] = useState(userId ? true : false)
+    const [shipmentOnly, setShipmentOnly] = useState(false)
     const [uncheckGdpr, setUncheckGdpr] = useState(false)
     const [checkedNewsletter, setCheckedNewsletter] = useState(false)
     const [userInformation, setUserInformation] = useState('')
     const [regSuccess, setRegSuccess] = useState(false)
+    const [newUser, setNewUser] = useState(false)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [paymentPopup, setPaymentPopup] = useState(false)
+
+    const orderId = `JV${moment().unix()}`
 
     const handleSessionStorage = (customKey, value) => {
         return sessionStorage.setItem(customKey, value)
     }
 
-    const orderId = `JV${moment().unix()}`
+    useEffect(() => {
+        if (cartVideos.length !== 0) {
+            const total = cartVideos.reduce((sum, vid) => Number(sum.price) + Number(vid.price))
+            setTotalPrice(total.toFixed(2).replace(/\./, ','))
+        }
+    }, [cartVideos])
+
 
     useEffect(() => {
         const videosFromStorage = localStorage.getItem('jakaiVideoShop') || '[]'
@@ -53,6 +64,7 @@ export default ({userId}) => {
                     }
                 })
                 .catch(err => err && console.log(err))
+                .then(() => setShipmentOnly(true))
         }
     }, [])
 
@@ -60,12 +72,6 @@ export default ({userId}) => {
         setLogin(false)
         setShipmentOnly(false)
         setRegistration(true)
-    }
-
-    const handleShipmentOnly = () => {
-        setLogin(false)
-        setRegistration(false)
-        setShipmentOnly(true)
     }
 
     const handleLogin = () => {
@@ -78,7 +84,7 @@ export default ({userId}) => {
         return cartVideos.map(video => {
             const {name, url, price, imageLink} = video
             return (
-                <>
+                <React.Fragment key={url}>
                     <Col style={{height: '150px'}} xs={6} md={3}>
                         <img 
                             className={`box-shad-card`} 
@@ -95,20 +101,52 @@ export default ({userId}) => {
                         <p>Video číslo: {url}</p>
                         <p>Cena za mesiac: <strong>{price.toFixed(2).toString().replace(/\./, ',')} €</strong></p>
                     </Col>
-                </>
+                </React.Fragment>
             )
         })
+    }
+
+    const processNewOrder = () => {
+        console.log({ orderId, userInformation, userId, videos: cartVideos, total: totalPrice })
+        axios.post(`http://localhost:5000/orders/add`, { orderId, userInformation, userId, videos: cartVideos, total: totalPrice })
+            .then(res => {
+                console.log('order created!')
+                if (checkedNewsletter) {
+                    axios.post(`http://localhost:5000/mails/add`, {name: userInformation.fullName, email: userInformation.email})
+                        .then(res => console.log(res))
+                        .catch(err => err && console.log(err))
+                }   
+            })
+            .catch(err => console.log(err))
+            .then(() => {
+                sessionStorage.clear()
+                setPaymentPopup(true)
+            })
+    }
+    
+    const handlePayment = () => {
+        if (registration) {
+            setNewUser(true)
+            handleLogin()
+            processNewOrder()
+        } else {
+            processNewOrder()
+        }
     }
 
     return (
         <div className="whitesmoke-bg-pless">
             <Container className="py-4">
+                {paymentPopup && <PayGate paymentPopup={paymentPopup} setPaymentPopup={setPaymentPopup} orderInfo={{total: totalPrice, orderId}} />}
                 {(cartVideos && cartVideos.length > 0) &&
                 <>
+                    <Row className="justify-content-center py-4">
+                        <h2>Vybrané videá</h2>
+                    </Row>
                     <Row className="justify-content-center">
                         {showCartVideos()}
                     </Row>
-                    <Row className="text-center pt-4">
+                    <Row className="text-center py-4">
                         <Col>
                             <h2>Fakturačné údaje {registration && 's registráciou'}</h2>
                         </Col>
@@ -131,9 +169,25 @@ export default ({userId}) => {
                     </Row>
                     <Row className="text-center">
                         {login && <Login shoppingCart={true} />}
-                        {registration && <SignUp setRegSuccess={setRegSuccess} regSuccess={regSuccess} uncheckGdpr={uncheckGdpr} setUncheckGdpr={setUncheckGdpr} userInformation={userInformation} shoppingCart={true} handleLogin={handleLogin} setUserInformation={setUserInformation} />}
-                        {registration && regSuccess && <Col><h3 style={{color: 'green'}}>Registracia prebehla uspesne.</h3></Col> }
+                        {registration && <SignUp newUser={newUser} setNewUser={setNewUser} setRegSuccess={setRegSuccess} regSuccess={regSuccess} uncheckGdpr={uncheckGdpr} setUncheckGdpr={setUncheckGdpr} userInformation={userInformation} shoppingCart={true} handleLogin={handleLogin} setUserInformation={setUserInformation} />}
+                        {login && regSuccess && <Col xs={12}><h3 style={{color: 'green'}}>Registracia prebehla uspesne.</h3></Col> }
                         {shipmentOnly && <PlaceOrder uncheckGdpr={uncheckGdpr} setUncheckGdpr={setUncheckGdpr} checkedNewsletter={checkedNewsletter} setCheckedNewsletter={setCheckedNewsletter} setUserInformation={setUserInformation} userInformation={userInformation} />}
+                    </Row>
+                    <Row className="justify-content-center text-center py-4">
+                        <Col>
+                            <h2>
+                                Finálna suma:&nbsp;
+                                <strong>{totalPrice} €</strong>
+                            </h2>
+                        </Col>
+                    </Row>
+                    <Row className="justify-content-center text-center">
+                        <Col>
+                            {typeof userInformation === 'object' ? 
+                                <Button variant="dark" style={{fontSize: '110%'}} onClick={() => handlePayment()}>Prejsť k platbe</Button> :
+                                <Button variant="dark" style={{fontSize: '110%'}} disabled>Prejsť k platbe</Button>
+                            }
+                        </Col>
                     </Row>
                 </>}
             </Container>

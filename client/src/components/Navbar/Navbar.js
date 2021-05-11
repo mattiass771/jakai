@@ -115,6 +115,9 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
             </Nav.Link>
           {isLoggedIn ? (
             <>
+              <Nav.Link as={Link} href="/objednavky" to="/objednavky" className="navihover  pt-3 pb-3 ">
+                OBJEDNÁVKY
+              </Nav.Link>
               <Nav.Link as={Link} href="/moje-videa" to="/moje-videa" className="navihover  pt-3 pb-3 ">
                 MOJE VIDEÁ
               </Nav.Link>

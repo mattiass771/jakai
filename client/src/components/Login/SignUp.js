@@ -325,7 +325,7 @@ export default ({regSuccess, setRegSuccess, uncheckGdpr, setUncheckGdpr, shoppin
                             style={{
                                 cursor: 'pointer',
                             }}
-                            color="warning"
+                            color="info"
                             shape="curve"
                             animation="jelly"
                             name='checkedGdpr'
@@ -342,7 +342,7 @@ export default ({regSuccess, setRegSuccess, uncheckGdpr, setUncheckGdpr, shoppin
                             style={{
                                 cursor: 'pointer',
                             }}
-                            color="warning"
+                            color="info"
                             shape="curve"
                             animation="jelly"   
                             name='checkedNewsletter'

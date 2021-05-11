@@ -27,7 +27,7 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
         <Modal size="xl" show={typeof showVideoPopup === 'object'} onHide={() => setShowVideoPopup('')}>
             <Modal.Body className="text-center" style={{fontSize: "90%", backgroundColor: 'whitesmoke'}}>
                 <header style={{fontSize: '300%', fontWeight: '900'}}>{name}</header>
-                {typeof price === 'number' && price > 0 && !userHasVideo && typeof userHasVideo !== 'object' ?
+                {typeof price === 'number' && price > 0 && typeof userHasVideo !== 'object' ?
                 <>
                     <figure 
                         style={{

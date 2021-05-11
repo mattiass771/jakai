@@ -40,7 +40,7 @@ export default ({userVideos, isOwner, userId}) => {
         return videos.map(video => {
             const {_id, name, url, description, price, imageLink} = video
             
-            const userHasVideo = (userVideos && userId) ? userVideos.find(userVid => userVid.url === url) : []
+            const userHasVideo = (userVideos && userId) ? userVideos.find(userVid => userVid.url === url) : ''
             
             if (userId && typeof userHasVideo === 'object' && userHasVideo.ttl && moment().toISOString() > userHasVideo.ttl) {
                 axios.post(`http://localhost:5000/users/${userId}/expired-video`, {videoId: url})

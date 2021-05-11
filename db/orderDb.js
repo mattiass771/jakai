@@ -8,12 +8,11 @@ const orderSchema = new Schema({
     orderId: { type: String, required: true },
     userId: {type: String},
     userInformation: { type: Object, required: true },
-    shops: {type: Array, required: true},
-    total: {type: Number, required: true},
+    videos: {type: Array, required: true},
+    total: {type: String, required: true},
     status: {type: String, required: true, default: 'vytvorena'},
     createdAt: { type: Date, required: true, default: moment().toISOString() },
     paidAt: {type: Date},
-    isShipped: {type: Boolean, required: true, default: false},
     expireAt: { type: Date, default: Date.now, index: { expires: 900 }},
     paymentId: {type: String},
     paymentResultCode: {type: String}
@@ -93,16 +92,15 @@ router.route("/:orderId/process-payment/").post((req, res) => {
 //
 
 router.route("/add").post((req, res) => {
-  const { orderId, userId, userInformation, shops, total, status } = req.body;
+  const { orderId, userId, userInformation, videos, total } = req.body;
 
   if (typeof userInformation === 'object') {
     const addOrder = new Order({
       orderId,
       userId,
       userInformation,
-      shops,
-      total,
-      status
+      videos,
+      total
     });
     addOrder
       .save()
