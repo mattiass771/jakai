@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 import {useHistory} from 'react-router-dom'
 
 import { getImage } from '../../utils/getImage'
@@ -9,13 +10,16 @@ import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 import AddVideo from './AddVideo'
 import EditVideo from './EditVideo'
 import VideoModal from './VideoModal'
 
-import { MdEdit, MdOndemandVideo } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { RiVideoFill } from "react-icons/ri"
+import { HiBadgeCheck } from "react-icons/hi"
 
 export default ({userVideos, isOwner, userId}) => {
     let history = useHistory()
@@ -35,6 +39,17 @@ export default ({userVideos, isOwner, userId}) => {
     const showVideos = () => {
         return videos.map(video => {
             const {_id, name, url, description, price, imageLink} = video
+            
+            const userHasVideo = (userVideos && userId) ? userVideos.find(userVid => userVid.url === url) : []
+            
+            if (userId && typeof userHasVideo === 'object' && userHasVideo.ttl && moment().toISOString() > userHasVideo.ttl) {
+                axios.post(`http://localhost:5000/users/${userId}/expired-video`, {videoId: url})
+                    .then(res => console.log('video removed ', res.data))
+                    .catch(err => console.log(err))
+            }
+
+            if (userHasVideo) console.log(userHasVideo, moment().toISOString() <= userHasVideo.ttl, userId)
+
             return (
                 <Col className="py-4" key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
                     {isOwner &&
@@ -52,6 +67,23 @@ export default ({userVideos, isOwner, userId}) => {
                         >
                             <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                         </Button>}
+                    {(!(price > 0) || (userId && typeof userHasVideo === 'object' && userHasVideo.ttl && moment().toISOString() <= userHasVideo.ttl)) &&
+                    <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{!(price > 0) ? `Toto video môžete pozerať úplne zadarmo!` : `Video máte zakúpené do ${moment(userHasVideo.ttl).format('DD.MM.YYYY, HH:mm')}`}</Tooltip>}>
+                        <HiBadgeCheck
+                            style={{
+                                width: "40px",
+                                height: "40px",
+                                right: 20,
+                                top: 95,
+                                zIndex: "+99",
+                                position:'absolute',
+                                color: 'whitesmoke',
+                                backgroundColor: '#AE1865',
+                                borderRadius: '5px'
+                            }}
+                        />
+                    </OverlayTrigger>
+                    }
                     <h3>{name}</h3>
                     <figure style={{height: '260px', width: '100%'}}>
                         <RiVideoFill 
@@ -67,7 +99,7 @@ export default ({userVideos, isOwner, userId}) => {
                         />
                         <img 
                             className={`box-shad-card ${isHovered === _id ? 'scale-out-marg' : 'scale-in-marg'}`} 
-                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink, userId})} 
+                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink, userId, userHasVideo})} 
                             onMouseEnter={() => setIsHovered(_id)}
                             onTouchStart={() => setIsHovered(_id)}
                             onMouseLeave={() => setIsHovered('')}

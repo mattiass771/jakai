@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState } from "react"
+import moment from 'moment'
 import axios from 'axios'
-import { nanoid } from 'nanoid'
 
+import { getImage } from '../../utils/getImage'
+
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import Col from 'react-bootstrap/Col'
-import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button'
-import Spinner from "react-bootstrap/Spinner";
 
 import PlaceOrder from './PlaceOrder'
 import SignUp from '../Login/SignUp'
@@ -15,278 +15,127 @@ import Login from '../Login/Login'
 import PayGate from './PayGate'
 
 export default ({userId}) => {
-    const lastRef = useRef(null)
-    const [shops, setShops] = useState('')
-    const [refresh, setRefresh] = useState(false)
-    const [userInformation, setUserInformation] = useState('')
+    const [cartVideos, setCartVideos] = useState([])
     const [login, setLogin] = useState(false)
-    const [registration, setRegistration] = useState(false)
-    const [shipmentOnly, setShipmentOnly] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [orderId, setOrderId] = useState(nanoid())
-    const [passOrderInfo, setPassOrderInfo] = useState({})
-    const [paymentPopup, setPaymentPopup] = useState(false)  
+    const [registration, setRegistration] = useState(userId ? false : true)
+    const [shipmentOnly, setShipmentOnly] = useState(userId ? true : false)
+    const [uncheckGdpr, setUncheckGdpr] = useState(false)
     const [checkedNewsletter, setCheckedNewsletter] = useState(false)
+    const [userInformation, setUserInformation] = useState('')
+    const [regSuccess, setRegSuccess] = useState(false)
 
-    const executeScroll = () => lastRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })   
- 
-    const sortItems = (cartItems) => {
-        let sortShop = []
-        for (let cartItem of cartItems) {
-            axios.get(`http://localhost:5000/page/${cartItem.shopId}`)
-                .then((res) => {
-                    if (res.data && res.data.shopName) {
-                        const { shopName, owner } = res.data
-                        const itemsArr = res.data.shopItems
-                        const { count, itemId } = cartItem
-                        const findItem = itemsArr.find(el => el._id === cartItem.itemId)
-                        if (findItem === undefined) {
-                            axios.post(`http://localhost:5000/users/${userId}/cart/delete-cart-item/${cartItem.shopId}/${cartItem.itemId}`)
-                                .then((res) => console.log(res))
-                                .catch(err => err && console.log('could not delete item', err))
-                        } else {
-                            const { itemName, price, imageLink } = findItem
-                            const index = sortShop.findIndex(el => el.shopId === cartItem.shopId)
-                            if (index >= 0) {
-                                const prevItems = sortShop[index].itemData
-                                const isInCart = prevItems.findIndex(el => el.itemId === itemId)
-                                if (isInCart !== -1) {
-                                    const prevCount = sortShop[index].itemData[isInCart].count
-                                    sortShop[index].itemData[isInCart].count = Number(count) + Number(prevCount)
-                                } else {
-                                    sortShop[index].itemData = [...prevItems, {itemId, itemName, price, imageLink, count}]
-                                }
-                            } else {
-                                const newShopId = cartItem.shopId
-                                sortShop = [...sortShop, {shopId: newShopId, shopName, owner, itemData: [{itemId, itemName, price, imageLink, count}]}]
-                            }
-                        }
-                    }
-                })
-                .catch(err => {
-                    if (err) return console.log(err)
-                })
-                .then(() => setShops([...sortShop]))
-        }
+    const handleSessionStorage = (customKey, value) => {
+        return sessionStorage.setItem(customKey, value)
     }
 
+    const orderId = `JV${moment().unix()}`
+
     useEffect(() => {
-        setLoading(true)
-        const localShoppingCart = localStorage.getItem('shoppingCart')
+        const videosFromStorage = localStorage.getItem('jakaiVideoShop') || '[]'
+        const parsedVideosFromStorage = JSON.parse(videosFromStorage)
+        setCartVideos(parsedVideosFromStorage)
         if (userId) {
-            const parsedShoppingCart = localShoppingCart ? JSON.parse(localShoppingCart) : []
-            if (parsedShoppingCart.length !== 0) {
-                const addItemsToShoppingCartFromLocal = async () => {
-                    for (let cartItem of parsedShoppingCart) {
-                        const {shopId, itemId, count} = cartItem
-                        console.log('importing item ', itemId)
-                        await axios
-                            .post(`http://localhost:5000/users/${userId}/cart/add-cart-item/${shopId}/${itemId}`, {
-                                shopId, itemId, count
-                            })
-                            .then((res) => console.log(res))
-                            .catch(err => err && console.log(err))
-                    }
-                    localStorage.removeItem('shoppingCart')
-                    console.log('Importing done.')
-                }
-                addItemsToShoppingCartFromLocal()
-            }
             axios
-                .get(`http://localhost:5000/users/${userId}`)
+                .post(`http://localhost:5000/users/get-user/${userId}`)
                 .then((res) => {
                     if (res.data) {
-                        const {shoppingCart, fullName, email, phone, address} = res.data
-                        sortItems([...shoppingCart, ...parsedShoppingCart])
+                        const {fullName, email, phone, address} = res.data
                         setUserInformation({ fullName, email, phone, address })
+                        const splitAddress = address.split(',')
+                        const splitName = fullName.split(' ')
+                        handleSessionStorage('firstName', splitName[0])
+                        handleSessionStorage('lastName', splitName[1])
+                        handleSessionStorage('email', email)
+                        handleSessionStorage('phone', phone)
+                        handleSessionStorage('city', splitAddress[2])
+                        handleSessionStorage('postal', splitAddress[1])
+                        handleSessionStorage('street', splitAddress[0])
                     }
                 })
                 .catch(err => err && console.log(err))
-        } else {
-            const localShoppingCart = localStorage.getItem('shoppingCart')
-            localShoppingCart && sortItems(JSON.parse(localShoppingCart))
         }
-        setLoading(false)
-    }, [refresh])
-
-    const getImage = (image) => {
-        try {
-          const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
-          return img;
-        } catch {
-          return null;
-        }
-    };
-
-    const removeItemFromCart = (e, itemId, shopId) => {
-        if (userId) {
-            axios.post(`http://localhost:5000/users/${userId}/cart/delete-cart-item/${shopId}/${itemId}`)
-                .then((res) => console.log(res))
-                .catch(err => err && console.log('could not delete item', err))
-                .then(() => setRefresh(!refresh)) 
-            if (shops.length === 1) setShops('')
-        } else {
-            const localShoppingCart = JSON.parse(localStorage.getItem('shoppingCart'))
-            const newLocalShoppingCart = localShoppingCart.filter(item => item.itemId !== itemId)
-            localStorage.removeItem('shoppingCart')
-            console.log(newLocalShoppingCart, shops)
-            if (newLocalShoppingCart.length !== 0) {
-                localStorage.setItem('shoppingCart', JSON.stringify(newLocalShoppingCart))
-            } else {
-                setShops('')
-            }
-            setRefresh(!refresh)
-        }
-    }
-
-    const showItemData = (itemData, shopId) => {
-        const outputData = itemData.map((item, i) => {
-            return (
-                <Col data-id={`${item.itemId}`} md={3} xs={6} lg={2} key={`${item.itemId}`} style={{textAlign: "center"}}>
-                    <Image src={getImage(item.imageLink) ? getImage(item.imageLink) : ''} rounded style={{height:75}} />
-                    <h6>{item.itemName}</h6>
-                    <p>
-                    Count: {item.count}<br />
-                    {item.price} €</p>
-                    <Button style={{position: 'absolute', right: "20%", top: 0}} onClick={(e) => removeItemFromCart(e, item.itemId, shopId)} variant="danger" size="sm">X</Button>
-                </Col>
-            )
-        })
-        return outputData
-    }
-
-    const getTotalPrice = (itemData) => {
-        let total = 0
-        for (let item of itemData) {
-            total += Number((item.price).replace(/,/g,"."))*item.count
-        }
-        return total
-    }
-
-    const showCartItems = () => {
-        return shops.sort().map(shop => {
-            return (
-                <Row key={shop.shopId} style={{marginBottom: "15px"}}>
-                    <Col style={{marginBottom: "50px"}} xs={12}>
-                        <hr />
-                        <div style={{display: "flex", justifyContent:"space-between"}}>
-                            <div>
-                                <h4>{shop.shopName}</h4>
-                            </div>
-                            <div className="text-right">
-                                <h5>Suma: {(getTotalPrice(shop.itemData)).toFixed(2).toString().replace(/\./g,',')} €</h5>
-                            </div>
-                        </div>
-                    </Col>
-                    {showItemData(shop.itemData, shop.shopId)}
-                </Row>
-            )
-        })
-    }
-
-    const createNewOrder = () => {
-        let result = 0
-        shops.map(shop => (shop.itemData).map(item => result += (Number((item.price).replace(/,/g,"."))*item.count)))
-        const total = result
-        const status = 'vytvorena'
-        setPassOrderInfo({ orderId, userInformation, userId, shops, total, status })
-        setPaymentPopup(true)
-        axios.post(`http://localhost:5000/orders/add`, { orderId, userInformation, userId, shops, total, status })
-            .then(res => {
-                if (checkedNewsletter) {
-                    axios.post(`http://localhost:5000/mails/add`, {name: userInformation.fullName, email: userInformation.email})
-                        .then(res => console.log(res))
-                        .catch(err => err && console.log(err))
-                }
-            })
-            .catch(err => err && console.log(err))
-    }
+    }, [])
 
     const handleRegistration = () => {
-        setTimeout(() => executeScroll(),500)
         setLogin(false)
         setShipmentOnly(false)
         setRegistration(true)
     }
 
     const handleShipmentOnly = () => {
-        setTimeout(() => executeScroll(),500)
         setLogin(false)
         setRegistration(false)
         setShipmentOnly(true)
     }
 
     const handleLogin = () => {
-        setTimeout(() => executeScroll(),500)
         setRegistration(false)
         setShipmentOnly(false)
         setLogin(true)
     }
 
-
-    const showTotalCartPrice = () => {
-        let result = 0
-        shops.map(shop => (shop.itemData).map(item => result += (Number((item.price).replace(/,/g,"."))*item.count)))
-        return (
-            <Col>
-                <h3>Finalna suma: {result.toFixed(2).toString().replace(/\./g,',')} €</h3>
-            </Col>
-        )
+    const showCartVideos = () => {
+        return cartVideos.map(video => {
+            const {name, url, price, imageLink} = video
+            return (
+                <>
+                    <Col style={{height: '150px'}} xs={6} md={3}>
+                        <img 
+                            className={`box-shad-card`} 
+                            src={getImage(imageLink)} 
+                            style={{
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover'
+                            }} 
+                        />
+                    </Col>
+                    <Col xs={6} md={3}>
+                        <h3>{name}</h3>
+                        <p>Video číslo: {url}</p>
+                        <p>Cena za mesiac: <strong>{price.toFixed(2).toString().replace(/\./, ',')} €</strong></p>
+                    </Col>
+                </>
+            )
+        })
     }
 
     return (
-        <div className="whitesmoke-bg-pnine">
-            <Container style={{paddingTop: "50px", paddingBottom: "50px"}}>
-                { passOrderInfo && paymentPopup &&
-                    <PayGate orderInfo={passOrderInfo} setPaymentPopup={setPaymentPopup} paymentPopup={paymentPopup} />
-                }
-                {loading ? 
-                    <Spinner
-                        style={{ marginLeft: "49%", marginTop: "20%" }}
-                        animation="border"
-                    /> : 
-                (shops && showCartItems())}
-                <Row className="text-center">
-                    <Col>
-                        {(!userInformation && shops ) &&
-                            <p>
-                                <Button className="mt-2" onClick={() => handleRegistration()} variant="dark">Dorucovacie udaje s registraciou</Button>
-                                &nbsp;&nbsp;
-                                <Button className="mt-2" onClick={() => handleLogin()} variant="dark">Mam ucet a chcem sa prihlasit</Button>
-                                &nbsp;&nbsp;
-                                <Button className="mt-2" onClick={() => handleShipmentOnly()} variant="dark">Dorucovacie udaje bez registracie</Button>
-                            </p>
-                        }
-                    </Col>
-                </Row>
-                <Row ref={lastRef} className="text-center">
-                    {login && <Login shoppingCart={true} />}
-                    {registration && <SignUp shoppingCart={true} handleLogin={handleLogin} />}
-                    {shipmentOnly && <PlaceOrder checkedNewsletter={checkedNewsletter} setCheckedNewsletter={setCheckedNewsletter} setUserInformation={setUserInformation} />}
-                </Row>
-                <Row className="text-center">
-                    <br />
-                    <br />
-                    {shops && showTotalCartPrice()}
-                </Row>
-                <Row className="text-center">
-                    <Col>
-                        {userInformation && shops.length > 0 ?
-                            <Button onClick={() => createNewOrder()} variant="dark">Prejst k platbe</Button>
-                        :
-                        <>  
-                            {shops.length === 0 && 
-                                <>
-                                    <h4>Nakupny kosik je momentálne prazdny.</h4>
-                                    <br />
-                                    <br />
-                                </>
+        <div className="whitesmoke-bg-pless">
+            <Container className="py-4">
+                {(cartVideos && cartVideos.length > 0) &&
+                <>
+                    <Row className="justify-content-center">
+                        {showCartVideos()}
+                    </Row>
+                    <Row className="text-center pt-4">
+                        <Col>
+                            <h2>Fakturačné údaje {registration && 's registráciou'}</h2>
+                        </Col>
+                    </Row>
+                    <Row className="text-center">
+                        <Col>
+                            {(!userInformation && !userId ) &&
+                                <p>
+                                    {login ? 
+                                    <Button className="mt-2" onClick={() => handleRegistration()} variant="dark">Nemám účet</Button>
+                                    :
+                                    <Button className="mt-2" onClick={() => handleLogin()} variant="dark">Mám účet a chcem sa prihlásit</Button> 
+                                    }
+                                </p>
                             }
-                            <Button disabled variant="dark">Prejst k platbe</Button>
-                        </>
-                    }
-                    </Col>
-                </Row>
+                            {userInformation && 
+                                <Button className="mt-2" onClick={() => setUncheckGdpr(true)} variant="dark">Zmeniť údaje</Button>
+                            }
+                        </Col>
+                    </Row>
+                    <Row className="text-center">
+                        {login && <Login shoppingCart={true} />}
+                        {registration && <SignUp setRegSuccess={setRegSuccess} regSuccess={regSuccess} uncheckGdpr={uncheckGdpr} setUncheckGdpr={setUncheckGdpr} userInformation={userInformation} shoppingCart={true} handleLogin={handleLogin} setUserInformation={setUserInformation} />}
+                        {registration && regSuccess && <Col><h3 style={{color: 'green'}}>Registracia prebehla uspesne.</h3></Col> }
+                        {shipmentOnly && <PlaceOrder uncheckGdpr={uncheckGdpr} setUncheckGdpr={setUncheckGdpr} checkedNewsletter={checkedNewsletter} setCheckedNewsletter={setCheckedNewsletter} setUserInformation={setUserInformation} userInformation={userInformation} />}
+                    </Row>
+                </>}
             </Container>
         </div>
     )

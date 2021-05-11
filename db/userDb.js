@@ -15,6 +15,7 @@ const userSchema = new Schema({
   isOwner: { type: Boolean, required: true, default: false},
   address: { type: String, required: true },
   videos: { type: Array },
+  myVideos: { type: Array }
 });
 
 const User = mongoose.model("User", userSchema);
@@ -27,7 +28,7 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
-router.route("/:userId").get((req, res) => {
+router.route("/get-user/:userId").post((req, res) => {
   User.findById(req.params.userId)
     .then((user) => res.json(user))
     .catch((err) => res.status(400).json(`Error: ${err}`));

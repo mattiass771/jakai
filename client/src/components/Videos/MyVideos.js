@@ -6,17 +6,11 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 
-export default ({userId, videos}) => {
+export default ({userId, myVideos}) => {
 
     const showVideos = () => {
-        return videos.map(video => {
-            const {name, url, ttl} = video
-
-            if (moment().toISOString() > ttl) {
-                axios.post(`http://localhost:5000/users/${userId}/expired-video`, {videoId: url})
-                    .then(res => console.log('video removed ', res.data))
-                    .catch(err => console.log(err))
-            }
+        return myVideos.map(video => {
+            const {name, url} = video
 
             return (
                 <Col key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
@@ -45,7 +39,7 @@ export default ({userId, videos}) => {
             </div>
             <Container className="whitesmoke-bg-pless text-center" style={{padding: '0px 75px'}} fluid>
                 <Row>
-                    {videos && videos.length !== 0 && showVideos()}
+                    {myVideos && myVideos.length !== 0 && showVideos()}
                 </Row>
             </Container>
         </>

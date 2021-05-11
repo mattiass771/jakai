@@ -129,7 +129,7 @@ app.post(
     failureRedirect: "http://localhost:3000/login-page"
   }),
   (req, res) => {
-    if (req.query.shopping === 'cart') return res.redirect('http://localhost:3000/cart-page')
+    if (req.query.shopping === 'cart') return res.redirect('http://localhost:3000/kosik')
     return res.redirect('http://localhost:3000/')
   }
 );

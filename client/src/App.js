@@ -40,8 +40,8 @@ export default () => {
       })
       .then((res) => {
         if (res.data) {
-          const { _id, userName, fullName, email, shopId, isOwner, videos } = res.data;
-          setUserData({ _id, userName, fullName, email, shopId, isOwner, videos });
+          const { _id, userName, fullName, email, shopId, isOwner, videos, myVideos } = res.data;
+          setUserData({ _id, userName, fullName, email, shopId, isOwner, videos, myVideos });
           setIsLoggedIn(userName ? true : false);
         } else {
           setUserData({})
@@ -123,7 +123,7 @@ export default () => {
               <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} pageId={`60701288c633d417d6dc66a7`} identificator={`videos`} />
             </Route>
             <Route exact path={`/moje-videa`}>
-              <MyVideos userId={userData._id} videos={userData.videos} />
+              <MyVideos userId={userData._id} myVideos={userData.myVideos} />
             </Route>
             <Route exact path={`/cennikprenajmu`}>
               <SinglePage isOwner={userData.isOwner} pageId={`605752f898dacf7257d7a4a5`} identificator={`cennikprenajmu`} />

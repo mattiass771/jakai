@@ -7,34 +7,40 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-import { SlideDown } from "react-slidedown";
-import "react-slidedown/lib/slidedown.css";
+import { Checkbox } from 'pretty-checkbox-react';
+import '@djthoms/pretty-checkbox';
+
+const token = process.env.REACT_APP_API_SECRET
 
 // Login.js
-export default ({shoppingCart = false, handleLogin}) => {
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+export default ({regSuccess, setRegSuccess, uncheckGdpr, setUncheckGdpr, shoppingCart = false, newUser, setNewUser, setUserInformation, userInformation}) => {
   const [passwordFirst, setPasswordFirst] = useState("");
   const [passwordSecond, setPasswordSecond] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(false);
   const [emailExists, setEmailExists] = useState(null);
-  const [phone, setPhone] = useState("")
 
-  const [street, setStreet] = useState("")
-  const [postal, setPostal] = useState("")
-  const [city, setCity] = useState("")
+  const [firstName, setFirstName] = useState(sessionStorage.getItem("firstName") || "");
+  const [lastName, setLastName] = useState(sessionStorage.getItem("lastName") || "");
+  const [email, setEmail] = useState(sessionStorage.getItem("email") || "");
+  const [phone, setPhone] = useState(sessionStorage.getItem("phone") || "")
+
+  const [street, setStreet] = useState(sessionStorage.getItem("street") || "")
+  const [postal, setPostal] = useState(sessionStorage.getItem("postal") || "")
+  const [city, setCity] = useState(sessionStorage.getItem("city") || "")
   
   const [checkedGdpr, setCheckedGdpr] = useState(false)
   const [checkedNewsletter, setCheckedNewsletter] = useState(false)
 
+  useEffect(() => {
+    if (uncheckGdpr) {
+      setCheckedGdpr(false)
+      setUncheckGdpr(false)
+    }
+  }, [uncheckGdpr])  
+
   const handleSignUp = () => {
-    const fullName = middleName
-      ? firstName + " " + middleName + " " + lastName
-      : firstName + " " + lastName;
-    const address = `${street},${postal.toString()},${city}`
-    console.log(typeof phone, phone, typeof address, address )
+    const fullName = firstName.trim() + " " + lastName.trim();
+    const address = `${street.trim()},${postal.toString()},${city.trim()}`
     axios
       .post(`http://localhost:5000/users/add-user`, {
         userName: email,
@@ -45,6 +51,7 @@ export default ({shoppingCart = false, handleLogin}) => {
         address: address
       })
       .then((res) => {
+        if (shoppingCart && !regSuccess) setRegSuccess(true)
         if (checkedNewsletter) {
           axios.post(`http://localhost:5000/mails/add`, {name: firstName, email})
               .then(res => console.log(res))
@@ -52,8 +59,39 @@ export default ({shoppingCart = false, handleLogin}) => {
         }
       })
       .catch((err) => err && console.log(`Error: ${err}`))
-      .then(() => shoppingCart ? handleLogin() : window.location.reload());
+      .then(() => shoppingCart ? null : window.location.reload());
   };
+
+  useEffect(() => {
+    if(newUser) {
+      handleSignUp()
+      setNewUser(false)
+    }
+  }, [newUser])
+
+  useEffect(() => {
+    if (shoppingCart) {
+      if (
+        checkIfEmailMeetsCriteria() === "" &&
+        checkIfNameMeetsCriteria(firstName) === "" &&
+        checkIfNameMeetsCriteria(lastName) === "" &&
+        checkIfPasswordMeetsCriteria() &&
+        checkIfPhoneMeetsCriteria() === "" &&
+        checkIfStreetMeetsCriteria() === "" &&
+        checkIfPostalMeetsCriteria() === "" &&
+        checkIfCityMeetsCriteria() === "" &&
+        passwordsMatch &&
+        checkedGdpr &&
+        emailExists === null
+      ) {
+        const fullName = firstName.trim() + " " + lastName.trim();
+        const address = `${street.trim()},${postal.toString()},${city.trim()}`
+        setUserInformation({ fullName, email, phone, address })
+      } else {
+        setUserInformation('')
+      }
+    }
+  }, [firstName, lastName, email, street, city, postal, phone, checkedGdpr, passwordsMatch, emailExists])
 
   const checkIfPasswordMeetsCriteria = () => {
     if (
@@ -78,34 +116,34 @@ export default ({shoppingCart = false, handleLogin}) => {
     if (
       email &&
       emailExists === null &&
-      email.match(/[a-z]+[.]?[a-z]*[@][a-z]+[.][a-z]{1,5}/gi)
+      email.match(/[a-z0-9]+[.]?[a-z0-9]*[@][a-z0-9]+[.][a-z]{1,5}/gi)
     )
       return "";
     else if (email && email.length > 0) return "invalid-input";
   };
 
   const checkIfNameMeetsCriteria = (name) => {
-    if (name && name.match(/^[a-z]+$/i)) return "";
+    if (name && name.match(/^[a-zá-ž ]+$/i)) return "";
     else if (name && name.length > 0) return "invalid-input";
   };
 
   const checkIfCityMeetsCriteria = () => {
-    if (city && city.match(/^[a-z]+$/i)) return "";
+    if (city && city.match(/^[a-zá-ž ]+$/i)) return "";
     else if (city && city.length > 0) return "invalid-input";
   };
 
   const checkIfStreetMeetsCriteria = () => {
-    if (street && street.match(/^[a-z ]+[0-9 ]+[/]{0,1}[a-z0-9 ]*$/i)) return "";
+    if (street && street.match(/^[a-zá-ž ]+[0-9]{1}[0-9 ]*[/]{0,1}[a-z0-9]*$/i)) return "";
     else if (street && street.length > 0) return "invalid-input";
   };
 
   const checkIfPhoneMeetsCriteria = () => {
-    if (phone && phone.match(/^[+]?[0-9]{6,14}[0-9]$/)) return "";
+    if (phone && phone.match(/^[+]?[0-9 ]{6,14}[0-9]$/)) return "";
     else if (phone && phone.length > 0) return "invalid-input";
   };
 
   const checkIfPostalMeetsCriteria = () => {
-    if (postal && postal.match(/^[0-9]{5}$/)) return "";
+    if (postal && postal.match(/^[0-9 ]{5}$/)) return "";
     else if (postal && postal.length > 0) return "invalid-input";
   };
 
@@ -114,15 +152,25 @@ export default ({shoppingCart = false, handleLogin}) => {
     else setPasswordsMatch(false);
   }, [passwordSecond]); //eslint-disable-line
 
+  useEffect(() => {
+    if (email) {
+      checkIfEmailInDatabase()
+    }
+  }, [email])
+
+  const handleSessionStorage = (customKey, value) => {
+    return sessionStorage.setItem(customKey, value)
+  }
+
   return (
-    <SlideDown className={"my-dropdown-slidedown"}>
       <Container>
         <br />
+        {!shoppingCart &&
         <Row className="justify-content-md-center">
           <Col md={6} className="text-center mt-1">
             <h2>Registrujte sa!</h2>
           </Col>
-        </Row>
+        </Row>}
         <Row className="justify-content-md-center">
           <Col md={6} className="text-center mt-1">
             <label htmlFor="firstName">Meno:</label>
@@ -140,24 +188,9 @@ export default ({shoppingCart = false, handleLogin}) => {
                       e.target.value.substring(1)
                 )
               }
-            />
-          </Col>
-          <Col md={6} className="text-center mt-1">
-            <label htmlFor="middleName">Stredné meno (voliteľné):</label>
-            <input
-              className={`form-control text-center ${checkIfNameMeetsCriteria(
-                middleName
-              )}`}
-              type="text"
-              name="middleName"
-              value={middleName}
-              onChange={(e) =>
-                setMiddleName(
-                  e.target.value &&
-                    e.target.value[0].toUpperCase() +
-                      e.target.value.substring(1)
-                )
-              }
+              onBlur={() => handleSessionStorage('firstName', firstName)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className="text-center mt-1">
@@ -176,6 +209,9 @@ export default ({shoppingCart = false, handleLogin}) => {
                   e.target.value.substring(1)
                 )
               }
+              onBlur={() => handleSessionStorage('lastName', lastName)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className={`text-center mt-1`}>
@@ -186,7 +222,9 @@ export default ({shoppingCart = false, handleLogin}) => {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onBlur={checkIfEmailInDatabase}
+              onBlur={() => handleSessionStorage('email', email)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className={`text-center mt-1`}>
@@ -199,6 +237,9 @@ export default ({shoppingCart = false, handleLogin}) => {
               onChange={(e) => setPhone(e.target.value &&
                 (e.target.value).substring(0,16)
                 )}
+                onBlur={() => handleSessionStorage('phone', phone)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className={`text-center mt-1`}>
@@ -213,6 +254,9 @@ export default ({shoppingCart = false, handleLogin}) => {
                 e.target.value[0].toUpperCase() +
                 e.target.value.substring(1)
               )}
+              onBlur={() => handleSessionStorage('street', street)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className={`text-center mt-1`}>
@@ -223,6 +267,9 @@ export default ({shoppingCart = false, handleLogin}) => {
               name="postal"
               value={postal}
               onChange={(e) => setPostal(e.target.value && (e.target.value).substring(0,5))}
+              onBlur={() => handleSessionStorage('postal', postal)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className={`text-center mt-1`}>
@@ -232,7 +279,14 @@ export default ({shoppingCart = false, handleLogin}) => {
               type="text"
               name="city"
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              onChange={(e) => setCity(
+                e.target.value &&
+                e.target.value[0].toUpperCase() +
+                e.target.value.substring(1)
+              )}
+              onBlur={() => handleSessionStorage('city', city)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className="text-center mt-1">
@@ -247,6 +301,8 @@ export default ({shoppingCart = false, handleLogin}) => {
               name="passwordFirst"
               value={passwordFirst}
               onChange={(e) => setPasswordFirst(e.target.value)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
           <Col md={6} className="text-center mt-1">
@@ -257,17 +313,21 @@ export default ({shoppingCart = false, handleLogin}) => {
               name="passwordSecond"
               value={passwordSecond}
               onChange={(e) => setPasswordSecond(e.target.value)}
+              readOnly={typeof userInformation === 'object'}
+              placeholder="povinné"
             />
           </Col>
         </Row>
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
-                    <em style={{float: 'left'}}>
-                        <input 
+                    <em style={{float: 'left', color: (!checkedGdpr && firstName && lastName && email && phone && street && postal && city) ? '#7b1818' : ''}}>
+                        <Checkbox 
                             style={{
                                 cursor: 'pointer',
                             }}
-                            type='checkbox'
+                            color="warning"
+                            shape="curve"
+                            animation="jelly"
                             name='checkedGdpr'
                             checked={checkedGdpr}
                             onChange={() => setCheckedGdpr(!checkedGdpr)}
@@ -278,11 +338,13 @@ export default ({shoppingCart = false, handleLogin}) => {
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
                     <em style={{float: 'left'}}>
-                        <input 
+                        <Checkbox 
                             style={{
                                 cursor: 'pointer',
                             }}
-                            type='checkbox'
+                            color="warning"
+                            shape="curve"
+                            animation="jelly"   
                             name='checkedNewsletter'
                             checked={checkedNewsletter}
                             onChange={() => setCheckedNewsletter(!checkedNewsletter)}
@@ -319,6 +381,7 @@ export default ({shoppingCart = false, handleLogin}) => {
             )}
           </Col>
         </Row>
+        {!shoppingCart &&
         <Row className="justify-content-md-center">
           <Col md={6} className="text-center mt-3">
             {checkIfEmailMeetsCriteria() === "" &&
@@ -333,16 +396,15 @@ export default ({shoppingCart = false, handleLogin}) => {
             checkedGdpr &&
             emailExists === null ? (
               <Button onClick={handleSignUp} variant="dark">
-                Prihlásiť sa!
+                Registrovať sa!
               </Button>
             ) : (
               <Button disabled variant="dark">
-                Prihlásiť sa!
+                Registrovať sa!
               </Button>
             )}
           </Col>
-        </Row>
+        </Row>}
       </Container>
-    </SlideDown>
   );
 };

@@ -110,7 +110,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
           </Nav.Link>
         </Nav>
         <Nav style={{position: "absolute", right: 16, top: 16}}>
-            <Nav.Link as={Link} href="/cart-page" to="/cart-page" className="navihover  pt-3 pb-3 ">
+            <Nav.Link as={Link} href="/kosik" to="/kosik" className="navihover  pt-3 pb-3 ">
                 <FiShoppingCart />
             </Nav.Link>
           {isLoggedIn ? (

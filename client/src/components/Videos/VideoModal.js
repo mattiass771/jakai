@@ -10,8 +10,7 @@ import Alert from 'react-bootstrap/Alert'
 import {MdLock} from 'react-icons/md'
 
 export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
-    const {name, url, description, price, imageLink} = showVideoPopup
-    const orderId = `JV${moment().unix()}`
+    const {name, url, description, price, imageLink, userHasVideo} = showVideoPopup
 
     const handleBuyVideo = (orderObj) => {
         const oldOrders = localStorage.getItem('jakaiVideoShop') || '[]'
@@ -28,7 +27,7 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
         <Modal size="xl" show={typeof showVideoPopup === 'object'} onHide={() => setShowVideoPopup('')}>
             <Modal.Body className="text-center" style={{fontSize: "90%", backgroundColor: 'whitesmoke'}}>
                 <header style={{fontSize: '300%', fontWeight: '900'}}>{name}</header>
-                {typeof price === 'number' && price > 0 ?
+                {typeof price === 'number' && price > 0 && !userHasVideo && typeof userHasVideo !== 'object' ?
                 <>
                     <figure 
                         style={{
@@ -42,7 +41,7 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
                         className={`box-shad-card video-tresholds`} 
                     >
                         <figure 
-                            onClick={() => handleBuyVideo({name, url, price, imageLink, orderId})}
+                            onClick={() => handleBuyVideo({name, url, price, imageLink})}
                             className="whitesmoke-bg-pless"
                             style={{
                                 width: '100%', 
