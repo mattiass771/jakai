@@ -13,7 +13,7 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-export default ({userId}) => {
+export default ({userId, updateVideos, setUpdateVideos}) => {
     let query = useQuery();
     const orderId = query.get('Reference')
     const result = query.get('ResultCode')
@@ -25,12 +25,8 @@ export default ({userId}) => {
                 .then(res => console.log(res.data))
                 .catch(err => err && console.log(err))
                 .then(() => {
-                    if (userId) {
-                        axios.get(`http://localhost:5000/users/${userId}/cart/clear-cart`)
-                            .then(res => console.log(res.data))
-                            .catch(error => error && console.log(error))
-                    }
-                    localStorage.removeItem('shoppingCart')
+                    localStorage.removeItem('jakaiVideoShop')
+                    setUpdateVideos(!updateVideos)
                 })            
         }
     }, [])

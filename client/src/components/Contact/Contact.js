@@ -10,6 +10,9 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from "react-bootstrap/Spinner";
 
+import { Checkbox } from 'pretty-checkbox-react';
+import '@djthoms/pretty-checkbox';
+
 export default () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -24,7 +27,7 @@ export default () => {
         e.preventDefault();
         setSending(true)
 
-        emailjs.sendForm('service_vjc9vdo', 'template_o2r5vl8', e.target, 'user_Pp2MD3ZQeVhPpppItiah8')
+        emailjs.sendForm('service_vuw0yrm', 'template_h67jutc', e.target, 'user_VzT160xQwoARc06cLseSO')
         .then((result) => {
             if (checkedNewsletter) {
                 axios.post(`http://localhost:5000/mails/add`, {name, email})
@@ -93,11 +96,13 @@ export default () => {
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
                     <em style={{float: 'left'}}>
-                        <input 
+                        <Checkbox 
                             style={{
                                 cursor: 'pointer',
                             }}
-                            type='checkbox'
+                            color="info"
+                            shape="curve"
+                            animation="jelly"
                             name='checkedGdpr'
                             checked={checkedGdpr}
                             onChange={() => setCheckedGdpr(!checkedGdpr)}
@@ -108,11 +113,13 @@ export default () => {
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
                     <em style={{float: 'left'}}>
-                        <input 
+                        <Checkbox 
                             style={{
                                 cursor: 'pointer',
                             }}
-                            type='checkbox'
+                            color="info"
+                            shape="curve"
+                            animation="jelly"
                             name='checkedNewsletter'
                             checked={checkedNewsletter}
                             onChange={() => setCheckedNewsletter(!checkedNewsletter)}

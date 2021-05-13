@@ -1,3 +1,4 @@
+const { default: axios } = require('axios');
 const moment = require('moment')
 const mongoose = require("mongoose");
 const router = require("express").Router();
@@ -15,7 +16,8 @@ const orderSchema = new Schema({
     paidAt: {type: Date},
     expireAt: { type: Date, default: Date.now, index: { expires: 900 }},
     paymentId: {type: String},
-    paymentResultCode: {type: String}
+    paymentResultCode: {type: String},
+    processing: { type: Boolean, required: true, default: true }
   });
   
 const Order = mongoose.model("Order", orderSchema);
@@ -74,18 +76,28 @@ router.route("/:orderId/process-payment/").post((req, res) => {
   const { paymentResultCode, paymentId } = req.body;
   Order.findOne({orderId: orderId}, (err, orderFound) => {
     if (err) return console.log(err.data);
-    if (orderFound) {
-      orderFound.status = ['4', '3', '0'].includes(paymentResultCode.toString()) ? 'zaplatena' : 'odmietnuta';
+    if (orderFound && orderFound.processing) {
+      orderFound.status = ['4', '3', '0'].includes(paymentResultCode.toString()) ? 'zaplatena' : 
+        ['1', '2', '5'].includes(paymentResultCode.toString()) ? 'ocakavana' : 'odmietnuta';
       orderFound.paymentResultCode = paymentResultCode
       orderFound.paymentId = paymentId
       orderFound.expireAt = null;
+      orderFound.processing = false;
+
+      if (['4', '3', '0'].includes(paymentResultCode.toString())) {
+        axios.post(`http://localhost:5000/users/${orderFound.userId}/add-processed-videos/`, {videos: orderFound.videos})
+          .then(res => console.log(res.data))
+          .catch(err => console.log(err))
+      }
   
       orderFound
         .save()
         .then(() => res.json(`Payment updated!`))
         .catch((error) => res.status(400).json(`Error: ${error}`));
-    } else {
+    } else if (!orderFound) {
       return res.status(404).json(`Order missing, order not processed!`)
+    } else {
+      return res.status(204).json(`Order processed.`)
     }
   });
 });

@@ -1,6 +1,13 @@
 const { truncate } = require("fs");
 const mongoose = require("mongoose");
 const router = require("express").Router();
+const moment = require("moment")
+
+moment.addRealMonth = function addRealMonth(d) {
+  const fm = moment(d).add(1, 'M');
+  const fmEnd = moment(fm).endOf('month');
+  return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD')) ? fm.add(1, 'd') : fm;  
+}
 
 const Schema = mongoose.Schema;
 
@@ -31,6 +38,12 @@ router.route("/").get((req, res) => {
 router.route("/get-user/:userId").post((req, res) => {
   User.findById(req.params.userId)
     .then((user) => res.json(user))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
+router.route("/:userId/videos").post((req, res) => {
+  User.findById(req.params.userId)
+    .then((user) => res.json(user.videos))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
@@ -66,6 +79,27 @@ router.route("/:userId/expired-video").post((req, res) => {
   User.findById(userId)
     .then((userFound) => {
       userFound['videos'] = (userFound.videos).filter(video => video.url !== videoId);
+      userFound
+        .save()
+        .then(() => res.json(`User info updated!`))
+        .catch((e) => res.status(400).json(`Error: ${e}`));
+    })
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
+router.route("/:userId/add-processed-videos").post((req, res) => {
+  const { videos } = req.body;
+  const { userId } = req.params;
+
+  const nextMonth = moment.addRealMonth(moment());
+
+  User.findById(userId)
+    .then((userFound) => {
+      const prevVideos = userFound['videos']
+      const newVideos = videos.map(vid => {
+        return {url: vid.url, ttl: moment(nextMonth).toISOString()}
+      })
+      userFound['videos'] = [...prevVideos, ...newVideos];
       userFound
         .save()
         .then(() => res.json(`User info updated!`))

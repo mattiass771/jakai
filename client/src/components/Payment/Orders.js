@@ -96,7 +96,7 @@ export default ({userEmail, isOwner}) => {
         return filteredData.map(order => {
             const { _id, orderId, userInformation, createdAt, status, videos, total, userId: buyerId } = order
             const { email } = userInformation
-            const statusColor = status === 'vytvorena' ? 'orange' : status === 'zaplatena' ? 'green' : status === 'odmietnuta' ? 'red' : 'black';
+            const statusColor = status === 'vytvorena' ? 'brown' : status === 'zaplatena' ? 'green' : status === 'ocakavana' ? 'orange' : status === 'odmietnuta' ? 'red' : 'black';
             return (
                 <tbody key={orderId}>
                     <tr onClick={() => handleExpanded(_id)}>

@@ -30,7 +30,7 @@ export default () => {
   const [userData, setUserData] = useState({});
   const [loadingData, setLoadingData] = useState(false);
   const [showLawPopup, setShowLawPopup] = useState('')
-  
+  const [updateVideos, setUpdateVideos] = useState(false);
 
   useEffect(() => {
     setLoadingData(true)
@@ -50,6 +50,15 @@ export default () => {
       .catch((err) => err && console.log("Load Error " + err))
       .then(() => setLoadingData(false))
   }, []);
+
+  useEffect(() => {
+    if (userData._id) {
+      axios.post(`http://localhost:5000/users/${userData._id}/videos/`)
+        .then(res => setUserData({...userData, videos: res.data}))
+        .catch(err => console.log('error updating shopping cart...', err))
+    }
+  }, [updateVideos])
+
   const handleLogOut = () => {
     axios
       .get(`http://localhost:5000/logout`, {
@@ -99,7 +108,7 @@ export default () => {
               <ShoppingCart userId={userData._id} />
             </Route>
             <Route exact path={`/success-payment`}>
-              <SuccessPayment userId={userData._id} />
+              <SuccessPayment userId={userData._id} updateVideos={updateVideos} setUpdateVideos={setUpdateVideos} />
             </Route>
                 <Route exact path={`/failed-payment`}>
               <RejectPayment userId={userData._id} />

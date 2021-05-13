@@ -26,17 +26,18 @@ export default ({userId}) => {
     const [newUser, setNewUser] = useState(false)
     const [totalPrice, setTotalPrice] = useState(0)
     const [paymentPopup, setPaymentPopup] = useState(false)
-
-    const orderId = `JV${moment().unix()}`
+    const [orderId, setOrderId] = useState('')
 
     const handleSessionStorage = (customKey, value) => {
         return sessionStorage.setItem(customKey, value)
     }
 
     useEffect(() => {
-        if (cartVideos.length !== 0) {
+        if (cartVideos.length > 1) {
             const total = cartVideos.reduce((sum, vid) => Number(sum.price) + Number(vid.price))
             setTotalPrice(total.toFixed(2).replace(/\./, ','))
+        } else if (cartVideos.length === 1 ) {
+            setTotalPrice((cartVideos[0].price).toFixed(2).replace(/\./, ','))
         }
     }, [cartVideos])
 
@@ -44,7 +45,8 @@ export default ({userId}) => {
     useEffect(() => {
         const videosFromStorage = localStorage.getItem('jakaiVideoShop') || '[]'
         const parsedVideosFromStorage = JSON.parse(videosFromStorage)
-        setCartVideos(parsedVideosFromStorage)
+        setCartVideos(parsedVideosFromStorage)        
+        setOrderId(`JV${moment().unix()}`)
         if (userId) {
             axios
                 .post(`http://localhost:5000/users/get-user/${userId}`)
@@ -138,7 +140,7 @@ export default ({userId}) => {
         <div className="whitesmoke-bg-pless">
             <Container className="py-4">
                 {paymentPopup && <PayGate paymentPopup={paymentPopup} setPaymentPopup={setPaymentPopup} orderInfo={{total: totalPrice, orderId}} />}
-                {(cartVideos && cartVideos.length > 0) &&
+                {(cartVideos && cartVideos.length > 0) ?
                 <>
                     <Row className="justify-content-center py-4">
                         <h2>Vybrané videá</h2>
@@ -189,7 +191,12 @@ export default ({userId}) => {
                             }
                         </Col>
                     </Row>
-                </>}
+                </>
+                : 
+                <div className="text-center" style={{padding: '200px 0px 250px 0px'}}>
+                    <h4>Nákupný košík je momentálne prázdny.</h4>
+                </div>
+                }
             </Container>
         </div>
     )
