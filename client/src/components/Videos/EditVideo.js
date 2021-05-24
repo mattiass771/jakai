@@ -19,13 +19,16 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
-export default ({passEditProps, setPassEditProps}) => {
+export default ({passEditProps, setPassEditProps, vidCollections}) => {
     const [name, setName] = useState(passEditProps.name || '')
     const [description, setDescription] = useState(passEditProps.description || '')
     const [url, setUrl] = useState(passEditProps.url || '')
     const [price, setPrice] = useState(passEditProps.price || '')
     const [imageLink, setImageLink] = useState(passEditProps.imageLink || '')
+    const [vidCollection, setVidCollection] = useState('')
+
     const videoId = passEditProps._id || null
 
     ClassicEditor.defaultConfig = editorConfig
@@ -54,6 +57,14 @@ export default ({passEditProps, setPassEditProps}) => {
             setImageLink(`${IMAGE_PREFIX}-${meta.name}`);
         } 
     };
+
+    const GetVidCollectionOptions = () => {
+        return vidCollections.map(collection => {
+            return (
+                <option key={collection}>{collection}</option>
+            )
+        })
+    }
 
     return (
         <Modal enforceFocus={false} size="lg" show={typeof passEditProps === 'object' && videoId !== null} onHide={() => setPassEditProps('')}>
@@ -92,6 +103,29 @@ export default ({passEditProps, setPassEditProps}) => {
                             name="price"
                             type="number"
                             onChange={(e) => setPrice(e.target.value)}
+                        />
+                    </Col>
+                </Row>
+                <Row className="justify-content-center">
+                    <Col className="form-group text-center mt-1">
+                        <label htmlFor="vidCollections">Vyber Existujucej Kolekcie:</label>
+                        <Form.Control 
+                            as="select"
+                            name="vidCollections"
+                        >
+                            <option></option>
+                            <GetVidCollectionOptions />
+                        </Form.Control>
+                    </Col>
+                    <Col className="form-group text-center mt-1">
+                        <label htmlFor="newCollection">Kolekcia:</label>
+                        <input
+                            value={vidCollection}
+                            placeholder='zadarmo'
+                            className="form-control text-center"
+                            name="newCollection"
+                            type="text"
+                            onChange={(e) => setVidCollection(e.target.value)}
                         />
                     </Col>
                 </Row>

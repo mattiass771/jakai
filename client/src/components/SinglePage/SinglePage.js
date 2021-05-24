@@ -2,22 +2,39 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import ViewBlocks from '../Shop/ViewShop/ViewBlocks';
+import Rozvrh from './Rozvrh'
 import Videos from '../Videos/Videos'
+import AllVideos from '../Videos/AllVideos'
 import Spinner from "react-bootstrap/Spinner";
 
 export default ({videos, isOwner, pageId, identificator, userId}) => {
-    const [singlePageData, setSinglePageData] = useState([])
+    const [singlePageData, setSinglePageData] = useState(null)
     const [loading, setLoading] = useState(true);
+    const [subPageId, setSubPageId] = useState('')
 
     useEffect(() => {
         setLoading(true)
-        axios.get(`http://localhost:5000/page/${pageId}`)
-            .then(res => {
-                setSinglePageData(res.data)
-                setLoading(false)
-            })
-            .catch(err => console.log(err))
-    }, [pageId])
+        if (['videoCollection'].includes(identificator)) {
+            setLoading(false)
+            console.log(subPageId)
+            if (typeof subPageId === 'string' && subPageId.length > 0) {
+
+                console.log('hit', subPageId)
+                axios.get(`http://localhost:5000/page/link/${subPageId}`)
+                    .then(res => {
+                        setSinglePageData(res.data)
+                    })
+                    .catch(err => console.log(err))
+            }
+        } else {
+            axios.get(`http://localhost:5000/page/${pageId}`)
+                .then(res => {
+                    setSinglePageData(res.data)
+                    setLoading(false)
+                })
+                .catch(err => console.log(err))
+        }
+    }, [pageId, subPageId])
 
     return (
         loading ? (
@@ -27,21 +44,21 @@ export default ({videos, isOwner, pageId, identificator, userId}) => {
             />
           ) :
         <>
-            <div className="text-center whitesmoke-bg-pless py-4">
-                <hr className="d-none d-md-block col-md-3" />
-                <h1 >{singlePageData.pageName.toUpperCase()}</h1>
-                <hr className="d-none d-md-block col-md-3" />
-            </div>
-            {identificator === 'rozvrh' &&
-            <div style={{height: '800px', width: 'auto'}}>
-                <iframe className="meo-event-calendar" style={{width: '100%', height: '800px', border: '1px solid #ccc', borderRadius: '3px'}} 
-                    src="https://calendiari.com/booking/embeddedCalendar?accountId=CdKXXQZ9HkeXochPTT_DNQ&amp;view=Week" 
-                    width="300" height="150"></iframe>
-            </div>}
-            {identificator === 'videos' &&
-                <Videos userId={userId} userVideos={videos} isOwner={isOwner} />
+            {singlePageData && 
+                <div className="text-center whitesmoke-bg-pless py-4">
+                    <hr className="d-none d-md-block col-md-3" />
+                    <h1 >{singlePageData.pageName.toUpperCase()}</h1>
+                    <hr className="d-none d-md-block col-md-3" />
+                </div>}
+            {identificator === 'rozvrh' && <Rozvrh />}
+            {identificator === 'videoCollection' &&
+                <Videos setSubPageId={setSubPageId} userId={userId} userVideos={videos} isOwner={isOwner} />
             }
-            <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />
+            {identificator === 'videos' &&
+                <AllVideos />
+            }
+            {singlePageData && 
+            <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />}
         </>
     )
 }

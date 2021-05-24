@@ -8,7 +8,8 @@ const videoSchema = new Schema({
     name: { type: String, required: true},
     description: { type: String },
     price: { type: Number },
-    imageLink: { type: String }
+    imageLink: { type: String },
+    vidCollection: { type: String }
 });
 
 const Video = mongoose.model("Video", videoSchema);
@@ -19,6 +20,33 @@ router.route("/").post((req, res) => {
       .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
+router.route("/get-collections").post((req, res) => {
+  Video.find()
+    .then((video) => {
+      const collections = video.map(vid => vid.vidCollection)
+      const setCollections = new Set(collections)
+      res.json([...setCollections])
+    })
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
+router.route("/get-videos-from-collection/:collect").post((req, res) => {
+  const {collect} = req.params
+  Video.find()
+    .then((video) => {
+      const collectionVideos = video.filter(vid => {
+        const {vidCollection} = vid
+        const formatted = vidCollection.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const queried = formatted.toLowerCase().replace(/[ ]/g, '-')
+        if (queried === collect) {
+          return vid
+        }
+      })
+      res.json(collectionVideos)
+    })
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+});
+
 router.route("/get-video/:videoId").post((req, res) => {
     Video.findById(req.params.videoId)
       .then((video) => res.json(video))
@@ -26,14 +54,15 @@ router.route("/get-video/:videoId").post((req, res) => {
 });
 
 router.route("/add-video").post((req, res) => {
-    const { url, name, description, price, imageLink } = req.body;
+    const { url, name, description, price, imageLink, vidCollection } = req.body;
   
     const addVideo = new Video({
         url, 
         name, 
         description,
         price,
-        imageLink
+        imageLink,
+        vidCollection
     });
     addVideo
       .save()
@@ -43,7 +72,7 @@ router.route("/add-video").post((req, res) => {
 
 router.route("/edit-video/:videoId").post((req, res) => {
     const { videoId } = req.params
-    const { name, description, price, imageLink } = req.body
+    const { name, description, price, imageLink, vidCollection } = req.body
   
     Video.findById(videoId, (err, videoFound) => {
       if (err) return console.log(err.data);
@@ -52,6 +81,7 @@ router.route("/edit-video/:videoId").post((req, res) => {
       videoFound.description = description
       videoFound.price = price
       videoFound.imageLink = imageLink
+      videoFound.vidCollection = vidCollection
   
       videoFound
         .save()

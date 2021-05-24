@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import { getImage } from '../../utils/getImage'
 
@@ -21,24 +21,33 @@ import { MdEdit } from "react-icons/md";
 import { RiVideoFill } from "react-icons/ri"
 import { HiBadgeCheck } from "react-icons/hi"
 
-export default ({userVideos, isOwner, userId}) => {
+export default ({setSubPageId, userVideos, isOwner, userId}) => {
     let history = useHistory()
+    const {kolekcia} = useParams()
     const [addAlert, setAddAlert] = useState(false)
     const [videos, setVideos] = useState([])
     const [addVideoPopup, setAddVideoPopup] = useState(false)
     const [passEditProps, setPassEditProps] = useState('')
     const [showVideoPopup, setShowVideoPopup] = useState('')
     const [isHovered, setIsHovered] = useState('')
+    const [vidCollections, setVidCollections] = useState([])
 
     useEffect(() => {
-        axios.post(`http://localhost:5000/videos/`)
+        setSubPageId(kolekcia)
+    }, [kolekcia])
+
+    useEffect(() => {
+        axios.post(`http://localhost:5000/videos/get-videos-from-collection/${kolekcia}`)
             .then(res => setVideos(res.data))
+            .catch(err => console.log(err))
+        axios.post(`http://localhost:5000/videos/get-collections`)
+            .then(res => setVidCollections(res.data))
             .catch(err => console.log(err))
     }, [addVideoPopup, passEditProps])
 
     const showVideos = () => {
         return videos.map(video => {
-            const {_id, name, url, description, price, imageLink} = video
+            const {_id, name, url, description, price, imageLink, vidCollection} = video
             
             const userHasVideo = (userVideos && userId) ? userVideos.find(userVid => userVid.url === url) : ''
             
@@ -127,8 +136,8 @@ export default ({userVideos, isOwner, userId}) => {
                     <Button variant="dark" onClick={() => history.push('/kosik')}>Prejsť k platbe</Button>
                 </Alert>}
             {isOwner && <Button variant="dark" onClick={() => setAddVideoPopup(true)} >Pridat Video</Button>}
-            {isOwner && <AddVideo addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
-            {typeof passEditProps === 'object' && isOwner && <EditVideo passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
+            {isOwner && <AddVideo vidCollections={vidCollections} addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
+            {typeof passEditProps === 'object' && isOwner && <EditVideo vidCollections={vidCollections} passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
             {typeof showVideoPopup === 'object' && <VideoModal setAddAlert={setAddAlert} showVideoPopup={showVideoPopup} setShowVideoPopup={setShowVideoPopup} />}
             <Row className="py-4">
                 {videos && showVideos()}

@@ -92,12 +92,12 @@ router.route("/:orderId/process-payment/").post((req, res) => {
   
       orderFound
         .save()
-        .then(() => res.json(`Payment updated!`))
+        .then(() => res.status(200).json(`success: Payment updated!`))
         .catch((error) => res.status(400).json(`Error: ${error}`));
     } else if (!orderFound) {
-      return res.status(404).json(`Order missing, order not processed!`)
+      return res.status(200).json(`failed: Order missing, order not processed!`)
     } else {
-      return res.status(204).json(`Order processed.`)
+      return res.status(200).json(`failed: Order already processed.`)
     }
   });
 });

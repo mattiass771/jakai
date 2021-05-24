@@ -11,7 +11,6 @@ import Pages from "./components/Shop/Pages";
 import Login from "./components/Login/Login";
 import ShopOnline from "./components/Shop/shopOnline/ShopOnline"
 import ShoppingCart from "./components/Cart/ShoppingCart"
-import PayGate from "./components/Cart/PayGate"
 import Orders from "./components/Payment/Orders"
 import SuccessPayment from "./components/Payment/SuccessPayment";
 import RejectPayment from "./components/Payment/RejectPayment";
@@ -128,7 +127,10 @@ export default () => {
             <Route exact path={`/rozvrh`}>
               <SinglePage isOwner={userData.isOwner} pageId={`6050e08fb8a35737f49e1552`} identificator={`rozvrh`} />
             </Route>
-            <Route exact path={`/videa`}>
+            <Route exact path={`/videa/:kolekcia`}>
+              <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} identificator={`videoCollection`} />
+            </Route>
+            <Route exact path={`/videa/`}>
               <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} pageId={`60701288c633d417d6dc66a7`} identificator={`videos`} />
             </Route>
             <Route exact path={`/moje-videa`}>

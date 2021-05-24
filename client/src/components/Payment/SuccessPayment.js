@@ -1,5 +1,6 @@
-import React, {useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import emailjs from 'emailjs-com'
 
 import { useLocation, Link } from "react-router-dom";
 
@@ -13,16 +14,31 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-export default ({userId, updateVideos, setUpdateVideos}) => {
+export default ({updateVideos, setUpdateVideos}) => {
     let query = useQuery();
     const orderId = query.get('Reference')
     const result = query.get('ResultCode')
     const paymentId = query.get('PaymentRequestId')
 
+    const [orderInfo, setOrderInfo] = useState('')
+
     useEffect(() => {
         if (orderId && orderId.length !== 0) {
             axios.post(`http://localhost:5000/orders/${orderId}/process-payment/`, {paymentResultCode: result, paymentId})
-                .then(res => console.log(res.data))
+                .then(res => {
+                    const result = res.data
+                    if (result.includes('success')) {
+                        console.log('can send mail')
+                        // emailjs.send('service_vuw0yrm', 'template_81fhk39', emailData, 'user_VzT160xQwoARc06cLseSO')
+                        //     .then((result) => {
+                        //         console.log('mail created.')
+                        //     }, (error) => {
+                        //         console.log('error mail', error)
+                        // });
+                    } else {
+                        return console.log(result)
+                    }
+                })
                 .catch(err => err && console.log(err))
                 .then(() => {
                     localStorage.removeItem('jakaiVideoShop')
