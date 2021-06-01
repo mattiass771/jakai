@@ -33,7 +33,7 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
     const [vidCollections, setVidCollections] = useState([])
 
     useEffect(() => {
-        setSubPageId(kolekcia)
+        setSubPageId(`${kolekcia}-video`)
     }, [kolekcia])
 
     useEffect(() => {

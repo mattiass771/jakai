@@ -21,7 +21,7 @@ body {
 }
 
 a:link {
-  color:#AE1865 !important;
+  color:rgb(174, 24, 101) !important;
 }
 
 a:link:hover {
@@ -36,6 +36,14 @@ a {
 a:hover {
   color:#b4648e !important;
   text-decoration: none;
+}
+
+.online-kurz {
+  background-color: rgba(174, 24, 101, 0.5)
+}
+
+.online-kurz:hover {
+  background-color: rgba(174, 24, 101, 1)
 }
 
 ul {

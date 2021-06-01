@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import shortid from 'shortid';
 
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
@@ -17,12 +16,13 @@ export default ({ userData, category }) => {
   const owner = userData.fullName;
 
   const handleOpenShop = () => {
+    const url = pageName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[ ]/g, '-')
     axios
       .post(`http://localhost:5000/page/add`, {
         pageName,
         owner,
         description,
-        url: shortid.generate(),
+        url,
         category
       })
       .then((res) => console.log(res.data))

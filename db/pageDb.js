@@ -29,6 +29,7 @@ const pageSchema = new Schema({
   category: {type: String },
   pageType: {type: String },
   blocks: {type: Array},
+  videoCollection: { type: String, required: true, default: 'none' }
 });
 
 const Page = mongoose.model("Page", pageSchema);
@@ -46,6 +47,15 @@ router.route("/:pageId").get((req, res) => {
     .then((page) => res.json(page))
     .catch((err) => res.status(400).json(`Error: ${err} !`));
 });
+
+router.route("/get-video-collections").post((req, res) => {
+  Page.find()
+    .then((pages) => {
+      const collections = pages.filter(page => (page.url).includes('-video'))
+      res.json(collections)
+    })
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+})
 
 router.route("/owner/:userId").get((req, res) => {
   const userId = req.params.userId;

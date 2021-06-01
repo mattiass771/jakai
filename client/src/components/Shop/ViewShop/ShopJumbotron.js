@@ -14,6 +14,7 @@ import Dropzone from "react-dropzone-uploader";
 
 import { BsUpload } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
+import { FaVideo } from "react-icons/fa";
 
 import { SlideDown } from "react-slidedown";
 import "react-slidedown/lib/slidedown.css";
@@ -41,11 +42,11 @@ export default ({ pageData, isOwner }) => {
   const [category, setCategory] = useState(pageData.category)
   const [imageLink, setImageLink] = useState('');
   const [overviewImage, setOverviewImage] = useState('');
-  const [localUploadingTitle, setLocalUploadingTitle] = useState(false)
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
   const [localUploadingLogoImage, setLocalUploadingLogoImage] = useState(false)
   const [logoImage, setLogoImage] = useState(pageData.logoImage)
   const [pageType, setPageType] = useState(pageData.pageType)
+  const [showVideoCollection, setShowVideoCollection] = useState(pageData.videoCollection || 'none')
   
   ClassicEditor.defaultConfig = editorConfig
 
@@ -80,9 +81,7 @@ export default ({ pageData, isOwner }) => {
       deleteFile(meta);
     }
     if (status === "done") {
-      if (localUploadingTitle) {
-        setImageLink(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
-      } else if (localUploadingOverview) {
+      if (localUploadingOverview) {
         setOverviewImage(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
       } else if (localUploadingLogoImage) {
         setLogoImage(`${pageData._id}-${meta.name.replace(/_/g,'-')}`);
@@ -248,24 +247,63 @@ export default ({ pageData, isOwner }) => {
   }
 
   const handleLocalUploadingOverview = () => {
-    setLocalUploadingTitle(false)
     setLocalUploadingLogoImage(false)
     setLocalUploadingOverview(true)
   }
 
-  const handleLocalUploadingTitle = () => {
-    setLocalUploadingOverview(false)
-    setLocalUploadingLogoImage(false)
-    setLocalUploadingTitle(true)
-  }
-
   const handleLocalUploadingLogoImage = () => {
     setLocalUploadingOverview(false)
-    setLocalUploadingTitle(false)
     setLocalUploadingLogoImage(true)
   }
 
-  console.log(logoImage)
+  const checkIfCollectionExists = async () => {
+    return axios.post(`http://localhost:5000/page/get-video-collections`)
+      .then(async res => {
+        const result = await res.data
+        const exists = result.some(coll => coll.url === `${currentUrl}-video`)
+
+        if (exists) {
+          return true
+        } else {
+          return false
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+  const openVideoCollection = () => {
+    if (showVideoCollection === 'none') {
+      setShowVideoCollection(currentUrl)
+      axios
+        .put(
+          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}`
+        )
+        .then(async (res) => {
+          if (await checkIfCollectionExists(currentUrl)) {
+            console.log('vid collection exists : ', currentUrl, pageName)
+            return
+          } else {
+            console.log('vid collection doesnt exist : ', currentUrl, pageName)
+            const newVidCollectionPage = { pageName, url: `${currentUrl}-video`, description: `Podstranka pre kolekciu videi ${pageName}`}
+            axios
+              .post(`http://localhost:5000/page/add`, newVidCollectionPage)
+                .then((res) => console.log(res.data))
+                .catch((err) => err && console.log(`Error catched: ${err}`));
+          }
+        })
+        .catch((err) => err && handleError(err));
+    } else {
+      setShowVideoCollection('none')
+      axios
+        .put(
+          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/none`
+        )
+        .then((res) => {
+          return;
+        })
+        .catch((err) => err && handleError(err));
+    } 
+  }
 
   return (
     <>
@@ -277,23 +315,34 @@ export default ({ pageData, isOwner }) => {
                       padding: '40px 60px'            
                       }} fluid>
       {!editMode ?
-        <Row style={{padding: '15px'}}>
-          {logoImage && 
+        <>
+          <Row style={{padding: '15px'}}>
+            {logoImage && 
+              <Col>
+                <Image src={getImage(logoImage)} style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} rounded fluid />
+              </Col>
+            }
             <Col>
-              <Image src={getImage(logoImage)} style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} rounded fluid />
+            <span className="text-center">
+              <h2>{pageName}</h2>
+              {pageType && <h4>{pageType}</h4>}
+            </span>
+              <p dangerouslySetInnerHTML={{__html: description}}></p>
+            <span className="text-center">
+              <p>{owner}</p>
+            </span>
             </Col>
-          }
-          <Col>
-          <span className="text-center">
-            <h2>{pageName}</h2>
-            {pageType && <h4>{pageType}</h4>}
-          </span>
-            <p dangerouslySetInnerHTML={{__html: description}}></p>
-          <span className="text-center">
-            <p>{owner}</p>
-          </span>
-          </Col>
-        </Row>
+          </Row>
+          {showVideoCollection !== 'none' &&
+          <Row className="justify-content-center text-center" style={{padding: '15px'}}>
+            <Col className="online-kurz" style={{borderRadius: '15px', color: 'whitesmoke', cursor: 'pointer' }} 
+              onClick={() => history.push(`/videa/${showVideoCollection}`)}>
+              <h3>Kurz si môžete vychutnať aj <strong>ONLINE</strong>.</h3>
+              <h4>Kliknite sem a prejdite na naše video kurzy.</h4>
+              <FaVideo style={{fontSize: '300%'}} />
+            </Col>
+          </Row>}
+        </>
         :
         <>
           <Row className="justify-content-center">
@@ -394,8 +443,6 @@ export default ({ pageData, isOwner }) => {
           </Row>
           <Row className="justify-content-md-center">
             <Col className="text-center">
-              <Button variant="dark" onClick={() => handleLocalUploadingTitle()}>Uploadni titulku</Button>
-              &nbsp;&nbsp;&nbsp;&nbsp;
               <Button variant="dark" onClick={() => handleLocalUploadingOverview()}>Uploadni kartu</Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Button variant="dark" onClick={() => handleLocalUploadingLogoImage()}>Uploadni logo</Button>
@@ -403,7 +450,7 @@ export default ({ pageData, isOwner }) => {
           </Row>
         </>
         }
-        {((localUploadingTitle || localUploadingOverview || localUploadingLogoImage) && editMode) ? 
+        {((localUploadingOverview || localUploadingLogoImage) && editMode) ? 
         <SlideDown className={"my-dropdown-slidedown"}>
         <Row>
           <Col>
@@ -420,7 +467,7 @@ export default ({ pageData, isOwner }) => {
                   key="label"
                   style={{ marginTop: "15px", color: "#333333" }}
                 >
-                  Sem pretiahni alebo klikni a nahraj {localUploadingTitle ? 'titulku' : localUploadingLogoImage ? 'logo' : 'kartu'}.
+                  Sem pretiahni alebo klikni a nahraj {localUploadingLogoImage ? 'logo' : 'kartu'}.
                   <br />
                   <BsUpload />
                 </p>
@@ -444,6 +491,11 @@ export default ({ pageData, isOwner }) => {
             {isUrlAvailible ? 
             <Button onClick={() => setEditMode(editMode ? false : true)} variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button> :
             <Button disabled variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
+            <br />
+            {showVideoCollection === 'none' ?
+              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Otvoriť online kurz!</Button> :
+              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Zavrieť online kurz!</Button>
+            }
           </Col>
         </Row>}
     </Jumbotron>

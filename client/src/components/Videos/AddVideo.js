@@ -34,7 +34,7 @@ export default ({addVideoPopup, setAddVideoPopup, vidCollections}) => {
     const handleNewCollection = () => {
         const formatted = vidCollection.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         const queried = formatted.toLowerCase().replace(/[ ]/g, '-')
-        const newVidCollectionPage = { pageName: vidCollection, url: queried, description: `Podstranka pre kolekciu videi ${vidCollection}`}
+        const newVidCollectionPage = { pageName: vidCollection, url: `${queried}-video`, description: `Podstranka pre kolekciu videi ${vidCollection}`}
         axios
           .post(`http://localhost:5000/page/add`, newVidCollectionPage)
             .then((res) => console.log(res.data))

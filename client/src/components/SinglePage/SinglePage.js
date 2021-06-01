@@ -16,13 +16,11 @@ export default ({videos, isOwner, pageId, identificator, userId}) => {
         setLoading(true)
         if (['videoCollection'].includes(identificator)) {
             setLoading(false)
-            console.log(subPageId)
             if (typeof subPageId === 'string' && subPageId.length > 0) {
-
-                console.log('hit', subPageId)
                 axios.get(`http://localhost:5000/page/link/${subPageId}`)
                     .then(res => {
                         setSinglePageData(res.data)
+                        setSubPageId('')
                     })
                     .catch(err => console.log(err))
             }
