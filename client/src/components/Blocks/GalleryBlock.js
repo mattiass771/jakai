@@ -20,7 +20,7 @@ export default ({title, text, images }) => {
     const showImages = () => {
         return images.map(image => {
             return (
-                <Col 
+                <div 
                     onClick={() => setExpand(image)} 
                     className={`
                         mt-4
@@ -30,7 +30,7 @@ export default ({title, text, images }) => {
                         ${images.length === 4 && 'col-xs-12 col-md-6'} 
                         ${!(images.length % 4) && images.length > 4 && 'col-xs-12 col-md-6 col-lg-4 col-xl-3'}
                         ${images.length > 4 && images.length < 8 && 'col-xs-12 col-md-6 col-lg-4'} 
-                        ${images.length > 9 && 'col-xs-12 col-md-6 col-lg-4 col-xl-3'} 
+                        ${images.length >= 8 && 'col-xs-12 col-md-6 col-lg-4 col-xl-3'} 
                     `}
                     style={{maxHeight: '450px', cursor: 'pointer'}}
                     key={image}
@@ -45,7 +45,7 @@ export default ({title, text, images }) => {
                         src={getImage(image)} 
                         rounded 
                     />
-                </Col>
+                </div>
             )
         })
     }

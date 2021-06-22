@@ -51,7 +51,7 @@ router.route("/:pageId").get((req, res) => {
 router.route("/get-video-collections").post((req, res) => {
   Page.find()
     .then((pages) => {
-      const collections = pages.filter(page => (page.url).includes('-video'))
+      const collections = pages.filter(page => page.videoCollection !== 'none')
       res.json(collections)
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
@@ -99,6 +99,8 @@ router.route("/:pageId/update-page/:find/:replace").put((req, res) => {
   const { pageId, find, replace } = req.params;
 
   const newValue = replace.replace(/_/g, " ");
+
+  console.log(pageId, find, newValue)
 
   Page.findById(pageId, (err, pageFound) => {
     if (err) return console.log(err.data);

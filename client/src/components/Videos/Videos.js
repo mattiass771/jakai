@@ -63,7 +63,7 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
                 <Col className="py-4" key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
                     {isOwner &&
                         <Button
-                            onClick={() => setPassEditProps({_id, name, url, description, price, imageLink})}
+                            onClick={() => setPassEditProps({_id, name, url, description, price, imageLink, vidCollection})}
                             style={{
                                 width: "40px",
                                 height: "40px",
@@ -136,8 +136,8 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
                     <Button variant="dark" onClick={() => history.push('/kosik')}>Prejsť k platbe</Button>
                 </Alert>}
             {isOwner && <Button variant="dark" onClick={() => setAddVideoPopup(true)} >Pridat Video</Button>}
-            {isOwner && <AddVideo vidCollections={vidCollections} addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
-            {typeof passEditProps === 'object' && isOwner && <EditVideo vidCollections={vidCollections} passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
+            {isOwner && <AddVideo kolekcia={kolekcia} addVideoPopup={addVideoPopup} setAddVideoPopup={setAddVideoPopup} />}
+            {typeof passEditProps === 'object' && isOwner && <EditVideo kolekcia={kolekcia} passEditProps={passEditProps} setPassEditProps={setPassEditProps} />}
             {typeof showVideoPopup === 'object' && <VideoModal setAddAlert={setAddAlert} showVideoPopup={showVideoPopup} setShowVideoPopup={setShowVideoPopup} />}
             <Row className="py-4">
                 {videos && showVideos()}

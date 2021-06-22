@@ -39,10 +39,12 @@ router.route("/get-videos-from-collection/:collect").post((req, res) => {
         const formatted = vidCollection.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         const queried = formatted.toLowerCase().replace(/[ ]/g, '-')
         const final = queried.replace('-video', '')
+        console.log(collect, final, final===collect)
         if (final === collect) {
           return vid
         }
       })
+      console.log(collectionVideos)
       res.json(collectionVideos)
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));

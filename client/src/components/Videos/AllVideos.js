@@ -57,7 +57,7 @@ export default () => {
     }
 
     return (
-        <Container>
+        <Container className="whitesmoke-bg-pless" fluid>
             <Row>
                 {showCollections()}
             </Row>

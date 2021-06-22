@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown"
 import Nav from "react-bootstrap/Nav";
 
 import logo from "./logojakai.png"
@@ -12,6 +13,8 @@ import {FiShoppingCart} from "react-icons/fi"
 export default ({ isLoggedIn, handleLogOut, userName }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0); 
   const [visible, setVisible] = useState(true);
+  const [selectedCourses, setSelectedCourses] = useState('PROGRAMY')
+  const [selectedPricing, setSelectedPricing] = useState('CENNÍK')
 
   const limit = Math.max( 
     document.body.scrollHeight, 
@@ -29,7 +32,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
     zIndex: '+2',
     color: '#AE1865',
     backgroundColor: 'whitesmoke',
-    fontSize: '120%'
+    fontSize: '110%'
   }
 
   const logoStyles = {
@@ -65,7 +68,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
           
         />
     </div>
-    <Navbar collapseOnSelect className="justify-content-center" style={{...navbarStyles, top: visible ? '0' : '-169px', paddingTop: '100px'}} variant="light" expand="lg">
+    <Navbar collapseOnSelect className="justify-content-center" style={{...navbarStyles, top: visible ? '0' : '-169px', paddingTop: '100px'}} variant="light" expand="md">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="row justify-content-center text-center">
         <Nav className="my-4 my-md-0">
@@ -73,29 +76,34 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
               DOMOV
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/rozvrh" to="/rozvrh" className="navihover  text-nowrap pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+          <Nav.Link as={Link} href="/rozvrh" to="/rozvrh" className="navihover  pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
               ROZVRH
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/lekcie-kurzy" to="/lekcie-kurzy" className="navihover  text-nowrap pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-              LEKCIE A KURZY
-          </Nav.Link>
+          <NavDropdown title={<span style={{color: '#333333'}}>{selectedCourses}</span>} id="basic-nav-dropdown" className="navihover">
+            <Nav.Link onClick={() => setSelectedCourses('LEKCIE A KURZY')} as={Link} href="/lekcie-kurzy" to="/lekcie-kurzy" className="navihover  pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+                LEKCIE A KURZY
+            </Nav.Link>
 
-          <Nav.Link as={Link} href="/workshopy" to="/workshopy" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-               WORKSHOPY
-          </Nav.Link>
+            <Nav.Link onClick={() => setSelectedCourses('WORKSHOPY')} as={Link} href="/workshopy" to="/workshopy" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+                WORKSHOPY
+            </Nav.Link>
 
-          <Nav.Link as={Link} href="/lektori" to="/lektori" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-              LEKTORI
-          </Nav.Link>
+            <Nav.Link onClick={() => setSelectedCourses('LEKTORI')} as={Link} href="/lektori" to="/lektori" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+                LEKTORI
+            </Nav.Link>
+          </NavDropdown>
 
-          <Nav.Link as={Link} href="/ceny" to="/ceny" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-              CENY
-          </Nav.Link>
+          <NavDropdown title={<span style={{color: '#333333'}}>{selectedPricing}</span>} id="basic-nav-dropdown" className="navihover">
+            <Nav.Link onClick={() => setSelectedPricing('CENY')} as={Link} href="/ceny" to="/ceny" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+                CENY
+            </Nav.Link>
 
-          <Nav.Link as={Link} href="/cennikprenajmu" to="/cennikprenajmu" className="navihover  text-nowrap pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-            CENNÍK PRENÁJMU
-          </Nav.Link>
+            <Nav.Link onClick={() => setSelectedPricing('CENNÍK PRENÁJMU')} as={Link} href="/cennikprenajmu" to="/cennikprenajmu" className="navihover  pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+              CENNÍK PRENÁJMU
+            </Nav.Link>
+          </NavDropdown>
+
 
           <Nav.Link as={Link} href="/galeria" to="/galeria" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
               GALÉRIA

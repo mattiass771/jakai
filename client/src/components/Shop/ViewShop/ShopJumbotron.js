@@ -260,7 +260,7 @@ export default ({ pageData, isOwner }) => {
     return axios.post(`http://localhost:5000/page/get-video-collections`)
       .then(async res => {
         const result = await res.data
-        const exists = result.some(coll => coll.url === `${currentUrl}-video`)
+        const exists = result.some(coll => coll.videoCollection === currentUrl)
 
         if (exists) {
           return true
@@ -274,6 +274,7 @@ export default ({ pageData, isOwner }) => {
   const openVideoCollection = () => {
     if (showVideoCollection === 'none') {
       setShowVideoCollection(currentUrl)
+      console.log(currentUrl)
       axios
         .put(
           `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}`
