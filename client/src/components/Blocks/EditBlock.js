@@ -27,6 +27,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     const [variant, setVariant] = useState(blockData.variant || '')
     const [really, setReally] = useState(false)
     const [images, setImages] = useState(blockData.images || '')
+    const [isVideo, setIsVideo] = useState((blockData.imageLink).includes('youtube') || (blockData.imageLink).includes('vimeo'))
 
     ClassicEditor.defaultConfig = editorConfig
 
@@ -130,15 +131,64 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                     />
                     </Col>
                 </Row>
-                <SlideDown className={"my-dropdown-slidedown"}>
-                {variant !== 'gallery' &&
-                    (imageLink ? 
-                        <Row className="justify-content-center text-center">
-                            <Col className="form-group">
-                            <img style={{height:'110px', width: '160px'}} src={getImage(imageLink) ? getImage(imageLink) : imageLink} />
-                            <Button onClick={() => setImageLink('')} variant="dark" size="sm" >Vymazat obrazok</Button>
-                            </Col>
-                        </Row> :
+                <Row>
+                    <Col>
+                        <Button variant="dark" onClick={() => setIsVideo(!isVideo)}>
+                            {isVideo ? 'Prepnúť na obrázok' : 'Prepnúť na video'}
+                        </Button>
+                    </Col>
+                </Row>
+                <br />
+                {isVideo ? 
+                    <Row>
+                        <Col>
+                            <label htmlFor="imageLink">Link na video:</label>
+                            <input
+                                value={imageLink}
+                                className="form-control text-center"
+                                name="imageLink"
+                                type="text"
+                                onChange={(e) => setImageLink(e.target.value)}
+                            />
+                        </Col>
+                    </Row> :
+                    <SlideDown className={"my-dropdown-slidedown"}>
+                    {variant !== 'gallery' &&
+                        (imageLink ? 
+                            <Row className="justify-content-center text-center">
+                                <Col className="form-group">
+                                <img style={{height:'110px', width: '160px'}} src={getImage(imageLink) ? getImage(imageLink) : imageLink} />
+                                <Button onClick={() => setImageLink('')} variant="dark" size="sm" >Vymazat obrazok</Button>
+                                </Col>
+                            </Row> :
+                            <Row>
+                                <Col>
+                                    <Dropzone
+                                        maxFiles={1}
+                                        multiple={false}
+                                        canCancel={false}
+                                        getUploadParams={getUploadParams}
+                                        onChangeStatus={handleChangeStatus}
+                                        accept="image/*"
+                                        inputContent={() => (
+                                            <p
+                                            className="text-center"
+                                            key="label"
+                                            style={{ marginTop: "15px", color: "#333333" }}
+                                            >
+                                            Pridat obrazok udalosti. <br />
+                                            <br />
+                                            <BsUpload />
+                                            </p>
+                                        )}
+                                        classNames={{
+                                            dropzone: "dropzoning"
+                                        }}
+                                    />
+                                </Col>
+                            </Row>)}
+                    {variant === 'gallery' &&
+                    <>
                         <Row>
                             <Col>
                                 <Dropzone
@@ -154,7 +204,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                                         key="label"
                                         style={{ marginTop: "15px", color: "#333333" }}
                                         >
-                                        Pridat obrazok udalosti. <br />
+                                        Pridat obrazky do galerie udalosti. <br />
                                         <br />
                                         <BsUpload />
                                         </p>
@@ -164,41 +214,14 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                                     }}
                                 />
                             </Col>
-                        </Row>)}
-                {variant === 'gallery' &&
-                <>
-                    <Row>
-                        <Col>
-                            <Dropzone
-                                maxFiles={1}
-                                multiple={false}
-                                canCancel={false}
-                                getUploadParams={getUploadParams}
-                                onChangeStatus={handleChangeStatus}
-                                accept="image/*"
-                                inputContent={() => (
-                                    <p
-                                    className="text-center"
-                                    key="label"
-                                    style={{ marginTop: "15px", color: "#333333" }}
-                                    >
-                                    Pridat obrazky do galerie udalosti. <br />
-                                    <br />
-                                    <BsUpload />
-                                    </p>
-                                )}
-                                classNames={{
-                                    dropzone: "dropzoning"
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-center text-center">
-                        {showImages()}
-                    </Row>
-                </>
-                }
-            </SlideDown>
+                        </Row>
+                        <Row className="justify-content-center text-center">
+                            {showImages()}
+                        </Row>
+                    </>
+                    }
+                </SlideDown>
+            }
             <br />
             <div className="text-right">
                 {really ? 

@@ -36,6 +36,9 @@ export default ({pageId, blocksData, isOwner}) => {
     },[refresh])
 
     const getImage = (image) => {
+        if (image.includes('youtube') || image.includes('vimeo')) {
+            return image
+        }
         try {
           const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
           return img;
