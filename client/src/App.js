@@ -143,7 +143,7 @@ export default () => {
               <SinglePage isOwner={userData.isOwner} pageId={`6057535298dacf7257d7a4a6`} identificator={`galeria`} />
             </Route>
             <Route exact path={`/kontakt`}>
-              <Contact />
+              <Contact setShowLawPopup={setShowLawPopup} />
             </Route>
             <Route exact path={`/odhlasit-newsletter`}>
               <DeleteFromNewsletter />

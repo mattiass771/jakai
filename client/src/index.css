@@ -15,7 +15,6 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   padding-top: 168px;
-  padding-bottom: 107px;
   --ck-z-default: 100;
   --ck-z-modal: calc( var(--ck-z-default) + 999);
 }
@@ -115,20 +114,12 @@ body:after{
 }
 
 @media only screen and (min-width: 975px) {
-  body {
-    padding-bottom: 107px !important;
-  }
-
   .video-tresholds {
     height: 500px;
   }
 }
 
 @media only screen and (max-width: 974px) {
-  body {
-    padding-bottom: 159px !important;
-  }
-
   .video-tresholds {
     height: 300px;
   }
@@ -137,7 +128,6 @@ body:after{
 @media only screen and (max-width: 767px) {
   body {
     padding-top: 147px !important;
-    padding-bottom: 223px !important;
   }
   .video-tresholds {
     height: 250px;
@@ -147,7 +137,6 @@ body:after{
 @media only screen and (max-width: 522px) {
   body {
     padding-top: 147px !important;
-    padding-bottom: 242px !important;
   }
 
   .video-tresholds {

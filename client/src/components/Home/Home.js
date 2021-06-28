@@ -89,7 +89,7 @@ const showLinks = () => {
     }
       return (
         <>
-          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+          <Col className="py-4" md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
             <Link to={`/lekcie-kurzy`}>
                 <Card className="h-100" onMouseEnter={() => handleMouseOver('lekcie')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} style={{ textAlign:"center", color: "#333333", 
                 border: '1.5px solid white'}} >
@@ -100,7 +100,7 @@ const showLinks = () => {
                 </Card>
             </Link>
           </Col>
-          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+          <Col className="py-4" md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
             <Link to={`/workshopy`}>
                 <Card className="h-100" onMouseEnter={() => handleMouseOver('workshopy')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} style={{ textAlign:"center", color: "#333333", 
                 border: '1.5px solid white'}} >
@@ -111,7 +111,7 @@ const showLinks = () => {
                 </Card>
             </Link>
           </Col>
-          <Col md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
+          <Col className="py-4" md={4} style={{height: '410px', maxWidth: '350px', minWidth: '300px', margin: '0 auto'}}>
             <a className="link-override" rel="noopener noreferrer" target="_blank" href={`https://mohendzodaro.com/kurzy/`}>
                 <Card className={`h-100`} onMouseEnter={() => handleMouseOver('programy')} onTouchStart={() => handleMouseLeave()} onMouseLeave={() => handleMouseLeave()} 
                 style={{ 

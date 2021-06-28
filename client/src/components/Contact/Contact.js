@@ -13,7 +13,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { Checkbox } from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
 
-export default () => {
+export default ({isSmall, setShowLawPopup}) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
@@ -29,7 +29,7 @@ export default () => {
 
         emailjs.sendForm('service_vuw0yrm', 'template_h67jutc', e.target, 'user_VzT160xQwoARc06cLseSO')
         .then((result) => {
-            if (checkedNewsletter) {
+            if (checkedNewsletter || isSmall) {
                 axios.post(`http://localhost:5000/mails/add`, {name, email})
                     .then(res => console.log(res))
                     .catch(err => err && console.log(err))
@@ -48,13 +48,14 @@ export default () => {
     }
 
   return (
-    <div className="whitesmoke-bg-pnine">
+    <div className={isSmall ? "" : "whitesmoke-bg-pnine"}>
         <Container className="py-4">
+            {isSmall ? null : 
             <Row className="mb-4 mt-4 text-center justify-content-center">
                 <Col xs={3}><hr style={{backgroundColor: '#AE1865', height: '1px', marginTop: '22px'}} /></Col>
                 <Col xs={6}><h1>Kontaktujte nás!</h1></Col>
                 <Col xs={3}><hr style={{backgroundColor: '#AE1865', height: '1px', marginTop: '22px'}} /></Col>
-            </Row>
+            </Row>}
             <Form className="contact-form" onSubmit={sendEmail}>
                 <input type="hidden" name="contact_number" />
                 <Row className="justify-content-center text-center mt-2">
@@ -81,6 +82,8 @@ export default () => {
                     />
                     </Col>
                 </Row>
+                {isSmall ? 
+                <input type="hidden" name="message" value={`${name} sa prihlásil na odber Newslettera.`} /> :
                 <Row className="justify-content-center text-center mt-2">
                     <Col md={10}>
                     <label htmlFor="message">Správa</label>
@@ -92,10 +95,10 @@ export default () => {
                         onChange={(e) => setMessage(e.target.value)}
                     />
                     </Col>
-                </Row>
+                </Row>}
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
-                    <em style={{float: 'left'}}>
+                    <em style={{float: 'left', fontSize: isSmall ? '80%' : ''}}>
                         <Checkbox 
                             style={{
                                 cursor: 'pointer',
@@ -107,9 +110,15 @@ export default () => {
                             checked={checkedGdpr}
                             onChange={() => setCheckedGdpr(!checkedGdpr)}
                         />&nbsp;
-                        Súhlasím so spracovávaním osobných údajov (v zmysle Zákona č. 18/2018 Z.z. o ochrane osobných údajov a o zmene a doplnení niektorých zákonov a zákona č. 245/2008 Z.z. o výchove a vzdelávaní v znení neskorších zmien a predpisov)</em>
+                        {isSmall && 
+                            <span>
+                                Chcem odoberať newsletter a týmto súhlasím s odoberaním newslettra eshopu jakai.sk. Tento súhlas môžete odvolať, napríklad <Link to="/odhlasit-newsletter">tu</Link>, alebo na konci každého newsletter emailu.<br />
+                            </span>
+                        }
+                        Súhlasím so <Link to="" onClick={() => setShowLawPopup('obchodne')}>spracovávaním osobných údajov.</Link></em>
                     </Col>
                 </Row>
+                {isSmall ? null : 
                 <Row className="justify-content-center mt-2">
                     <Col md={10}>
                     <em style={{float: 'left'}}>
@@ -124,9 +133,9 @@ export default () => {
                             checked={checkedNewsletter}
                             onChange={() => setCheckedNewsletter(!checkedNewsletter)}
                         />&nbsp;
-                        Chcem odoberať newsletter a týmto súhlasím s odoberaním newslettra eshopu masvino.sk. Tento súhlas môžete odvolať, napríklad <Link to="/odhlasit-newsletter">tu</Link>, alebo na konci každého newsletter emailu.</em>
+                        Chcem odoberať newsletter a týmto súhlasím s odoberaním newslettra eshopu jakai.sk. Tento súhlas môžete odvolať, napríklad <Link to="/odhlasit-newsletter">tu</Link>, alebo na konci každého newsletter emailu.</em>
                     </Col>
-                </Row>
+                </Row>}
                 {success &&
                 <Row className="justify-content-center text-center mt-2">
                     <Col md={10}> 
@@ -146,22 +155,21 @@ export default () => {
                 {sending &&
                 <Row className="justify-content-center text-center mt-2">
                     <Col md={10}> 
-                        <Spinner animation="border" style={{color: 'whitesmoke'}} />
+                        <Spinner animation="border" style={{color: '#333333'}} />
                     </Col>
                 </Row>}
-                {(!checkedGdpr || !name || !email || !message) &&
-                <Row className="justify-content-center text-center mt-2">
-                    <Col>  
-                        <input className="btn btn-dark" type="submit" value="Odoslať" disabled />
-                    </Col>
-                </Row>
-                }
-                {!failed && !success && !sending && checkedGdpr && name && email && message &&
+                {(!failed && !success && !sending && checkedGdpr && name && email && (isSmall || message)) ?
                 <Row className="justify-content-center text-center mt-2">
                     <Col>  
                         <input className="btn btn-dark" type="submit" value="Odoslať" />
                     </Col>
-                </Row>}
+                </Row> : !sending ?
+                <Row className="justify-content-center text-center mt-2">
+                    <Col>  
+                        <input className="btn btn-dark" type="submit" value="Odoslať" disabled />
+                    </Col>
+                </Row> : null
+                }               
             </Form>
         </Container>
     </div>
