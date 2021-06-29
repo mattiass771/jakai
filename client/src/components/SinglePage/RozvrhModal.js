@@ -19,7 +19,7 @@ export default ({showRozvrhPopup, setShowRozvrhPopup, rozvrhLink}) => {
                     height="150">
             </iframe>
             </Modal.Body>
-            <Modal.Footer className="row justify-content-center">
+            <Modal.Footer className="justify-content-center">
                 <Button variant="dark" onClick={() => setShowRozvrhPopup(false)}>
                     Zavrieť
                 </Button>

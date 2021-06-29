@@ -9,6 +9,8 @@ import Card from "react-bootstrap/Card";
 
 import { Link } from "react-router-dom";
 
+import logoDefault from '../../logo-default.jpg'
+
 export default ({userData, pageData, category}) => {
     const [showCreateShop, setShowCreateShop] = useState(false)
     const [isHovered, setIsHovered] = useState("")
@@ -44,7 +46,7 @@ export default ({userData, pageData, category}) => {
                             style={{ textAlign:"center", color: '#333333' }} 
                         id={_id} >
                             <Card.Img className={`${isHovered[_id] === 'none' ? 'scale-out' : 'scale-in'}`} 
-                                style={{height: '65%', width: '100%', objectFit: 'cover'}} src={getImage(chooseImage) ? getImage(chooseImage) : `https://miro.medium.com/max/295/1*i5iqn7xB-l0kLwsJJBYEWQ.jpeg`} />
+                                style={{height: '65%', width: '100%', objectFit: 'cover'}} src={getImage(chooseImage) ? getImage(chooseImage) : logoDefault} />
                             <Card.Body>
                                     <Card.Title>
                                         <h4>

@@ -95,7 +95,7 @@ export default ({ pageData, isOwner }) => {
         .delete(
         `http://localhost:5000/page/${pageData._id}`
         )
-        .then(() => history.push(`/lekciekurzy`))
+        .then(() => history.push(`/`))
         .catch((err) => err && console.log(`Error ${err}`));
   };
 
@@ -505,12 +505,12 @@ export default ({ pageData, isOwner }) => {
         {rozvrhLink && rozvrhLink.length > 5 ? 
           <Row className="mt-4 text-center">
             <Col>
-              <Button onClick={() => setShowRozvrhPopup(true)} variant="danger">Prihlásiť sa na kurz!</Button>
+              <Button onClick={() => setShowRozvrhPopup(true)} variant="danger">Registrácia</Button>
             </Col>
           </Row> : 
           <Row className="mt-4 text-center">
             <Col>
-              <Button onClick={() => history.push('/rozvrh')} variant="danger">Rozvrh lekcií a kurzov v Jakai!</Button>
+              <Button onClick={() => history.push('/rozvrh')} variant="danger">Rozvrh lekcií a kurzov v Jakai</Button>
             </Col>
           </Row>
         }
@@ -523,8 +523,8 @@ export default ({ pageData, isOwner }) => {
             <Button disabled variant="dark">{editMode ? 'Hotovo' : 'Upravit'}</Button>}
             <br />
             {showVideoCollection === 'none' ?
-              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Otvoriť online kurz!</Button> :
-              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Zavrieť online kurz!</Button>
+              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Otvoriť online kurz</Button> :
+              <Button className="mt-4" variant="dark" onClick={() => openVideoCollection()} >Zavrieť online kurz</Button>
             }
           </Col>
         </Row>}

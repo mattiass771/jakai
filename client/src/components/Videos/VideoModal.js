@@ -78,7 +78,7 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
                 </iframe>}
                 {description && <article className="mt-4" dangerouslySetInnerHTML={{__html: description}} />}
             </Modal.Body>
-            <Modal.Footer className="row justify-content-center">
+            <Modal.Footer className="justify-content-center">
                 <Button variant="dark" onClick={() => setShowVideoPopup('')}>
                     Zavrieť
                 </Button>

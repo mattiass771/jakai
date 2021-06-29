@@ -7,10 +7,20 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
+import logoDefault from '../../logo-default.jpg'
 
 export default () => {
     const [collectionData, setCollectionData] = useState([])
     const [isHovered, setIsHovered] = useState("")
+
+    const getImage = (image) => {
+        try {
+          const img = `https://jakaibucket.s3.eu-central-1.amazonaws.com/${image.replace(/_/g, '-')}`
+          return img;
+        } catch {
+          return null;
+        }
+    };
     
     useEffect(() => {
         axios.post(`http://localhost:5000/page/get-video-collections`)
@@ -20,8 +30,9 @@ export default () => {
 
     const showCollections = () => {
         return collectionData.map(collect => {
-            const {_id, pageName, url} = collect
+            const {_id, pageName, url, overviewImage, logoImage} = collect
             const urlFromCollection = url.replace('-video', '')
+            const chooseImage = overviewImage || logoImage
             const handleMouseOver = () => {
                 let hoverObj = {}
                 hoverObj[_id] = 'none'
@@ -32,7 +43,7 @@ export default () => {
             }
             return (
                 <Col className="mt-2 mb-2" md={4} style={{height: "410px", maxWidth: '350px',  minWidth: '300px', margin: '0 auto'}} key={urlFromCollection}>
-                    <Link to={`/videa/${urlFromCollection}`}>
+                    <Link to={`/online-kurzy/${urlFromCollection}`}>
                         <Card className={`h-100`} 
                             onMouseEnter={() => handleMouseOver()} 
                             onMouseLeave={() => handleMouseLeave()} 
@@ -40,7 +51,7 @@ export default () => {
                             id={urlFromCollection} 
                         >
                             <Card.Img className={`${isHovered[_id] === 'none' ? 'scale-out' : 'scale-in'}`} 
-                                style={{height: '65%', width: '100%', objectFit: 'cover'}} src={`https://miro.medium.com/max/295/1*i5iqn7xB-l0kLwsJJBYEWQ.jpeg`} />
+                                style={{height: '65%', width: '100%', objectFit: 'cover'}} src={getImage(chooseImage) ? getImage(chooseImage) : logoDefault} />
                             <Card.Body>
                                     <Card.Title>
                                         <h6>Video kolekcia</h6>

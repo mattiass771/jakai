@@ -127,10 +127,10 @@ export default () => {
             <Route exact path={`/rozvrh`}>
               <SinglePage isOwner={userData.isOwner} pageId={`6050e08fb8a35737f49e1552`} identificator={`rozvrh`} />
             </Route>
-            <Route exact path={`/videa/:kolekcia`}>
+            <Route exact path={`/online-kurzy/:kolekcia`}>
               <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} identificator={`videoCollection`} />
             </Route>
-            <Route exact path={`/videa/`}>
+            <Route exact path={`/online-kurzy/`}>
               <SinglePage userId={userData._id} videos={userData.videos} isOwner={userData.isOwner} pageId={`60701288c633d417d6dc66a7`} identificator={`videos`} />
             </Route>
             <Route exact path={`/moje-videa`}>

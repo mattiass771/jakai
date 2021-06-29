@@ -193,6 +193,9 @@ ul li ol {
 
 .btn-dark {
   background-color: #333333 !important;
+  border-radius: 25px !important;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
 }
 
 .btn-dark:hover {
@@ -203,6 +206,9 @@ ul li ol {
 .btn-danger {
   background-color: #AE1865 !important;
   font-size: 120% !important;
+  border-radius: 25px !important;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
 }
 
 .btn-danger:hover {

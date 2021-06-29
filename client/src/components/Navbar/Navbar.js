@@ -113,8 +113,8 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
               KONTAKT
           </Nav.Link>
 
-          <Nav.Link as={Link} href="/videa" to="/videa" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
-              VIDEÁ
+          <Nav.Link as={Link} href="/online-kurzy" to="/online-kurzy" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
+              ONLINE KURZY
           </Nav.Link>
         </Nav>
         <Nav style={{position: "absolute", right: 16, top: 16}}>

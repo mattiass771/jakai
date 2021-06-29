@@ -17,7 +17,7 @@ export default ({showLawPopup, setShowLawPopup}) => {
                 {showLawPopup === 'reklamacny' && <ReklamacnyPoriadok />}
                 {showLawPopup === 'doprava' && <Doprava />}
             </Modal.Body>
-            <Modal.Footer className="row justify-content-center">
+            <Modal.Footer className="justify-content-center">
                 <Button variant="dark" onClick={() => setShowLawPopup('')}>
                     Zavrieť
                 </Button>
