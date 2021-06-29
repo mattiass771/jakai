@@ -56,7 +56,7 @@ export default ({videos, isOwner, pageId, identificator, userId}) => {
                 <AllVideos />
             }
             {singlePageData && 
-            <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} />}
+            <ViewBlocks pageId={singlePageData._id} blocksData={singlePageData.blocks} isOwner={isOwner} noRozvrh={identificator === 'rozvrh' ? true : false} />}
         </>
     )
 }

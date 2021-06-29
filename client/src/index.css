@@ -113,15 +113,30 @@ body:after{
   background-size: cover;
 }
 
-@media only screen and (min-width: 975px) {
+@media only screen and (min-width: 1440px) {
   .video-tresholds {
     height: 500px;
+  }
+  .page-breaks {
+    padding: 5% 15%
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  .video-tresholds {
+    height: 500px;
+  }
+  .page-breaks {
+    padding: 5% 12%
   }
 }
 
 @media only screen and (max-width: 974px) {
   .video-tresholds {
     height: 300px;
+  }
+  .page-breaks {
+    padding: 5% 10%
   }
 }
 
@@ -132,6 +147,9 @@ body:after{
   .video-tresholds {
     height: 250px;
   }
+  .page-breaks {
+    padding: 5% 5%
+  }
 }
 
 @media only screen and (max-width: 522px) {
@@ -141,6 +159,9 @@ body:after{
 
   .video-tresholds {
     height: 220px;
+  }
+  .page-breaks {
+    padding: 5% 10%
   }
 }
 
@@ -154,7 +175,7 @@ body:after{
 }
 
 .whitesmoke-bg-pless {
-  background-color: rgba(250,250,250,0.5);
+  background-color: rgba(250,250,250,0.8);
 }
 
 .pink-bg-pnine {
@@ -177,6 +198,16 @@ ul li ol {
 .btn-dark:hover {
   background-color: whitesmoke !important;
   color: #333333 !important
+}
+
+.btn-danger {
+  background-color: #AE1865 !important;
+  font-size: 120% !important;
+}
+
+.btn-danger:hover {
+  background-color: whitesmoke !important;
+  color: #AE1865 !important
 }
 
 code {

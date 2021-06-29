@@ -10,7 +10,7 @@ export default ({showRozvrhPopup, setShowRozvrhPopup, rozvrhLink}) => {
             <iframe className="meo-event-calendar" 
                     style={{
                         width: '100%', 
-                        height: '800px', 
+                        height: '80vh', 
                         border: '1px solid #ccc', 
                         borderRadius: '3px'
                     }} 

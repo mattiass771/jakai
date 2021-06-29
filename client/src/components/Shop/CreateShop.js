@@ -11,7 +11,8 @@ import "react-slidedown/lib/slidedown.css";
 // CreateShop.js
 export default ({ userData, category }) => {
   const [pageName, setPageName] = useState("");
-  const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [externalLink, setExternalLink] = useState("");
 
   const owner = userData.fullName;
 
@@ -21,7 +22,8 @@ export default ({ userData, category }) => {
       .post(`http://localhost:5000/page/add`, {
         pageName,
         owner,
-        description,
+        type,
+        externalLink,
         url,
         category
       })
@@ -57,21 +59,35 @@ export default ({ userData, category }) => {
           </Row>
           <Row className="justify-content-md-center">
             <Col md={6} className="form-group">
-              <label htmlFor="setDescription">
-                Základný popis:
+              <label htmlFor="setType">
+                Typ:
               </label>
-              <textarea
-                value={description}
+              <input
+                value={type}
                 className="form-control"
                 type="text"
-                name="setDescription"
-                onChange={(e) => setDescription(e.target.value)}
+                name="setType"
+                onChange={(e) => setType(e.target.value)}
+              />
+            </Col>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Col md={6} className="form-group">
+              <label htmlFor="externalLink">
+                Externý link:
+              </label>
+              <input
+                value={externalLink}
+                className="form-control"
+                type="text"
+                name="externalLink"
+                onChange={(e) => setExternalLink(e.target.value)}
               />
             </Col>
           </Row>
           <Row className="justify-content-md-center">
             <Col md={6} className="text-center">
-              {description && pageName ? 
+              {pageName ? 
               <Button variant="dark" onClick={handleOpenShop}>
                 Hotovo
               </Button> :

@@ -10,8 +10,6 @@ const pageSchema = new Schema({
   owner: { type: String },
   description: {
     type: String,
-    required: true,
-    default: "Pridaj popis"
   },
   imageLink: {
     type: String,
@@ -29,7 +27,8 @@ const pageSchema = new Schema({
   category: {type: String },
   pageType: {type: String },
   blocks: {type: Array},
-  videoCollection: { type: String, required: true, default: 'none' }
+  videoCollection: { type: String, required: true, default: 'none' },
+  externalLink: {type: String}
 });
 
 const Page = mongoose.model("Page", pageSchema);
@@ -79,12 +78,13 @@ router.route("/link/:link").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-  const { pageName, owner, description, url, category } = req.body;
+  const { pageName, owner, type, externalLink, url, category } = req.body;
 
   const addPage = new Page({
     pageName,
     owner,
-    description,
+    pageType: type,
+    externalLink,
     url,
     category
   });
@@ -98,17 +98,31 @@ router.route("/add").post((req, res) => {
 router.route("/:pageId/update-page/:find/:replace").put((req, res) => {
   const { pageId, find, replace } = req.params;
 
+  const noValue = replace === 'ziadna' ? true : false
   const newValue = replace.replace(/_/g, " ");
-
-  console.log(pageId, find, newValue)
 
   Page.findById(pageId, (err, pageFound) => {
     if (err) return console.log(err.data);
-    pageFound[find] = newValue;
+    pageFound[find] = noValue ? '' : newValue;
 
     pageFound
       .save()
       .then(() => res.json(`Page updated!`))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
+});
+
+router.route("/:pageId/update-page-external-link/").put((req, res) => {
+  const { pageId } = req.params;
+  const {externalLink} = req.body;
+
+  Page.findById(pageId, (err, pageFound) => {
+    if (err) return console.log(err.data);
+    pageFound.externalLink = externalLink;
+
+    pageFound
+      .save()
+      .then(() => res.json(`Page externalLink updated!`))
       .catch((error) => res.status(400).json(`Error: ${error}`));
   });
 });

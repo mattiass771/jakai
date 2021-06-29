@@ -44,9 +44,10 @@ export default ({ pageData, isOwner }) => {
   const [overviewImage, setOverviewImage] = useState('');
   const [localUploadingOverview, setLocalUploadingOverview] = useState(false)
   const [localUploadingLogoImage, setLocalUploadingLogoImage] = useState(false)
-  const [logoImage, setLogoImage] = useState(pageData.logoImage)
+  const [logoImage, setLogoImage] = useState(pageData.logoImage || pageData.overviewImage)
   const [pageType, setPageType] = useState(pageData.pageType)
   const [showVideoCollection, setShowVideoCollection] = useState(pageData.videoCollection || 'none')
+  const [externalLink, setExternalLink] = useState(pageData.externalLink || '')
   
   ClassicEditor.defaultConfig = editorConfig
 
@@ -168,16 +169,14 @@ export default ({ pageData, isOwner }) => {
   }
 
   const handleRozvrhLinkChange = () => {
-    if (rozvrhLink) {
-      axios
+    axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink}
+        `http://localhost:5000/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink: rozvrhLink ? rozvrhLink : 'ziadna'}
       )
       .then((res) => {
         return;;
       })
       .catch((err) => err && handleError(err))
-    }
   }
 
   const handleShopNameChange = () => {
@@ -194,16 +193,14 @@ export default ({ pageData, isOwner }) => {
   }
 
   const handlePageTypeChange = () => {
-    if (pageType) {
-      axios
-      .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/pageType/${pageType}`
-      )
-      .then((res) => {
-        return;
-      })
-      .catch((err) => err && handleError(err));
-    }
+    axios
+    .put(
+      `http://localhost:5000/page/${pageData._id}/update-page/pageType/${pageType ? pageType : 'ziadna'}`
+    )
+    .then((res) => {
+      return;
+    })
+    .catch((err) => err && handleError(err));
   }
 
   const handleCategoryChange = () => {
@@ -246,6 +243,20 @@ export default ({ pageData, isOwner }) => {
     }
   }
 
+  const handleExternalLinkChange = () => {
+    if (externalLink) {
+      axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-page-external-link/`,
+        {externalLink}
+      )
+      .then((res) => {
+        return;
+      })
+      .catch((err) => err && handleError(err));
+    }
+  }
+
   const handleLocalUploadingOverview = () => {
     setLocalUploadingLogoImage(false)
     setLocalUploadingOverview(true)
@@ -274,7 +285,6 @@ export default ({ pageData, isOwner }) => {
   const openVideoCollection = () => {
     if (showVideoCollection === 'none') {
       setShowVideoCollection(currentUrl)
-      console.log(currentUrl)
       axios
         .put(
           `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}`
@@ -319,19 +329,20 @@ export default ({ pageData, isOwner }) => {
         <>
           <Row style={{padding: '15px'}}>
             {logoImage && 
-              <Col>
+              <Col xs={12} lg={6} className="mb-2">
                 <Image src={getImage(logoImage)} style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} rounded fluid />
               </Col>
             }
-            <Col>
+            <Col xs={12} lg={logoImage ? 6 : 12}>
             <span className="text-center">
               <h2>{pageName}</h2>
               {pageType && <h4>{pageType}</h4>}
             </span>
               <p dangerouslySetInnerHTML={{__html: description}}></p>
+            {owner && 
             <span className="text-center">
-              <p>{owner}</p>
-            </span>
+              <p><strong>Lektor: </strong>{owner}</p>
+            </span>}
             </Col>
           </Row>
           {showVideoCollection !== 'none' &&
@@ -440,6 +451,17 @@ export default ({ pageData, isOwner }) => {
                 </InputGroup>
                 {!isUrlAvailible && <p style={{color: "red"}}>Adresa uz existuje, vyberte prosim inu.</p>}
               </div>
+              <InputGroup style={{marginTop: 10}}>
+                <p style={{marginRight: 10, marginTop: 5}}>Externá stránka:</p>
+                <input 
+                  className={'form-control text-center'}
+                  value={externalLink} 
+                  onChange={(e) => setExternalLink(e.target.value)} 
+                  onBlur={handleExternalLinkChange}
+                  name="externalLink"
+                  placeholder="napr. mohendzodaro.com/nieco"
+                />
+              </InputGroup>
             </Col>
           </Row>
           <Row className="justify-content-md-center">
@@ -480,11 +502,18 @@ export default ({ pageData, isOwner }) => {
           </Col>
         </Row></SlideDown> : null
         }
-        <Row className="mt-4 text-center">
-          <Col>
-            <Button onClick={() => setShowRozvrhPopup(true)} variant="dark">Prihlasit sa na kurz!</Button>
-          </Col>
-        </Row>
+        {rozvrhLink && rozvrhLink.length > 5 ? 
+          <Row className="mt-4 text-center">
+            <Col>
+              <Button onClick={() => setShowRozvrhPopup(true)} variant="danger">Prihlásiť sa na kurz!</Button>
+            </Col>
+          </Row> : 
+          <Row className="mt-4 text-center">
+            <Col>
+              <Button onClick={() => history.push('/rozvrh')} variant="danger">Rozvrh lekcií a kurzov v Jakai!</Button>
+            </Col>
+          </Row>
+        }
         {isOwner &&
         <Row className="mt-4 text-center">
           <Col>

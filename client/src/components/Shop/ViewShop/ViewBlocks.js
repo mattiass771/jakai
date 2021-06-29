@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 import ParaImageBlock from '../../Blocks/ParaImageBlock'
 import ImageParaBlock from '../../Blocks/ImageParaBlock'
@@ -12,10 +13,13 @@ import AddBlock from '../../Blocks/AddBlock'
 import { MdEdit } from "react-icons/md";
 
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
 
 
-export default ({pageId, blocksData, isOwner}) => {
+export default ({pageId, blocksData, isOwner, noRozvrh}) => { 
+    let history = useHistory()
     const [blocks, setBlocks] = useState([])
     const [passEditProps, setPassEditProps] = useState('')
     const [refresh, setRefresh] = useState(false)
@@ -54,7 +58,7 @@ export default ({pageId, blocksData, isOwner}) => {
             switch(variant) {
                 case 'para-para':
                     return (
-                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
@@ -74,7 +78,7 @@ export default ({pageId, blocksData, isOwner}) => {
                     )
                 case 'para-img':
                     return (
-                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
@@ -94,7 +98,7 @@ export default ({pageId, blocksData, isOwner}) => {
                     )
                 case 'img-para':
                     return (
-                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
@@ -114,7 +118,7 @@ export default ({pageId, blocksData, isOwner}) => {
                     )
                 case 'img-only':
                     return (
-                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
@@ -134,7 +138,7 @@ export default ({pageId, blocksData, isOwner}) => {
                     )
                 case 'gallery':
                     return (
-                        <Row key={_id} className={`justify-content-center ${pinkStripe}`} style={{padding: '40px 60px'}}>
+                        <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
@@ -157,7 +161,7 @@ export default ({pageId, blocksData, isOwner}) => {
         })
     }
     return (
-        <div className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}}>
+        <Container className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}} fluid>
             {typeof passEditProps === 'object'&& isOwner && <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
             {isOwner && <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />}
             <ShowBlocks />
@@ -165,6 +169,12 @@ export default ({pageId, blocksData, isOwner}) => {
             <div className="text-center">
                 <Button className="mt-4" size="sm" variant="success" onClick={() => setAddBlockPopup(true)} >Pridat Blok</Button>
             </div>}
-        </div>
+            {!noRozvrh &&
+            <Row className="mt-4 text-center">
+                <Col>
+                    <Button onClick={() => history.push('/rozvrh')} variant="danger">Rozvrh lekcií a kurzov v Jakai!</Button>
+                </Col>
+            </Row>}
+        </Container>
     )
 }
