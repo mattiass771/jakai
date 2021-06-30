@@ -104,7 +104,6 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
             </Nav.Link>
           </NavDropdown>
 
-
           <Nav.Link as={Link} href="/galeria" to="/galeria" className="navihover   pt-4 pb-3 mr-xl-2 ml-xl-2 mr-lg-1 ml-lg-1 ">
               GALÉRIA
           </Nav.Link>
@@ -126,9 +125,9 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
               <Nav.Link as={Link} href="/objednavky" to="/objednavky" className="navihover  pt-3 pb-3 ">
                 OBJEDNÁVKY
               </Nav.Link>
-              <Nav.Link as={Link} href="/moje-videa" to="/moje-videa" className="navihover  pt-3 pb-3 ">
+              {/* <Nav.Link as={Link} href="/moje-videa" to="/moje-videa" className="navihover  pt-3 pb-3 ">
                 MOJE VIDEÁ
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link as={Link} href="" to="" onClick={() => handleLogOut()} className="navihover  pt-3 pb-3 ">
                 ODHLÁSIŤ
               </Nav.Link>

@@ -32,7 +32,7 @@ export default ({userEmail, isOwner}) => {
                 setOrdersData(validatedOrdersData)
             })
             .catch(err => err && console.log(err.data))
-    }, [])
+    }, [showDeleteModal])
 
     const handleExpanded = (_id) => {
         let newObj = {}
