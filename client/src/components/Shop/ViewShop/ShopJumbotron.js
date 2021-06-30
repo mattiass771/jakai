@@ -48,6 +48,7 @@ export default ({ pageData, isOwner }) => {
   const [pageType, setPageType] = useState(pageData.pageType)
   const [showVideoCollection, setShowVideoCollection] = useState(pageData.videoCollection || 'none')
   const [externalLink, setExternalLink] = useState(pageData.externalLink || '')
+  const [active, setActive] = useState(pageData.active)
   
   ClassicEditor.defaultConfig = editorConfig
 
@@ -154,6 +155,17 @@ export default ({ pageData, isOwner }) => {
     return setTimeout(() => setError(''), 5000)
   }
 
+  const handleActive = () => {
+    axios
+      .put(
+        `http://localhost:5000/page/${pageData._id}/update-page/active/${!active}`
+      )
+      .then((res) => {
+        return setActive(!active)
+      })
+      .catch((err) => err && handleError(err))
+  }
+
   const handleUrlChange = () => {
     if (isUrlAvailible) {
       axios
@@ -174,7 +186,7 @@ export default ({ pageData, isOwner }) => {
         `http://localhost:5000/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink: rozvrhLink ? rozvrhLink : 'ziadna'}
       )
       .then((res) => {
-        return;;
+        return;
       })
       .catch((err) => err && handleError(err))
   }
@@ -371,6 +383,28 @@ export default ({ pageData, isOwner }) => {
               <MdDelete style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
             </Button>
             <Col xs={8}>
+              <InputGroup className="py-4">
+               {active ? 
+                <Button
+                  onClick={() => handleActive()}
+                  style={{
+                    fontSize: '150%'
+                  }}
+                  variant="warning"
+                >
+                  SCHOVAŤ
+                </Button>
+                : <Button
+                    onClick={() => handleActive()}
+                    style={{
+                      fontSize: '150%'
+                    }}
+                    variant="success"
+                  >
+                    PUBLIKOVAŤ
+                  </Button>
+                }
+              </InputGroup>
               <InputGroup>
                 <p style={{marginRight: 10, marginTop: 5}}>Nazov:</p>
                 <input 
@@ -514,7 +548,7 @@ export default ({ pageData, isOwner }) => {
             </Col>
           </Row>
         }
-        {isOwner &&
+        {(isOwner) &&
         <Row className="mt-4 text-center">
           <Col>
             <Alert style={{display: `${error ? 'block' : 'none'}`}} variant="danger">{error}</Alert>

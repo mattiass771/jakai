@@ -28,7 +28,8 @@ const pageSchema = new Schema({
   pageType: {type: String },
   blocks: {type: Array},
   videoCollection: { type: String, required: true, default: 'none' },
-  externalLink: {type: String}
+  externalLink: {type: String},
+  active: {type: Boolean, default: false}
 });
 
 const Page = mongoose.model("Page", pageSchema);

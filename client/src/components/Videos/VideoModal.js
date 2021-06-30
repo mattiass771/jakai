@@ -10,12 +10,12 @@ import Alert from 'react-bootstrap/Alert'
 import {MdLock} from 'react-icons/md'
 
 export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
-    const {name, url, description, price, imageLink, userHasVideo} = showVideoPopup
+    const {name, url, description, price, imageLink, userHasVideo, vidCollection} = showVideoPopup
 
     const handleBuyVideo = (orderObj) => {
         const oldOrders = localStorage.getItem('jakaiVideoShop') || '[]'
         const parsedOldOrders = JSON.parse(oldOrders)
-        const shouldAddOrder = parsedOldOrders.some(order => order.url === orderObj.url)
+        const shouldAddOrder = parsedOldOrders.some(order => order.vidCollection === orderObj.vidCollection)
         if (!shouldAddOrder) {
             const newOrders = [...parsedOldOrders, orderObj] 
             localStorage.setItem('jakaiVideoShop', JSON.stringify(newOrders))
@@ -41,7 +41,7 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
                         className={`box-shad-card video-tresholds`} 
                     >
                         <figure 
-                            onClick={() => handleBuyVideo({name, url, price, imageLink})}
+                            onClick={() => handleBuyVideo({vidCollection, url, price, imageLink})}
                             className="whitesmoke-bg-pless"
                             style={{
                                 width: '100%', 

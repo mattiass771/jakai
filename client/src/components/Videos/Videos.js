@@ -30,7 +30,6 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
     const [passEditProps, setPassEditProps] = useState('')
     const [showVideoPopup, setShowVideoPopup] = useState('')
     const [isHovered, setIsHovered] = useState('')
-    const [vidCollections, setVidCollections] = useState([])
 
     useEffect(() => {
         setSubPageId(`${kolekcia}-video`)
@@ -39,9 +38,6 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
     useEffect(() => {
         axios.post(`http://localhost:5000/videos/get-videos-from-collection/${kolekcia}`)
             .then(res => setVideos(res.data))
-            .catch(err => console.log(err))
-        axios.post(`http://localhost:5000/videos/get-collections`)
-            .then(res => setVidCollections(res.data))
             .catch(err => console.log(err))
     }, [addVideoPopup, passEditProps])
 
@@ -56,8 +52,6 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
                     .then(res => console.log('video removed ', res.data))
                     .catch(err => console.log(err))
             }
-
-            if (userHasVideo) console.log(userHasVideo, moment().toISOString() <= userHasVideo.ttl, userId)
 
             return (
                 <Col className="py-4" key={name.replace(/ /g, '-').toLowerCase()} xs={12} md={6} lg={4}>
@@ -108,7 +102,7 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
                         />
                         <img 
                             className={`box-shad-card ${isHovered === _id ? 'scale-out-marg' : 'scale-in-marg'}`} 
-                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink, userId, userHasVideo})} 
+                            onClick={() => setShowVideoPopup({_id, name, url, description, price, imageLink, userId, userHasVideo, vidCollection})} 
                             onMouseEnter={() => setIsHovered(_id)}
                             onTouchStart={() => setIsHovered(_id)}
                             onMouseLeave={() => setIsHovered('')}

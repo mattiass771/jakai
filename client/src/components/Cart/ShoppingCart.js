@@ -84,7 +84,7 @@ export default ({userId}) => {
 
     const showCartVideos = () => {
         return cartVideos.map(video => {
-            const {name, url, price, imageLink} = video
+            const {vidCollection, url, price, imageLink} = video
             return (
                 <React.Fragment key={url}>
                     <Col style={{height: '150px'}} xs={6} md={3}>
@@ -99,7 +99,7 @@ export default ({userId}) => {
                         />
                     </Col>
                     <Col xs={6} md={3}>
-                        <h3>{name}</h3>
+                        <h3>{vidCollection}</h3>
                         <p>Video číslo: {url}</p>
                         <p>Cena za mesiac: <strong>{price.toFixed(2).toString().replace(/\./, ',')} €</strong></p>
                     </Col>
@@ -143,7 +143,7 @@ export default ({userId}) => {
                 {(cartVideos && cartVideos.length > 0) ?
                 <>
                     <Row className="justify-content-center py-4">
-                        <h2>Vybrané videá</h2>
+                        <h2>Vybrané kolekcie</h2>
                     </Row>
                     <Row className="justify-content-center">
                         {showCartVideos()}

@@ -27,7 +27,9 @@ export default ({userId, isOwner}) => {
           style={{ marginLeft: "49%", marginTop: "20%" }}
           animation="border"
         /> :
-        isUrlAvailible && pageData._id ? 
+        (isUrlAvailible && pageData._id && pageData.active) ?
+        <ViewShop pageData={pageData} isOwner={isOwner} userId={userId} /> :
+        isOwner && !pageData.active ? 
         <ViewShop pageData={pageData} isOwner={isOwner} userId={userId} /> :
         <h5 style={{ marginTop: "20%" }} className="text-center">Pod adresou http://localhost:5000/{shopUrl} ešte neexistuje žiadna stránka.</h5>
         
