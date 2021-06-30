@@ -27,6 +27,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     const [variant, setVariant] = useState('')
     const [isVideo, setIsVideo] = useState(false)
     const [images, setImages] = useState([])
+    const [centered, setCentered] = useState(false)
 
     ClassicEditor.defaultConfig = editorConfig
 
@@ -67,7 +68,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/add`, {pageId, text: description, title, imageLink, variant, images})
+        axios.post(`http://localhost:5000/blocks/add`, {pageId, text: description, title, imageLink, variant, images, centered})
             .then(res => {
                 const newBlock = res.data
                 axios.post(`http://localhost:5000/page/${pageId}/update-blocks/`, {newBlock})
@@ -106,6 +107,13 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
                             type="text"
                             onChange={(e) => setTitle(e.target.value)}
                         />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button variant="dark" onClick={() => setCentered(!centered)}>
+                            {centered ? 'Centrovať text' : 'Vypnúť centrovanie textu'}
+                        </Button>
                     </Col>
                 </Row>
                 <Row className="justify-content-center">

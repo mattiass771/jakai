@@ -2,7 +2,7 @@ import React from 'react'
 
 import Col from 'react-bootstrap/Col'
 
-export default ({title, text}) => {
+export default ({title, text, centered}) => {
     return (
         <>
             {title &&
@@ -10,7 +10,7 @@ export default ({title, text}) => {
                 <h2>{title}</h2>
                 <br />
             </Col>}
-            <Col dangerouslySetInnerHTML={{__html: text}} xs={12} />
+            <Col className={centered ? "text-center" : ""} dangerouslySetInnerHTML={{__html: text}} xs={12} />
         </>
     )
 }

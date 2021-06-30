@@ -299,7 +299,7 @@ export default ({ pageData, isOwner }) => {
       setShowVideoCollection(currentUrl)
       axios
         .put(
-          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}`
+          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}-video`
         )
         .then(async (res) => {
           if (await checkIfCollectionExists(currentUrl)) {
@@ -360,7 +360,7 @@ export default ({ pageData, isOwner }) => {
           {showVideoCollection !== 'none' &&
           <Row className="justify-content-center text-center" style={{padding: '15px'}}>
             <Col className="online-kurz" style={{borderRadius: '15px', color: 'whitesmoke', cursor: 'pointer' }} 
-              onClick={() => history.push(`/videa/${showVideoCollection}`)}>
+              onClick={() => history.push(`/online-kurzy/${showVideoCollection.replace('-video', '')}`)}>
               <h3>Kurz si môžete vychutnať aj <strong>ONLINE</strong>.</h3>
               <h4>Kliknite sem a prejdite na naše video kurzy.</h4>
               <FaVideo style={{fontSize: '300%'}} />

@@ -14,7 +14,7 @@ body {
   color: #333333 !important;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  padding-top: 168px;
+  padding-top: 161px;
   --ck-z-default: 100;
   --ck-z-modal: calc( var(--ck-z-default) + 999);
 }
@@ -142,7 +142,7 @@ body:after{
 
 @media only screen and (max-width: 767px) {
   body {
-    padding-top: 147px !important;
+    padding-top: 143px !important;
   }
   .video-tresholds {
     height: 250px;
@@ -154,7 +154,7 @@ body:after{
 
 @media only screen and (max-width: 522px) {
   body {
-    padding-top: 147px !important;
+    padding-top: 143px !important;
   }
 
   .video-tresholds {

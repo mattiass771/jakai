@@ -99,8 +99,7 @@ export default ({userId}) => {
                         />
                     </Col>
                     <Col xs={6} md={3}>
-                        <h3>{vidCollection}</h3>
-                        <p>Video číslo: {url}</p>
+                        <h5>{vidCollection.replace(/-/g, " ").toUpperCase()}</h5>
                         <p>Cena za mesiac: <strong>{price.toFixed(2).toString().replace(/\./, ',')} €</strong></p>
                     </Col>
                 </React.Fragment>

@@ -53,7 +53,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
 
     const ShowBlocks = () => {
         return blocks.map((block, i) => {
-            const {_id, variant, title, text, imageLink, images} = block
+            const {_id, variant, title, text, imageLink, images, centered} = block
             const pinkStripe = !(i%2) ? 'pink-bg-pnine' : ''
             switch(variant) {
                 case 'para-para':
@@ -61,7 +61,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -73,7 +73,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                                 >
                                     <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                                 </Button>}
-                            <ParaBlock title={title} text={text} />
+                            <ParaBlock title={title} text={text} centered={centered} />
                         </Row>
                     )
                 case 'para-img':
@@ -81,7 +81,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -93,7 +93,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                                 >
                                     <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                                 </Button>}
-                            <ParaImageBlock title={title} text={text} imageLink={getImage(imageLink)} />
+                            <ParaImageBlock title={title} text={text} imageLink={getImage(imageLink)}  centered={centered} />
                         </Row>
                     )
                 case 'img-para':
@@ -101,7 +101,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -113,7 +113,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                                 >
                                     <MdEdit style={{ fontSize: "150%", margin: "0 0 15px -5px" }} />
                                 </Button>}
-                            <ImageParaBlock title={title} text={text} imageLink={getImage(imageLink)} />
+                            <ImageParaBlock title={title} text={text} imageLink={getImage(imageLink)} centered={centered} />
                         </Row>
                     )
                 case 'img-only':
@@ -121,7 +121,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
                                     style={{
                                         width: "40px",
                                         height: "40px",
@@ -141,7 +141,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
                             {isOwner &&
                                 <Button
-                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant})}
+                                    onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
                                     style={{
                                         width: "40px",
                                         height: "40px",

@@ -3,7 +3,7 @@ import React from 'react'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 
-export default ({title, text, imageLink }) => {
+export default ({title, text, imageLink, centered }) => {
     return (
         <>
             {title &&
@@ -35,7 +35,7 @@ export default ({title, text, imageLink }) => {
                     <Image style={{maxHeight: '400px', minHeight: '300px', width: '100%', objectFit: 'cover'}} src={imageLink} rounded fluid />
                 }
             </Col>
-            <Col dangerouslySetInnerHTML={{__html: text}} className="pb-2" xs={{order: 1, span: 12}} md={{order: 12, span: 6}} />
+            <Col dangerouslySetInnerHTML={{__html: text}} className={`${centered ? 'text-center' : ''} pb-2`} xs={{order: 1, span: 12}} md={{order: 12, span: 6}} />
         </>
     )
 }

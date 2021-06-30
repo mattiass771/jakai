@@ -3,7 +3,7 @@ import React from 'react'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 
-export default ({title, text, imageLink }) => {
+export default ({title, text, imageLink, centered }) => {
     return (
         <>
             {title &&
@@ -11,7 +11,7 @@ export default ({title, text, imageLink }) => {
                 <h2>{title}</h2>
                 <br />
             </Col>}
-            <Col dangerouslySetInnerHTML={{__html: text}} xs={12} md={6} className="pb-2" />
+            <Col dangerouslySetInnerHTML={{__html: text}} xs={12} md={6} className={`${centered ? 'text-center' : ''} pb-2`} />
             <Col xs={12} md={6}>
                 {imageLink.includes('youtube') ? 
                     <iframe 

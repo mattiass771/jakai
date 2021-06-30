@@ -28,6 +28,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     const [really, setReally] = useState(false)
     const [images, setImages] = useState(blockData.images || '')
     const [isVideo, setIsVideo] = useState((blockData.imageLink).includes('youtube') || (blockData.imageLink).includes('vimeo'))
+    const [centered, setCentered] = useState(blockData.centered)
 
     ClassicEditor.defaultConfig = editorConfig
 
@@ -67,7 +68,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant, images})
+        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant, images, centered})
             .then(res => {
                 setPassEditProps('')
                 setRefresh(!refresh)
@@ -116,6 +117,13 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
                         type="text"
                         onChange={(e) => setTitle(e.target.value)}
                     />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button variant="dark" onClick={() => setCentered(!centered)}>
+                            {!centered ? 'Centrovať text' : 'Vypnúť centrovanie textu'}
+                        </Button>
                     </Col>
                 </Row>
                 <Row className="justify-content-center">

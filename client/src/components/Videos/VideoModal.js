@@ -56,14 +56,14 @@ export default ({showVideoPopup, setShowVideoPopup, setAddAlert}) => {
                                     opacity: '1.0'
                                 }}
                             />
-                            <Button variant="dark" className={'vertical-center-btn'} style={{fontSize: '150%'}}>Predplatiť video</Button>
+                            <Button variant="dark" className={'vertical-center-btn'} style={{fontSize: '150%'}}>Predplatiť kurz</Button>
                         </figure>
                     </figure>
                     <article className="pt-4" style={{
                         fontSize: '175%',
                         fontWeight: '800',
                     }}>
-                        <p>Toto video si môžete predplatiť.</p>
+                        <p>Toto video môžete pozerať, keď si predplatíte tento online kurz.</p>
                         <p>Cena za mesiac: {price.toFixed(2).toString().replace(/\./g, ',')} €</p>
                     </article>
                 </> : 

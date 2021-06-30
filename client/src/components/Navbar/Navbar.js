@@ -46,7 +46,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
     const currentScrollPos = window.pageYOffset;
     if ((limit - currentScrollPos) < 1750 && currentScrollPos > 250) setVisible(false)
     else {
-      setVisible((prevScrollPos > currentScrollPos) || currentScrollPos < 250 );
+      setVisible(currentScrollPos < 250 );
     }
     setPrevScrollPos(currentScrollPos);
   }
@@ -58,7 +58,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
 
   return (
     <>
-      <div className="text-center w-100" style={{...logoStyles, top: visible ? '0' : '-169px'}}>
+      <div className="text-center w-100" style={{...logoStyles, top: visible ? '0' : '-95px'}}>
         <img
           alt=""
           src={logo}
@@ -68,7 +68,7 @@ export default ({ isLoggedIn, handleLogOut, userName }) => {
           
         />
     </div>
-    <Navbar collapseOnSelect className="justify-content-center" style={{...navbarStyles, top: visible ? '0' : '-169px', paddingTop: '100px'}} variant="light" expand="md">
+    <Navbar collapseOnSelect className="justify-content-center" style={{...navbarStyles, top: visible ? '0' : '-90px', paddingTop: '95px'}} variant="light" expand="md">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="row justify-content-center text-center">
         <Nav className="my-4 my-md-0">
