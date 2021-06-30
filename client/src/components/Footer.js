@@ -20,7 +20,7 @@ export default ({showLawPopup, setShowLawPopup}) => {
     return (
       <div className="pt-4 pb-3" style={{...footerStyles}}>
         <Row style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Col>
+          <Col xs={12} md={6}>
             <Container className="py-4">
               <Row className="text-center">
                 <Col className="mb-2" xs={12}>
@@ -60,7 +60,7 @@ export default ({showLawPopup, setShowLawPopup}) => {
               </Row>
             </Container>
           </Col>
-          <Col>
+          <Col xs={12} md={6}>
             <Contact isSmall={true} setShowLawPopup={setShowLawPopup} />
           </Col>
         </Row>
