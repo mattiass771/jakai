@@ -44,19 +44,19 @@ export default ({showLawPopup, setShowLawPopup}) => {
                   </a>
                 </Col>
               </Row>
-              <Row className="text-center my-2" style={{fontSize: '80%'}}>
-                <Col xs={12}>
+              <Row className="text-center my-2" style={{fontSize: '100%'}}>
+                {/* <Col xs={12}>
                   <span style={{color: '#333333', cursor: 'pointer'}} onClick={() => setShowLawPopup('obchodne')}>Obchodné podmienky</span>
-                </Col>
+                </Col> */}
                 <Col xs={12}>
                   <span style={{color: '#333333', cursor: 'pointer'}} onClick={() => setShowLawPopup('gdpr')}>Ochrana osobných údajov</span>
                 </Col>
                 <Col xs={12}>
                   <span style={{color: '#333333', cursor: 'pointer'}} onClick={() => setShowLawPopup('reklamacny')}>Reklamačný poriadok</span>
                 </Col>
-                <Col xs={12}>
+                {/* <Col xs={12}>
                   <span style={{color: '#333333', cursor: 'pointer'}} onClick={() => setShowLawPopup('doprava')}>Doprava a platba</span>
-                </Col>
+                </Col> */}
               </Row>
             </Container>
           </Col>

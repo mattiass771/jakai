@@ -161,7 +161,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
         })
     }
     return (
-        <Container className="whitesmoke-bg-pless pb-4" style={{fontSize: '120%'}} fluid>
+        <Container className="whitesmoke-bg-pless py-4" style={{fontSize: '120%'}} fluid>
             {typeof passEditProps === 'object'&& isOwner && <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
             {isOwner && <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />}
             <ShowBlocks />

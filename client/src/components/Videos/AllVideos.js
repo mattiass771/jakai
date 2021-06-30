@@ -42,7 +42,7 @@ export default () => {
                 setIsHovered('')
             }
             return (
-                <Col className="mt-2 mb-2" md={4} style={{height: "410px", maxWidth: '350px',  minWidth: '300px', margin: '0 auto'}} key={urlFromCollection}>
+                <Col className="pt-2 pb-2" md={4} style={{height: "410px", maxWidth: '350px',  minWidth: '300px', margin: '0 auto'}} key={urlFromCollection}>
                     <Link to={`/online-kurzy/${urlFromCollection}`}>
                         <Card className={`h-100`} 
                             onMouseEnter={() => handleMouseOver()} 
