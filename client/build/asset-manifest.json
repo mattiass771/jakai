@@ -1,27 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.b4e5fc63.chunk.css",
-    "main.js": "/static/js/main.e0fab00f.chunk.js",
-    "main.js.map": "/static/js/main.e0fab00f.chunk.js.map",
+    "main.css": "/static/css/main.922d0b8c.chunk.css",
+    "main.js": "/static/js/main.a261415d.chunk.js",
+    "main.js.map": "/static/js/main.a261415d.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.0227d7fa.js",
     "runtime-main.js.map": "/static/js/runtime-main.0227d7fa.js.map",
-    "static/css/2.979590fc.chunk.css": "/static/css/2.979590fc.chunk.css",
-    "static/js/2.09730fac.chunk.js": "/static/js/2.09730fac.chunk.js",
-    "static/js/2.09730fac.chunk.js.map": "/static/js/2.09730fac.chunk.js.map",
+    "static/css/2.659406da.chunk.css": "/static/css/2.659406da.chunk.css",
+    "static/js/2.1df600af.chunk.js": "/static/js/2.1df600af.chunk.js",
+    "static/js/2.1df600af.chunk.js.map": "/static/js/2.1df600af.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.33077d657d0c64c510ee7b8285aabe72.js": "/precache-manifest.33077d657d0c64c510ee7b8285aabe72.js",
+    "precache-manifest.e270a5510dc0c41240d19c20f1da420d.js": "/precache-manifest.e270a5510dc0c41240d19c20f1da420d.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.979590fc.chunk.css.map": "/static/css/2.979590fc.chunk.css.map",
-    "static/css/main.b4e5fc63.chunk.css.map": "/static/css/main.b4e5fc63.chunk.css.map",
-    "static/js/2.09730fac.chunk.js.LICENSE.txt": "/static/js/2.09730fac.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/static/media/bg.dcedc949.png",
-    "static/media/logo.png": "/static/media/logo.c8c0a018.png"
+    "static/css/2.659406da.chunk.css.map": "/static/css/2.659406da.chunk.css.map",
+    "static/css/main.922d0b8c.chunk.css.map": "/static/css/main.922d0b8c.chunk.css.map",
+    "static/js/2.1df600af.chunk.js.LICENSE.txt": "/static/js/2.1df600af.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/jakai.28ee484c.jpg",
+    "static/media/default.jpg": "/static/media/default.96f94904.jpg",
+    "static/media/logo-default.jpg": "/static/media/logo-default.2a76f8ed.jpg",
+    "static/media/logojakai.png": "/static/media/logojakai.745e7f12.png"
   },
   "entrypoints": [
     "static/js/runtime-main.0227d7fa.js",
-    "static/css/2.979590fc.chunk.css",
-    "static/js/2.09730fac.chunk.js",
-    "static/css/main.b4e5fc63.chunk.css",
-    "static/js/main.e0fab00f.chunk.js"
+    "static/css/2.659406da.chunk.css",
+    "static/js/2.1df600af.chunk.js",
+    "static/css/main.922d0b8c.chunk.css",
+    "static/js/main.a261415d.chunk.js"
   ]
 }

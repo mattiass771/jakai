@@ -10,8 +10,6 @@ import Button from "react-bootstrap/Button";
 import { Checkbox } from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
 
-const token = process.env.REACT_APP_API_SECRET
-
 // Login.js
 export default ({regSuccess, setRegSuccess, uncheckGdpr, setUncheckGdpr, shoppingCart = false, newUser, setNewUser, setUserInformation, userInformation}) => {
   const [passwordFirst, setPasswordFirst] = useState("");
