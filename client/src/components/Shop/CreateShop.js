@@ -19,7 +19,7 @@ export default ({ userData, category }) => {
   const handleOpenShop = () => {
     const url = pageName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[ ]/g, '-')
     axios
-      .post(`http://localhost:5000/page/add`, {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/page/add`, {
         pageName,
         owner,
         type,

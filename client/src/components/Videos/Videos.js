@@ -36,7 +36,7 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
     }, [kolekcia])
 
     useEffect(() => {
-        axios.post(`http://localhost:5000/videos/get-videos-from-collection/${kolekcia}`)
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/videos/get-videos-from-collection/${kolekcia}`)
             .then(res => setVideos(res.data))
             .catch(err => console.log(err))
     }, [addVideoPopup, passEditProps])
@@ -48,7 +48,7 @@ export default ({setSubPageId, userVideos, isOwner, userId}) => {
             const userHasVideo = (userVideos && userId) ? userVideos.find(userVid => userVid.url === url) : ''
             
             if (userId && typeof userHasVideo === 'object' && userHasVideo.ttl && moment().toISOString() > userHasVideo.ttl) {
-                axios.post(`http://localhost:5000/users/${userId}/expired-video`, {videoId: url})
+                axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}/expired-video`, {videoId: url})
                     .then(res => console.log('video removed ', res.data))
                     .catch(err => console.log(err))
             }

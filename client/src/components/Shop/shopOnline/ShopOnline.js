@@ -12,7 +12,7 @@ export default ({userId, isOwner}) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/page/link/${shopUrl}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/page/link/${shopUrl}`)
             .then((res) => res.data ? setPageData(res.data) : setPageData({}))
             .catch((err) => err && console.log(err))
             .then(() => {
@@ -31,7 +31,7 @@ export default ({userId, isOwner}) => {
         <ViewShop pageData={pageData} isOwner={isOwner} userId={userId} /> :
         isOwner && !pageData.active ? 
         <ViewShop pageData={pageData} isOwner={isOwner} userId={userId} /> :
-        <h5 style={{ marginTop: "20%" }} className="text-center">Pod adresou http://localhost:5000/{shopUrl} ešte neexistuje žiadna stránka.</h5>
+        <h5 style={{ marginTop: "20%" }} className="text-center">Pod adresou https://jakai.sk/{shopUrl} ešte neexistuje žiadna stránka.</h5>
         
     )
 }

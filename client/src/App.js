@@ -34,7 +34,7 @@ export default () => {
   useEffect(() => {
     setLoadingData(true)
     axios
-      .get(`http://localhost:5000/get-user-data`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-user-data`, {
         withCredentials: true
       })
       .then((res) => {
@@ -52,7 +52,7 @@ export default () => {
 
   useEffect(() => {
     if (userData._id) {
-      axios.post(`http://localhost:5000/users/${userData._id}/videos/`)
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/${userData._id}/videos/`)
         .then(res => setUserData({...userData, videos: res.data}))
         .catch(err => console.log('error updating shopping cart...', err))
     }
@@ -60,7 +60,7 @@ export default () => {
 
   const handleLogOut = () => {
     axios
-      .get(`http://localhost:5000/logout`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/logout`, {
         withCredentials: true
       })
       .then(() => {

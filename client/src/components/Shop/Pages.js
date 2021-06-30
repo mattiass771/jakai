@@ -10,7 +10,7 @@ export default ({ userData, category }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/page/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/page/`)
       .then((res) => setPageData(res.data ? res.data : {}))
       .catch((err) => {
         if (err) return console.log(`Fetch error: ${err}`);

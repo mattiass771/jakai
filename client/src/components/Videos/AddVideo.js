@@ -32,7 +32,7 @@ export default ({addVideoPopup, setAddVideoPopup, kolekcia}) => {
     ClassicEditor.defaultConfig = editorConfig
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/videos/add-video`, {name, description, url, price, imageLink, vidCollection: kolekcia})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/videos/add-video`, {name, description, url, price, imageLink, vidCollection: kolekcia})
             .then(res => {
                 setAddVideoPopup(false)
                 setName('')

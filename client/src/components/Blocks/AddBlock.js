@@ -43,7 +43,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
 
     const deleteFile = (file) => {
         axios
-          .get(`http://localhost:5000/deleteFile/${IMAGE_PREFIX}`, {
+          .get(`${process.env.REACT_APP_BACKEND_URL}/deleteFile/${IMAGE_PREFIX}`, {
             params: file
           })
           .then(() => 
@@ -53,7 +53,7 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     };
 
     const getUploadParams = ({ meta }) => {
-        return { url: `http://localhost:5000/fileUpload/${IMAGE_PREFIX}` };
+        return { url: `${process.env.REACT_APP_BACKEND_URL}/fileUpload/${IMAGE_PREFIX}` };
     };
 
     const handleChangeStatus = ({ meta, file }, status) => {
@@ -68,10 +68,10 @@ export default ({addBlockPopup, setAddBlockPopup, pageId, refresh, setRefresh}) 
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/add`, {pageId, text: description, title, imageLink, variant, images, centered})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/blocks/add`, {pageId, text: description, title, imageLink, variant, images, centered})
             .then(res => {
                 const newBlock = res.data
-                axios.post(`http://localhost:5000/page/${pageId}/update-blocks/`, {newBlock})
+                axios.post(`${process.env.REACT_APP_BACKEND_URL}/page/${pageId}/update-blocks/`, {newBlock})
                     .then(blockRes => {
                         setAddBlockPopup(false)
                         document.location.reload()

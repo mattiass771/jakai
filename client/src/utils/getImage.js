@@ -13,7 +13,7 @@ export const getImage = (image) => {
 
 export const deleteFile = (file, imagePrefix) => {
     axios
-      .get(`http://localhost:5000/deleteFile/${IMAGE_PREFIX}`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/deleteFile/${IMAGE_PREFIX}`, {
         params: file
       })
       .then(() => 
@@ -23,5 +23,5 @@ export const deleteFile = (file, imagePrefix) => {
 };
 
 export const getUploadParams = ({ meta }) => {
-    return { url: `http://localhost:5000/fileUpload/${IMAGE_PREFIX}` };
+    return { url: `${process.env.REACT_APP_BACKEND_URL}/fileUpload/${IMAGE_PREFIX}` };
 };

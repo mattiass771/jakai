@@ -31,7 +31,7 @@ export default ({isSmall, setShowLawPopup}) => {
         emailjs.sendForm('service_vuw0yrm', 'template_h67jutc', e.target, 'user_VzT160xQwoARc06cLseSO')
         .then((result) => {
             if (checkedNewsletter || isSmall) {
-                axios.post(`http://localhost:5000/mails/add`, {name, email})
+                axios.post(`${process.env.REACT_APP_BACKEND_URL}/mails/add`, {name, email})
                     .then(res => console.log(res))
                     .catch(err => err && console.log(err))
             }

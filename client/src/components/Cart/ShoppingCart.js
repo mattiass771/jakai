@@ -49,7 +49,7 @@ export default ({userId}) => {
         setOrderId(`JV${moment().unix()}`)
         if (userId) {
             axios
-                .post(`http://localhost:5000/users/get-user/${userId}`)
+                .post(`${process.env.REACT_APP_BACKEND_URL}/users/get-user/${userId}`)
                 .then((res) => {
                     if (res.data) {
                         const {fullName, email, phone, address} = res.data
@@ -109,11 +109,11 @@ export default ({userId}) => {
 
     const processNewOrder = () => {
         console.log({ orderId, userInformation, userId, videos: cartVideos, total: totalPrice })
-        axios.post(`http://localhost:5000/orders/add`, { orderId, userInformation, userId, videos: cartVideos, total: totalPrice })
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/orders/add`, { orderId, userInformation, userId, videos: cartVideos, total: totalPrice })
             .then(res => {
                 console.log('order created!')
                 if (checkedNewsletter) {
-                    axios.post(`http://localhost:5000/mails/add`, {name: userInformation.fullName, email: userInformation.email})
+                    axios.post(`${process.env.REACT_APP_BACKEND_URL}/mails/add`, {name: userInformation.fullName, email: userInformation.email})
                         .then(res => console.log(res))
                         .catch(err => err && console.log(err))
                 }   

@@ -35,7 +35,7 @@ export default ({passEditProps, setPassEditProps, kolekcia}) => {
 
     const handleSave = () => {
         if (videoId) {
-            axios.post(`http://localhost:5000/videos/edit-video/${videoId}`, {name, description, url, price, imageLink, vidCollection})
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/videos/edit-video/${videoId}`, {name, description, url, price, imageLink, vidCollection})
                 .then(res => setPassEditProps(''))
                 .catch(err => alert('Nepodarilo sa upravit video, chyba: ', err))
         }
@@ -43,7 +43,7 @@ export default ({passEditProps, setPassEditProps, kolekcia}) => {
 
     const deleteVideo = () => {
         if (videoId) {
-            axios.post(`http://localhost:5000/videos/delete-video/${videoId}`)
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/videos/delete-video/${videoId}`)
                 .then(res => setPassEditProps(''))
                 .catch(err => alert('Nepodarilo sa vymazat video, chyba: ', err))
         }

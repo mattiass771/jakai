@@ -34,7 +34,7 @@ export default ({userId, isOwner}) => {
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`http://localhost:5000/home/`)
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/home/`)
       .then(res => {
         const description = res.data.descriptionGeneral
         const subTitle = res.data.subTitleGeneral

@@ -85,7 +85,7 @@ router.route("/:orderId/process-payment/").post((req, res) => {
       orderFound.processing = false;
 
       if (['4', '3', '0'].includes(paymentResultCode.toString())) {
-        axios.post(`http://localhost:5000/users/${orderFound.userId}/add-processed-videos/`, {videos: orderFound.videos})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/${orderFound.userId}/add-processed-videos/`, {videos: orderFound.videos})
           .then(res => console.log(res.data))
           .catch(err => console.log(err))
       }

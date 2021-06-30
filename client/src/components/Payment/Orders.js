@@ -25,7 +25,7 @@ export default ({userEmail, isOwner}) => {
     // TODO: pridat moznost znovu zaplatit pri rejected order
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/orders`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/orders`)
             .then(res => {
                 const result = res.data
                 const validatedOrdersData = isOwner ? result : result.filter(obj => obj.email === userEmail)

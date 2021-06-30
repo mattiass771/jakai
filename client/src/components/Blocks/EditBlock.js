@@ -43,7 +43,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
 
     const deleteFile = (file) => {
         axios
-          .get(`http://localhost:5000/deleteFile/${IMAGE_PREFIX}`, {
+          .get(`${process.env.REACT_APP_BACKEND_URL}/deleteFile/${IMAGE_PREFIX}`, {
             params: file
           })
           .then(() => 
@@ -53,7 +53,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     };
 
     const getUploadParams = ({ meta }) => {
-        return { url: `http://localhost:5000/fileUpload/${IMAGE_PREFIX}` };
+        return { url: `${process.env.REACT_APP_BACKEND_URL}/fileUpload/${IMAGE_PREFIX}` };
     };
 
     const handleChangeStatus = ({ meta, file }, status) => {
@@ -68,7 +68,7 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
     };
 
     const handleSave = () => {
-        axios.post(`http://localhost:5000/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant, images, centered})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/blocks/edit-block/${blockData._id}`, {pageId, text: description, title, imageLink, variant, images, centered})
             .then(res => {
                 setPassEditProps('')
                 setRefresh(!refresh)
@@ -78,9 +78,9 @@ export default ({pageId, blockData, setPassEditProps, refresh, setRefresh}) => {
 
     const deleteBlock = () => {
         const blockId = blockData._id
-        axios.delete(`http://localhost:5000/blocks/${blockId}`)
+        axios.delete(`${process.env.REACT_APP_BACKEND_URL}/blocks/${blockId}`)
             .then(res => {
-                axios.post(`http://localhost:5000/page/${pageId}/remove-block/`, {blockId})
+                axios.post(`${process.env.REACT_APP_BACKEND_URL}/page/${pageId}/remove-block/`, {blockId})
                     .then(blockRes => {
                         setReally(false)
                         setPassEditProps('')

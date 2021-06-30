@@ -21,12 +21,12 @@ export default ({userId}) => {
 
     useEffect(() => {
         if (orderId && orderId.length !== 0) {
-            axios.post(`http://localhost:5000/orders/${orderId}/process-payment/`, {paymentResultCode: result, paymentId})
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/orders/${orderId}/process-payment/`, {paymentResultCode: result, paymentId})
                 .then(res => console.log(res.data))
                 .catch(err => err && console.log(err))
                 .then(() => {
                     if (userId) {
-                        axios.get(`http://localhost:5000/users/${userId}/cart/clear-cart`)
+                        axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}/cart/clear-cart`)
                             .then(res => console.log(res.data))
                             .catch(error => error && console.log(error))
                     }

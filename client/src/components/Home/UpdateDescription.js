@@ -15,7 +15,7 @@ export default ({descriptionsPopup, setDescriptionsPopup, forceRefresh, setForce
     const [title, setTitle] = useState(titleText)
 
     const handleSave = () => {
-        axios.put(`http://localhost:5000/home/general-description`, { descriptionGeneral: description, titleGeneral: title, subTitleGeneral: subTitle })
+        axios.put(`${process.env.REACT_APP_BACKEND_URL}/home/general-description`, { descriptionGeneral: description, titleGeneral: title, subTitleGeneral: subTitle })
             .then(res => {
                 console.log(res.data)
                 setForceRefresh(!forceRefresh)

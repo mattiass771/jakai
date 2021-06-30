@@ -63,12 +63,12 @@ export default ({ pageData, isOwner }) => {
 
   // specify upload params and url for your files
   const getUploadParams = ({ meta }) => {
-    return { url: `http://localhost:5000/fileUpload/${pageData._id}` };
+    return { url: `${process.env.REACT_APP_BACKEND_URL}/fileUpload/${pageData._id}` };
   };
 
   const deleteFile = (file) => {
     axios
-      .get(`http://localhost:5000/deleteFile/${pageData._id}`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/deleteFile/${pageData._id}`, {
         params: file
       })
       .then(() => 
@@ -94,7 +94,7 @@ export default ({ pageData, isOwner }) => {
   const deleteCard = (e) => {
     axios
         .delete(
-        `http://localhost:5000/page/${pageData._id}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}`
         )
         .then(() => history.push(`/`))
         .catch((err) => err && console.log(`Error ${err}`));
@@ -104,7 +104,7 @@ export default ({ pageData, isOwner }) => {
     if (imageLink) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/imageLink/${imageLink}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/imageLink/${imageLink}`
       )
       .then((res) => {
         return;
@@ -117,7 +117,7 @@ export default ({ pageData, isOwner }) => {
     if (overviewImage) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/overviewImage/${overviewImage}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/overviewImage/${overviewImage}`
       )
       .then((res) => {
         return;
@@ -130,7 +130,7 @@ export default ({ pageData, isOwner }) => {
     if (logoImage) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/logoImage/${logoImage}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/logoImage/${logoImage}`
       )
       .then((res) => {
         return;
@@ -141,7 +141,7 @@ export default ({ pageData, isOwner }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/page/link/${currentUrl}`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/page/link/${currentUrl}`)
       .then((res) => {
         if (res.data && currentUrl !== newUrl) setIsUrlAvailible(false)
         else setIsUrlAvailible(true)
@@ -158,7 +158,7 @@ export default ({ pageData, isOwner }) => {
   const handleActive = () => {
     axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/active/${!active}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/active/${!active}`
       )
       .then((res) => {
         return setActive(!active)
@@ -170,7 +170,7 @@ export default ({ pageData, isOwner }) => {
     if (isUrlAvailible) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/url/${currentUrl}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/url/${currentUrl}`
       )
       .then((res) => {
         return setNewUrl(currentUrl);
@@ -183,7 +183,7 @@ export default ({ pageData, isOwner }) => {
   const handleRozvrhLinkChange = () => {
     axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink: rozvrhLink ? rozvrhLink : 'ziadna'}
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-rozvrh-link/`, {rozvrhLink: rozvrhLink ? rozvrhLink : 'ziadna'}
       )
       .then((res) => {
         return;
@@ -195,7 +195,7 @@ export default ({ pageData, isOwner }) => {
     if (pageName) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/pageName/${pageName}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/pageName/${pageName}`
       )
       .then((res) => {
         return;
@@ -207,7 +207,7 @@ export default ({ pageData, isOwner }) => {
   const handlePageTypeChange = () => {
     axios
     .put(
-      `http://localhost:5000/page/${pageData._id}/update-page/pageType/${pageType ? pageType : 'ziadna'}`
+      `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/pageType/${pageType ? pageType : 'ziadna'}`
     )
     .then((res) => {
       return;
@@ -219,7 +219,7 @@ export default ({ pageData, isOwner }) => {
     if (category) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/category/${category}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/category/${category}`
       )
       .then((res) => {
         return;
@@ -233,7 +233,7 @@ export default ({ pageData, isOwner }) => {
       console.log('hit', typeof description)
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page-description/`,{description}
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page-description/`,{description}
       )
       .then((res) => {
         return;
@@ -246,7 +246,7 @@ export default ({ pageData, isOwner }) => {
     if (owner) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page/owner/${owner}`
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/owner/${owner}`
       )
       .then((res) => {
         return;
@@ -259,7 +259,7 @@ export default ({ pageData, isOwner }) => {
     if (externalLink) {
       axios
       .put(
-        `http://localhost:5000/page/${pageData._id}/update-page-external-link/`,
+        `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page-external-link/`,
         {externalLink}
       )
       .then((res) => {
@@ -280,7 +280,7 @@ export default ({ pageData, isOwner }) => {
   }
 
   const checkIfCollectionExists = async () => {
-    return axios.post(`http://localhost:5000/page/get-video-collections`)
+    return axios.post(`${process.env.REACT_APP_BACKEND_URL}/page/get-video-collections`)
       .then(async res => {
         const result = await res.data
         const exists = result.some(coll => coll.videoCollection === currentUrl)
@@ -299,7 +299,7 @@ export default ({ pageData, isOwner }) => {
       setShowVideoCollection(currentUrl)
       axios
         .put(
-          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/${currentUrl}-video`
+          `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/videoCollection/${currentUrl}-video`
         )
         .then(async (res) => {
           if (await checkIfCollectionExists(currentUrl)) {
@@ -309,7 +309,7 @@ export default ({ pageData, isOwner }) => {
             console.log('vid collection doesnt exist : ', currentUrl, pageName)
             const newVidCollectionPage = { pageName, url: `${currentUrl}-video`, description: `Podstranka pre kolekciu videi ${pageName}`}
             axios
-              .post(`http://localhost:5000/page/add`, newVidCollectionPage)
+              .post(`${process.env.REACT_APP_BACKEND_URL}/page/add`, newVidCollectionPage)
                 .then((res) => console.log(res.data))
                 .catch((err) => err && console.log(`Error catched: ${err}`));
           }
@@ -319,7 +319,7 @@ export default ({ pageData, isOwner }) => {
       setShowVideoCollection('none')
       axios
         .put(
-          `http://localhost:5000/page/${pageData._id}/update-page/videoCollection/none`
+          `${process.env.REACT_APP_BACKEND_URL}/page/${pageData._id}/update-page/videoCollection/none`
         )
         .then((res) => {
           return;

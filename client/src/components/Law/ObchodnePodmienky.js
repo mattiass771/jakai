@@ -8,7 +8,7 @@ export default () => {
             <p>Predávajúcim a prevádzkovateľom internetového obchodu je spoločnosť:</p>
             <p>Krizanovic &amp; Prievozník, s. r. o. so sídlom Hradská 66/51 900 82 Blatné, IČO: 52510484, zapísaná v obchodnom registri Okresného súdu Bratislava I, odd. Sro, vl.č.  
             138857/B, DIČ: 2121048963 (ďalej tiež ako „predávajúci“ a/alebo tiež ako „prevádzkovateľ“ a/alebo tiež ako „Križanovič &amp; Prievozník, s.r.o.“) je prevádzkovateľom internetového obchodu umiestneného na internetovej adrese: 
-            <a href="http://localhost:5000">masvino.sk </a>. </p>
+            <a href={`${process.env.REACT_APP_BACKEND_URL}`}>masvino.sk </a>. </p>
             <h3>
                 <strong>Objednávanie a nákup tovaru </strong> 
             </h3>

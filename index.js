@@ -126,11 +126,11 @@ app.use(passport.session());
 app.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "http://localhost:3000/login-page"
+    failureRedirect: `${process.env.FRONTEND_URL}/login-page`
   }),
   (req, res) => {
-    if (req.query.shopping === 'cart') return res.redirect('http://localhost:3000/kosik')
-    return res.redirect('http://localhost:3000/')
+    if (req.query.shopping === 'cart') return res.redirect(`${process.env.FRONTEND_URL}/kosik`)
+    return res.redirect(`${process.env.FRONTEND_URL}/`)
   }
 );
 

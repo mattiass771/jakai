@@ -17,7 +17,7 @@ export default ({videos, isOwner, pageId, identificator, userId}) => {
         if (['videoCollection'].includes(identificator)) {
             setLoading(false)
             if (typeof subPageId === 'string' && subPageId.length > 0) {
-                axios.get(`http://localhost:5000/page/link/${subPageId}`)
+                axios.get(`${process.env.REACT_APP_BACKEND_URL}/page/link/${subPageId}`)
                     .then(res => {
                         setSinglePageData(res.data)
                         setSubPageId('')
@@ -25,7 +25,7 @@ export default ({videos, isOwner, pageId, identificator, userId}) => {
                     .catch(err => console.log(err))
             }
         } else {
-            axios.get(`http://localhost:5000/page/${pageId}`)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/page/${pageId}`)
                 .then(res => {
                     setSinglePageData(res.data)
                     setLoading(false)

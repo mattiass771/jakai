@@ -23,7 +23,7 @@ export default () => {
     };
     
     useEffect(() => {
-        axios.post(`http://localhost:5000/page/get-video-collections`)
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/page/get-video-collections`)
             .then(res => setCollectionData(res.data))
             .catch(err => console.log(err))
     }, [])

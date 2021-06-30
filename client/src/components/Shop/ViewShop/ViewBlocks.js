@@ -28,7 +28,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
     useEffect(() => {
         setBlocks([])
         const getData = async id => {
-            await axios.get(`http://localhost:5000/blocks/${id}`).then((res) => {
+            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/blocks/${id}`).then((res) => {
                 if (res.data) setBlocks(prev => [...prev, res.data])
             }).catch(err => console.log('error fetching blocks', err))
         }
