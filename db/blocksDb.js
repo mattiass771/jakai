@@ -10,7 +10,8 @@ const blockSchema = new Schema({
     variant: { type: String, required: true},
     pageId: { type: String },
     images: { type: Array },
-    centered: { type: Boolean, default: false }
+    centered: { type: Boolean, default: false },
+    position: { type: Number}
 });
 
 const Block = mongoose.model("Block", blockSchema);
@@ -64,6 +65,22 @@ router.route("/edit-block/:blockId").post((req, res) => {
         .then(() => res.json(`Block settings updated!`))
         .catch((error) => res.status(400).json(`Error: ${error}`));
     });
+});
+
+router.route("/edit-block-position/:blockId").post((req, res) => {
+  const { blockId } = req.params
+  const { position } = req.body
+
+  Block.findById(blockId, (err, blockFound) => {
+    if (err) return console.log(err.data);
+      
+    blockFound.position = position
+
+    blockFound
+      .save()
+      .then(() => res.json(`Block position updated!`))
+      .catch((error) => res.status(400).json(`Error: ${error}`));
+  });
 });
 
 router.route("/:id").delete((req, res) => {

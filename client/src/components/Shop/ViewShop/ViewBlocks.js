@@ -9,6 +9,7 @@ import ImageBlock from '../../Blocks/ImageBlock'
 import GalleryBlock from '../../Blocks/GalleryBlock'
 import EditBlock from '../../Blocks/EditBlock'
 import AddBlock from '../../Blocks/AddBlock'
+import MoveBlock from '../../Blocks/MoveBlock'
 
 import { MdEdit } from "react-icons/md";
 
@@ -52,13 +53,22 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
     };
 
     const ShowBlocks = () => {
-        return blocks.map((block, i) => {
-            const {_id, variant, title, text, imageLink, images, centered} = block
+        const createSortIndexes = blocks.map((block,i) => {
+            if (block.position >= 0) {
+                return block
+            } 
+            return {...block, position: i}
+        })
+        const sortedBlocks = createSortIndexes.sort((a,b) => a.position - b.position)
+        console.log(sortedBlocks)
+        return sortedBlocks.map((block, i) => {
+            const {_id, variant, title, text, imageLink, images, centered, position} = block
             const pinkStripe = !(i%2) ? 'pink-bg-pnine' : ''
             switch(variant) {
                 case 'para-para':
                     return (
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
+                            {isOwner && <MoveBlock setRefresh={() => setRefresh(!refresh)} max={blocks.length} blockId={_id} prevBlockPosition={sortedBlocks[i -1] && sortedBlocks[i-1].position} nextBlockPosition={sortedBlocks[i +1] && sortedBlocks[i+1].position} prevBlockId={sortedBlocks[i-1] && sortedBlocks[i-1]._id} nextBlockId={sortedBlocks[i+1] && sortedBlocks[i+1]._id} position={position || i} />}
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
@@ -79,6 +89,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                 case 'para-img':
                     return (
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
+                            {isOwner && <MoveBlock setRefresh={() => setRefresh(!refresh)} max={blocks.length} blockId={_id} prevBlockPosition={sortedBlocks[i -1] && sortedBlocks[i-1].position} nextBlockPosition={sortedBlocks[i +1] && sortedBlocks[i+1].position} prevBlockId={sortedBlocks[i-1] && sortedBlocks[i-1]._id} nextBlockId={sortedBlocks[i+1] && sortedBlocks[i+1]._id} position={position || i} />}
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
@@ -99,6 +110,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                 case 'img-para':
                     return (
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
+                            {isOwner && <MoveBlock setRefresh={() => setRefresh(!refresh)} max={blocks.length} blockId={_id} prevBlockPosition={sortedBlocks[i -1] && sortedBlocks[i-1].position} nextBlockPosition={sortedBlocks[i +1] && sortedBlocks[i+1].position} prevBlockId={sortedBlocks[i-1] && sortedBlocks[i-1]._id} nextBlockId={sortedBlocks[i+1] && sortedBlocks[i+1]._id} position={position || i} />}
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
@@ -119,6 +131,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                 case 'img-only':
                     return (
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
+                            {isOwner && <MoveBlock setRefresh={() => setRefresh(!refresh)} max={blocks.length} blockId={_id} prevBlockPosition={sortedBlocks[i -1] && sortedBlocks[i-1].position} nextBlockPosition={sortedBlocks[i +1] && sortedBlocks[i+1].position} prevBlockId={sortedBlocks[i-1] && sortedBlocks[i-1]._id} nextBlockId={sortedBlocks[i+1] && sortedBlocks[i+1]._id} position={position || i} />}
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
@@ -139,6 +152,7 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
                 case 'gallery':
                     return (
                         <Row key={_id} className={`page-breaks justify-content-center ${pinkStripe}`}>
+                            {isOwner && <MoveBlock setRefresh={() => setRefresh(!refresh)} max={blocks.length} blockId={_id} prevBlockPosition={sortedBlocks[i -1] && sortedBlocks[i-1].position} nextBlockPosition={sortedBlocks[i +1] && sortedBlocks[i+1].position} prevBlockId={sortedBlocks[i-1] && sortedBlocks[i-1]._id} nextBlockId={sortedBlocks[i+1] && sortedBlocks[i+1]._id} position={position || i} />}
                             {isOwner &&
                                 <Button
                                     onClick={() => setPassEditProps({_id, title, text, imageLink, images, variant, centered})}
@@ -162,8 +176,8 @@ export default ({pageId, blocksData, isOwner, noRozvrh}) => {
     }
     return (
         <Container className="whitesmoke-bg-pless py-4" style={{fontSize: '120%'}} fluid>
-            {typeof passEditProps === 'object'&& isOwner && <EditBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
-            {isOwner && <AddBlock pageId={pageId} setRefresh={setRefresh} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />}
+            {typeof passEditProps === 'object'&& isOwner && <EditBlock pageId={pageId} setRefresh={() => setRefresh(!refresh)} refresh={refresh} blockData={passEditProps} setPassEditProps={setPassEditProps} />}
+            {isOwner && <AddBlock pageId={pageId} setRefresh={() => setRefresh(!refresh)} refresh={refresh} addBlockPopup={addBlockPopup} setAddBlockPopup={setAddBlockPopup} />}
             <ShowBlocks />
             {isOwner &&
             <div className="text-center">
